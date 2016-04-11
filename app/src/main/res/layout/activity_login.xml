@@ -1,0 +1,67 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_page_bg"
+    tools:context="cn.com.xplora.xploraapp.LaunchActivity">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:layout_marginTop="35dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <EditText
+        android:id="@+id/login_username_input"
+        android:layout_width="260dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="45dp"
+        android:hint="用户名/手机号码"
+        android:singleLine="true"
+        android:textColorHint="#444444"
+        android:paddingLeft="10dp"
+        android:textSize="14sp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/background_login_text"
+        android:layout_below="@id/logo"
+        />
+    <EditText
+        android:id="@+id/login_password_input"
+        android:layout_centerHorizontal="true"
+        android:layout_width="260dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:hint="密码"
+        android:singleLine="true"
+        android:textColorHint="#444444"
+        android:paddingLeft="10dp"
+        android:textSize="14sp"
+        android:background="@drawable/background_login_text"
+        android:layout_below="@id/login_username_input"
+        />
+    <Button
+        android:id="@+id/login_submit_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_width="260dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:textSize="14sp"
+        android:text="登录"
+        android:textColor="#00FFFF"
+        android:background="@drawable/background_login_btn"
+        android:layout_below="@id/login_password_input"
+        />
+
+</RelativeLayout>
+
+
+</FrameLayout>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_left_frag"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/menu_bg"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <cn.com.xplora.xploraapp.circleImageView.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/hugh"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="#FF000000"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="20dp"
+                    />
+                <TextView
+                    android:id="@+id/full_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/profile_image"
+                    android:layout_alignTop="@id/profile_image"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:text="Hugh Anderson"
+                    android:textColor="#00FFFF"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:id="@+id/hobbies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/full_name"
+                    android:layout_alignLeft="@id/full_name"
+                    android:layout_marginTop="5dp"
+                    android:text="#音乐#运动#美食#赛车#展览"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    />
+                <TextView
+                    android:id="@+id/following_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_image"
+                    android:layout_alignLeft="@id/hobbies"
+                    android:layout_marginTop="5dp"
+                    android:text="关注:"
+                    android:textColor="#00FFFF"
+                    android:textSize="10sp"
+                    />
+                <TextView
+                    android:id="@+id/following_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/following_label"
+                    android:layout_below="@id/profile_image"
+                    android:text="23333"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    />
+                <TextView
+                    android:id="@+id/follower_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_image"
+                    android:layout_toRightOf="@id/following_count"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="5dp"
+                    android:text="粉丝:"
+                    android:textColor="#00FFFF"
+                    android:textSize="10sp"
+                    />
+                <TextView
+                    android:id="@+id/follower_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/follower_label"
+                    android:layout_below="@id/profile_image"
+                    android:text="23333"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/profile_image_no"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/profile_image_no"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="20dp"
+                    />
+                <TextView
+                    android:id="@+id/login_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/profile_image_no"
+                    android:layout_alignTop="@id/profile_image_no"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="15dp"
+                    android:text="您好，请点击登录"
+                    android:textColor="#00FFFF"
+                    android:textSize="16sp"
+                    android:clickable="true"
+
+                    />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_marginTop="15dp"
+                android:layout_width="220dp"
+                android:layout_gravity="center"
+                android:layout_height="0.5dp"
+                android:background="#00FFFF"
+                android:layout_marginBottom="15dp"
+                />
+            <RelativeLayout
+                android:layout_width="220dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon_left_menu_event"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_left_menu_event"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tab_news"
+                    android:layout_toRightOf="@id/icon_left_menu_event"
+                    style="@style/tab_style"
+                    android:layout_centerVertical="true"
+                    android:text="活动" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="220dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon_left_menu_xcircle"
+                    android:layout_centerVertical="true"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_left_menu_xcircle"
+                    />
+                <TextView
+                    android:id="@+id/tab_read"
+                    style="@style/tab_style"
+                    android:layout_toRightOf="@id/icon_left_menu_xcircle"
+                    android:layout_centerVertical="true"
+                    android:text="X-Circle" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="220dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon_left_menu_friend"
+                    android:layout_centerVertical="true"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_left_menu_friend"
+                    />
+                <TextView
+                    android:id="@+id/tab_local"
+                    android:layout_toRightOf="@id/icon_left_menu_friend"
+                    android:layout_centerVertical="true"
+                    style="@style/tab_style"
+                    android:text="好友" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="220dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon_left_menu_notify"
+                    android:layout_centerVertical="true"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_left_menu_notify"
+                    />
+                <TextView
+                    android:id="@+id/tab_ties"
+                    android:layout_toRightOf="@id/icon_left_menu_notify"
+                    android:layout_centerVertical="true"
+                    style="@style/tab_style"
+                    android:text="通知" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="220dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon_left_menu_explore"
+                    android:layout_centerVertical="true"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_left_menu_explore"
+                    />
+                <TextView
+                    android:id="@+id/tab_pics"
+                    android:layout_toRightOf="@id/icon_left_menu_explore"
+                    android:layout_centerVertical="true"
+                    style="@style/tab_style"
+                    android:text="探索卷" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="220dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon_left_menu_search"
+                    android:layout_centerVertical="true"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_left_menu_search"
+                    />
+                <TextView
+                    android:id="@+id/tab_focus"
+                    android:layout_toRightOf="@id/icon_left_menu_search"
+                    android:layout_centerVertical="true"
+                    style="@style/tab_style"
+                    android:text="搜索" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="220dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon_left_menu_setting"
+                    android:layout_centerVertical="true"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_left_menu_setting"
+                    />
+                <TextView
+                    android:id="@+id/tab_vote"
+                    android:layout_toRightOf="@id/icon_left_menu_setting"
+                    android:layout_centerVertical="true"
+                    style="@style/tab_style"
+                    android:text="设置" />
+            </RelativeLayout>
+
+
+
+            <View
+                android:layout_marginTop="15dp"
+                android:layout_width="220dp"
+                android:layout_gravity="center"
+                android:layout_height="0.5dp"
+                android:background="#00FFFF"
+                android:layout_marginBottom="5dp"
+                />
+
+            <RelativeLayout
+                android:layout_width="220dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon_left_menu_lang"
+                    android:layout_centerVertical="true"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_left_menu_lang"
+                    />
+                <TextView
+                    android:id="@+id/tab_ugc"
+                    style="@style/tab_style"
+                    android:layout_toRightOf="@id/icon_left_menu_lang"
+                    android:layout_centerVertical="true"
+                    android:text="English Version" />
+
+            </RelativeLayout>
+
+
+            <Button
+                android:visibility="gone"
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:background="@drawable/btn_logout_bg"
+                android:text="登出"
+                android:textColor="#00FFFF"
+                android:textAlignment="center"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+
+
+</FrameLayout>
