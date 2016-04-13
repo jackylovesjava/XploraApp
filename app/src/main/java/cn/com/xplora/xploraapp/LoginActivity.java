@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -46,12 +47,21 @@ public class LoginActivity extends Activity {
      */
 //    private UserLoginTask mAuthTask = null;
 
-
-
+    private Button mFetchSmsCodeBtn;
+    private TimeCount mTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mFetchSmsCodeBtn = (Button)findViewById(R.id.login_fetch_smscode);
+        mTime = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        mFetchSmsCodeBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTime.start();//开始计时
+            }
+        });
         // Set up the login form.
 
 
@@ -237,5 +247,23 @@ public class LoginActivity extends Activity {
 //            showProgress(false);
 //        }
 //    }
+
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
+
+        @Override
+        public void onFinish() {//计时完毕时触发
+            mFetchSmsCodeBtn.setText("重新获取");
+            mFetchSmsCodeBtn.setClickable(true);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {//计时过程显示
+            mFetchSmsCodeBtn.setClickable(false);
+            mFetchSmsCodeBtn.setText(millisUntilFinished / 1000 + "秒");
+        }
+    }
 }
 

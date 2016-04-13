@@ -23,9 +23,9 @@
     <EditText
         android:id="@+id/login_username_input"
         android:layout_width="260dp"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:layout_marginTop="45dp"
-        android:hint="用户名/手机号码"
+        android:hint="手机号码"
         android:singleLine="true"
         android:textColorHint="#444444"
         android:paddingLeft="10dp"
@@ -35,32 +35,100 @@
         android:layout_below="@id/logo"
         />
     <EditText
-        android:id="@+id/login_password_input"
+        android:id="@+id/login_smscode_input"
         android:layout_centerHorizontal="true"
-        android:layout_width="260dp"
-        android:layout_height="35dp"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
         android:layout_marginTop="5dp"
-        android:hint="密码"
+        android:hint="验证码"
         android:singleLine="true"
         android:textColorHint="#444444"
         android:paddingLeft="10dp"
         android:textSize="14sp"
         android:background="@drawable/background_login_text"
         android:layout_below="@id/login_username_input"
+        android:layout_alignLeft="@id/login_username_input"
+        />
+    <Button
+        android:id="@+id/login_fetch_smscode"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_width="75dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/login_smscode_input"
+        android:layout_below="@id/login_username_input"
+        android:text="获取"
+        android:textSize="14sp"
+        android:textColor="#00FFFF"
+        android:textAlignment="center"
+        android:background="@drawable/background_login_smscode"
         />
     <Button
         android:id="@+id/login_submit_btn"
         android:layout_centerHorizontal="true"
         android:layout_width="260dp"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:textSize="14sp"
         android:text="登录"
         android:textColor="#00FFFF"
         android:background="@drawable/background_login_btn"
-        android:layout_below="@id/login_password_input"
+        android:layout_below="@id/login_smscode_input"
         />
+    <LinearLayout
+        android:id="@+id/login_sns_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal"
+        >
+    <ImageView
+        android:id="@+id/login_weibo_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/weibo"
+        android:layout_marginRight="15dp"
+        />
+    <ImageView
+        android:id="@+id/login_wechat_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/wechat"
+        android:layout_marginLeft="15dp"
+        />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@id/login_sns_panel"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal"
+        >
+    <View
+        android:layout_width="120dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#FFFFFF"></View>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:text="您亦可以"
+        />
+    <View
+        android:layout_width="120dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
 
+        android:background="#FFFFFF"></View>
+    </LinearLayout>
 </RelativeLayout>
 
 
