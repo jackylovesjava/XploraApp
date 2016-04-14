@@ -4,10 +4,13 @@ package cn.com.xplora.xploraapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import cn.com.xplora.xploraapp.fragments.BaseFragment;
 import cn.com.xplora.xploraapp.fragments.FocusFragment;
@@ -17,6 +20,7 @@ import cn.com.xplora.xploraapp.fragments.ReadFragment;
 import cn.com.xplora.xploraapp.fragments.TiesFragment;
 import cn.com.xplora.xploraapp.fragments.UgcFragment;
 import cn.com.xplora.xploraapp.fragments.VoteFragment;
+import cn.com.xplora.xploraapp.utils.CommonUtil;
 
 public class LeftMenuFragment extends Fragment implements OnClickListener {
 
@@ -36,6 +40,39 @@ public class LeftMenuFragment extends Fragment implements OnClickListener {
 		view.findViewById(R.id.tab_vote).setOnClickListener(this);
 		view.findViewById(R.id.tab_ugc).setOnClickListener(this);
 		view.findViewById(R.id.login_label).setOnClickListener(this);
+
+		Bundle data = this.getArguments();
+		if(data!=null){
+			TextView fullNameText = (TextView)view.findViewById(R.id.full_name);
+			fullNameText.setText(data.getString("userName"));
+			TextView hobbyText = (TextView)view.findViewById(R.id.hobbies);
+			if("CHN".equalsIgnoreCase(CommonUtil.getLang(mAct))) {
+				hobbyText.setText(data.getString("hobby"));
+			}else{
+				hobbyText.setText(data.getString("hobbyEn"));
+			}
+			TextView followingText = (TextView)view.findViewById(R.id.following_count);
+			TextView followerText = (TextView)view.findViewById(R.id.follower_count);
+			followingText.setText(String.valueOf(data.getInt("followings")));
+			followerText.setText(String.valueOf(data.getInt("followers")));
+
+			String imageName = data.getString("imageName");
+			String imageUrl = data.getString("imageUrl");
+			ImageView profileImage = (ImageView)view.findViewById(R.id.profile_image);
+
+			if(imageName==null||"null".equalsIgnoreCase(imageName)||"".equalsIgnoreCase(imageName)){
+				profileImage.setImageResource(R.drawable.profile_image_no);
+			}
+			view.findViewById(R.id.profile).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.profile_no).setVisibility(View.GONE);
+			view.findViewById(R.id.logout_btn).setVisibility(View.VISIBLE);
+		}else{
+			view.findViewById(R.id.profile_no).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.profile).setVisibility(View.GONE);
+			view.findViewById(R.id.logout_btn).setVisibility(View.GONE);
+
+		}
+
 		return view;
 	}
 

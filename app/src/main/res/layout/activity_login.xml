@@ -2,13 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_page_bg"
+    android:background="@drawable/background_color"
     tools:context="cn.com.xplora.xploraapp.LaunchActivity">
 
 <RelativeLayout
+    android:id="@+id/login_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/login_page_bg"
     >
 
     <ImageView

@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -29,10 +30,18 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import cn.com.xplora.xploraapp.asyncTasks.LoginAsyncTask;
+import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
+import cn.com.xplora.xploraapp.model.UserModel;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -49,12 +58,47 @@ public class LoginActivity extends Activity {
 
     private Button mFetchSmsCodeBtn;
     private TimeCount mTime;
+    private CustomProgressDialog mLoadingDialog;
+    private Button mLoginBtn;
+    private EditText mMobileInput;
+    private EditText mCodeInput;
+    private LoginAsyncTask mLoginAsyncTask = null;
+    private RelativeLayout mLoginPage = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        initView();//初始化视图
+        setCountDown();//设置倒数60秒
+    }
 
+
+    private void initView(){
+        setContentView(R.layout.activity_login);
+        mLoginPage = (RelativeLayout)findViewById(R.id.login_page);
+        mLoadingDialog = new CustomProgressDialog(LoginActivity.this, getString(R.string.loading),R.anim.loading_frame);
+        mLoginBtn = (Button)findViewById(R.id.login_submit_btn);
+        mLoginBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptLogin();
+
+            }
+        });
+        mMobileInput =  (EditText) findViewById(R.id.login_username_input);
+        mCodeInput = (EditText) findViewById(R.id.login_smscode_input);
+        mCodeInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login_submit_btn || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
         mFetchSmsCodeBtn = (Button)findViewById(R.id.login_fetch_smscode);
+    }
+    private void setCountDown(){
         mTime = new TimeCount(60000, 1000);//构造CountDownTimer对象
         mFetchSmsCodeBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -62,32 +106,7 @@ public class LoginActivity extends Activity {
                 mTime.start();//开始计时
             }
         });
-        // Set up the login form.
-
-
-//        mPasswordView = (EditText) findViewById(R.id.password);
-//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-//                    attemptLogin();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-
-//        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-//        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                attemptLogin();
-//            }
-//        });
-
     }
-
-
 
 
 
@@ -97,60 +116,41 @@ public class LoginActivity extends Activity {
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-//        if (mAuthTask != null) {
-//            return;
-//        }
+        if (mLoginAsyncTask != null){
+            return;
+        }
 
         // Reset errors.
-//        mEmailView.setError(null);
-//        mPasswordView.setError(null);
+        mMobileInput.setError(null);
+        mCodeInput.setError(null);
 //
 //        // Store values at the time of the login attempt.
-//        String email = mEmailView.getText().toString();
-//        String password = mPasswordView.getText().toString();
+        String mobile = mMobileInput.getText().toString();
+        String code = mCodeInput.getText().toString();
 //
-//        boolean cancel = false;
-//        View focusView = null;
+        boolean cancel = false;
+        View focusView = null;
 //
-//        // Check for a valid password, if the user entered one.
-//        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-//            mPasswordView.setError(getString(R.string.error_invalid_password));
-//            focusView = mPasswordView;
-//            cancel = true;
-//        }
-//
-//        // Check for a valid email address.
-//        if (TextUtils.isEmpty(email)) {
-//            mEmailView.setError(getString(R.string.error_field_required));
-//            focusView = mEmailView;
-//            cancel = true;
-//        } else if (!isEmailValid(email)) {
-//            mEmailView.setError(getString(R.string.error_invalid_email));
-//            focusView = mEmailView;
-//            cancel = true;
-//        }
-//
-//        if (cancel) {
-//            // There was an error; don't attempt login and focus the first
-//            // form field with an error.
-//            focusView.requestFocus();
-//        } else {
-//            // Show a progress spinner, and kick off a background task to
-//            // perform the user login attempt.
-//            showProgress(true);
-//            mAuthTask = new UserLoginTask(email, password);
-//            mAuthTask.execute((Void) null);
-//        }
-    }
+        // Check for a valid mobile, if the user entered one.
+        if (TextUtils.isEmpty(mobile) ||!isMobileValid(mobile)) {
+            mMobileInput.setError(getString(R.string.error_mobile_invalid));
+            focusView = mMobileInput;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(code)||!isCodeValid(code)) {
+            mCodeInput.setError(getString(R.string.error_code_invalid));
+            focusView = mCodeInput;
+            cancel = true;
+        }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
+        if(cancel){
+            focusView.requestFocus();
+        }else{
+            showProgress(true);
+            mLoginAsyncTask = new LoginAsyncTask(mobile,code,LoginActivity.this,mLoadingDialog);
+            mLoginAsyncTask.execute((Void)null);
+        }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
     }
 
     /**
@@ -161,18 +161,18 @@ public class LoginActivity extends Activity {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-//            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-//
-//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                }
-//            });
-//
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mLoginPage.setVisibility(show ? View.GONE : View.VISIBLE);
+            mLoginPage.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mLoginPage.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
 //            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
 //            mProgressView.animate().setDuration(shortAnimTime).alpha(
 //                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
@@ -181,12 +181,12 @@ public class LoginActivity extends Activity {
 //                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
 //                }
 //            });
-//        } else {
-//            // The ViewPropertyAnimator APIs are not available, so simply show
-//            // and hide the relevant UI components.
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
 //            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//        }
+            mLoginPage.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
 
@@ -248,6 +248,42 @@ public class LoginActivity extends Activity {
 //        }
 //    }
 
+        private boolean isMobileValid(String mobile){
+            Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+
+              Matcher m = p.matcher(mobile);
+            return m.matches();
+        }
+    private boolean isCodeValid(String code){
+        Pattern p = Pattern.compile("^\\d{6}$");
+
+        Matcher m = p.matcher(code);
+        return m.matches();
+    }
+    public void doAfterTask(UserModel user){
+        showProgress(false);
+        mLoginAsyncTask = null;
+        if(!user.isResult()){
+            Toast toast= Toast.makeText(LoginActivity.this, user.getErrorMsg(), Toast.LENGTH_SHORT);
+            toast.show();
+        }else{
+            if(user.isNewUser()){// new user, go to new user guide
+
+            }else {//login, go to home page
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("userName", user.getUserName());
+                intent.putExtra("hobby", user.getHobby());
+                intent.putExtra("hobbyEn", user.getHobbyEn());
+                intent.putExtra("imageName", user.getImageName());
+                intent.putExtra("imageUrl", user.getImageUrl());
+                intent.putExtra("followings", user.getFollowings());
+                intent.putExtra("followers", user.getFollowers());
+                startActivity(intent);
+            }
+        }
+
+    }
+
     class TimeCount extends CountDownTimer {
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
@@ -264,6 +300,11 @@ public class LoginActivity extends Activity {
             mFetchSmsCodeBtn.setClickable(false);
             mFetchSmsCodeBtn.setText(millisUntilFinished / 1000 + "秒");
         }
+    }
+    public static void main(String[]args){
+        Pattern p = Pattern.compile("^\\d{6}$");
+        Matcher m = p.matcher("565");
+        System.out.println(m.matches());
     }
 }
 
