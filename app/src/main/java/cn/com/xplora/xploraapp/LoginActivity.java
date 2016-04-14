@@ -269,6 +269,10 @@ public class LoginActivity extends Activity {
         }else{
             if(user.isNewUser()){// new user, go to new user guide
 
+                Intent intent = new Intent(LoginActivity.this, NewUserGuideActivity.class);
+                intent.putExtra("userId",user.getUuidInBack());
+                startActivity(intent);
+
             }else {//login, go to home page
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("userName", user.getUserName());

@@ -1,6 +1,7 @@
 package cn.com.xplora.xploraapp;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import cn.com.xplora.xploraapp.fragments.BaseFragment;
@@ -49,12 +51,21 @@ public class LeftMenuFragment extends Fragment implements OnClickListener {
 		Bundle data = this.getArguments();
 		if(data!=null){
 			TextView fullNameText = (TextView)view.findViewById(R.id.full_name);
+			String userName = data.getString("userName");
+			TextView setupText = (TextView)view.findViewById(R.id.setup);
+			if(userName==null||"null".equalsIgnoreCase(userName)||userName.indexOf("****")>0){
+				//need to setup nickname
+				setupText.setText(getString(R.string.setup_profile_username));
+			}
 			fullNameText.setText(data.getString("userName"));
 			TextView hobbyText = (TextView)view.findViewById(R.id.hobbies);
 			if("CHN".equalsIgnoreCase(CommonUtil.getLang(mAct))) {
 				hobbyText.setText(data.getString("hobby"));
 			}else{
 				hobbyText.setText(data.getString("hobbyEn"));
+			}
+			if(hobbyText.getText()==null||TextUtils.isEmpty(hobbyText.getText())){
+				setupText.setText(getString(R.string.setup_profile_hobby));
 			}
 			TextView followingText = (TextView)view.findViewById(R.id.following_count);
 			TextView followerText = (TextView)view.findViewById(R.id.follower_count);
@@ -67,11 +78,19 @@ public class LeftMenuFragment extends Fragment implements OnClickListener {
 
 			if(imageName==null||"null".equalsIgnoreCase(imageName)||"".equalsIgnoreCase(imageName)){
 				profileImage.setImageResource(R.drawable.profile_image_no);
+				setupText.setText(getString(R.string.setup_profile_image));
 			}else{
 				ImageLoader imageLoader = ImageLoader.getInstance();
 				DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
 						.cacheOnDisk(true).imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).showImageForEmptyUri(R.drawable.profile_image_no).build();
+				if(!imageLoader.isInited()){
+					imageLoader.init(ImageLoaderConfiguration.createDefault(mAct));
+				}
+
 				imageLoader.displayImage(imageUrl,profileImage,displayImageOptions);
+			}
+			if(setupText.getText()==null||TextUtils.isEmpty(setupText.getText())){
+				setupText.setVisibility(View.GONE);
 			}
 			view.findViewById(R.id.profile).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.profile_no).setVisibility(View.GONE);

@@ -55,6 +55,11 @@ public class LoginResultJson {
                 if(hobbyList!=null&&hobbyList.length()>0){
                     for(int i = 0;i<hobbyList.length();i++){
                         JSONObject hobbyJson = (JSONObject)hobbyList.opt(i);
+                        if(i>4){
+                            hobbyEnSB.append("...and "+(hobbyList.length()-5)+" more");
+                            hobbySB.append("...等"+hobbyList.length()+"项");
+                            break;
+                        }
                         hobbyEnSB.append("#");
                         hobbyEnSB.append(hobbyJson.getString("hobbyNameEn"));
 
