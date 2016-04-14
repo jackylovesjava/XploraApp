@@ -49,7 +49,9 @@ public class LoginResultJson {
 
                 StringBuilder hobbyEnSB = new StringBuilder("");
                 StringBuilder hobbySB = new StringBuilder("");
+                try {//当返回hobbyList为空时
                 JSONArray hobbyList = root.getJSONArray("hobbyList");
+
                 if(hobbyList!=null&&hobbyList.length()>0){
                     for(int i = 0;i<hobbyList.length();i++){
                         JSONObject hobbyJson = (JSONObject)hobbyList.opt(i);
@@ -59,6 +61,9 @@ public class LoginResultJson {
                         hobbySB.append("#");
                         hobbySB.append(hobbyJson.getString("hobbyName"));
                     }
+                }}
+                catch (Exception ex){
+
                 }
                 user.setHobbyEn(hobbyEnSB.toString());
                 user.setHobby(hobbySB.toString());

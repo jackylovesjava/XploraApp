@@ -5,12 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import cn.com.xplora.xploraapp.fragments.BaseFragment;
 import cn.com.xplora.xploraapp.fragments.FocusFragment;
@@ -62,6 +67,11 @@ public class LeftMenuFragment extends Fragment implements OnClickListener {
 
 			if(imageName==null||"null".equalsIgnoreCase(imageName)||"".equalsIgnoreCase(imageName)){
 				profileImage.setImageResource(R.drawable.profile_image_no);
+			}else{
+				ImageLoader imageLoader = ImageLoader.getInstance();
+				DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
+						.cacheOnDisk(true).imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).showImageForEmptyUri(R.drawable.profile_image_no).build();
+				imageLoader.displayImage(imageUrl,profileImage,displayImageOptions);
 			}
 			view.findViewById(R.id.profile).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.profile_no).setVisibility(View.GONE);
