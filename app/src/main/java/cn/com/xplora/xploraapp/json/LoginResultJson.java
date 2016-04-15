@@ -37,7 +37,7 @@ public class LoginResultJson {
                 user.setFollowers(followers);
                 boolean newUser = root.getBoolean("newUser");
                 user.setNewUser(newUser);
-
+                int uuidInBack = root.getInt("userId");
                 try {//当返回city为空时
                     JSONObject cityJson = root.getJSONObject("city");
                     if (cityJson != null) {
@@ -49,6 +49,7 @@ public class LoginResultJson {
 
                 StringBuilder hobbyEnSB = new StringBuilder("");
                 StringBuilder hobbySB = new StringBuilder("");
+                StringBuilder hobbyIdsSB = new StringBuilder("");
                 try {//当返回hobbyList为空时
                 JSONArray hobbyList = root.getJSONArray("hobbyList");
 
@@ -66,13 +67,22 @@ public class LoginResultJson {
                         hobbySB.append("#");
                         hobbySB.append(hobbyJson.getString("hobbyName"));
                     }
-                }}
+
+                    for(int i = 0;i<hobbyList.length();i++){
+                        JSONObject hobbyJson = (JSONObject)hobbyList.opt(i);
+                        hobbyIdsSB.append(hobbyJson.getInt("uuid"));
+                        hobbyIdsSB.append("|");
+
+                    }
+                }
+
+                }
                 catch (Exception ex){
 
                 }
                 user.setHobbyEn(hobbyEnSB.toString());
                 user.setHobby(hobbySB.toString());
-
+                user.setHobbyIds(hobbyIdsSB.toString());
                 return user;
 
             }

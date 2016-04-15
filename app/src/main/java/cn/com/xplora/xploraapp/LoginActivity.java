@@ -35,12 +35,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.com.xplora.xploraapp.asyncTasks.LoginAsyncTask;
 import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
+import cn.com.xplora.xploraapp.db.UserDAO;
+import cn.com.xplora.xploraapp.db.XploraDBHelper;
 import cn.com.xplora.xploraapp.model.UserModel;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -64,6 +67,7 @@ public class LoginActivity extends Activity {
     private EditText mCodeInput;
     private LoginAsyncTask mLoginAsyncTask = null;
     private RelativeLayout mLoginPage = null;
+    private UserDAO mUserDAO = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -267,6 +271,8 @@ public class LoginActivity extends Activity {
             Toast toast= Toast.makeText(LoginActivity.this, user.getErrorMsg(), Toast.LENGTH_SHORT);
             toast.show();
         }else{
+            user.setLogined(true);//成功登陆
+            user.setLastLoginDate(new Date());
             if(user.isNewUser()){// new user, go to new user guide
 
                 Intent intent = new Intent(LoginActivity.this, NewUserGuideActivity.class);
@@ -284,6 +290,10 @@ public class LoginActivity extends Activity {
                 intent.putExtra("followers", user.getFollowers());
                 startActivity(intent);
             }
+
+            //INSERT LOGINED USER DATA INTO LOCAL DATABASE
+            mUserDAO = new UserDAO(new XploraDBHelper(this,"XPLORA"));
+            mUserDAO.insert(user);
         }
 
     }

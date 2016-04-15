@@ -11,6 +11,7 @@ public class UserModel extends BaseModel {
     private String mobile;
     private String imageUrl;
     private String imageName;
+    private String hobbyIds;
     private String hobby;
     private String hobbyEn;
     private int cityId;
@@ -19,6 +20,7 @@ public class UserModel extends BaseModel {
     private boolean newUser;
     private boolean logined;
     private Date lastLoginDate;
+    private boolean autoPush;
 
     public String getUserName() {
         return userName;
@@ -114,5 +116,21 @@ public class UserModel extends BaseModel {
 
     public void setLastLoginDate(Date lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
+    }
+
+    public String getHobbyIds() {
+        return hobbyIds;
+    }
+
+    public void setHobbyIds(String hobbyIds) {
+        this.hobbyIds = hobbyIds;
+    }
+
+    public boolean isAutoPush() {
+        return autoPush;
+    }
+
+    public void setAutoPush(boolean autoPush) {
+        this.autoPush = autoPush;
     }
 }
