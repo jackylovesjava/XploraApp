@@ -16,11 +16,15 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import cn.com.xplora.xploraapp.asyncTasks.ActiveCitiesAsyncTask;
+import cn.com.xplora.xploraapp.asyncTasks.DoAfterResultInterface;
+import cn.com.xplora.xploraapp.json.ActiveCitiesResult;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class LaunchActivity extends Activity {
+public class LaunchActivity extends Activity implements DoAfterResultInterface{
 
     private View mContentView;
     /**
@@ -28,7 +32,7 @@ public class LaunchActivity extends Activity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-
+    private ActiveCitiesAsyncTask mActiveCitiesAsyncTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,23 +44,19 @@ public class LaunchActivity extends Activity {
         mContentView = findViewById(R.id.fullscreen_content);
 
 
-        // Set up the user interaction to manually show or hide the system UI.
-        mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LaunchActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
 
         ShimmerFrameLayout container =
                 (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
         container.setDuration(3000);
         container.startShimmerAnimation();
 
+        mActiveCitiesAsyncTask = new ActiveCitiesAsyncTask(LaunchActivity.this);
+        mActiveCitiesAsyncTask.execute();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
     }
 
     @Override
@@ -108,5 +108,12 @@ public class LaunchActivity extends Activity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    @Override
+    public void doAfterResult(Object result) {
+
+        Intent intent = new Intent(LaunchActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

@@ -42,9 +42,6 @@ public class MainActivity extends SlidingFragmentActivity {
 			mLeftMenu = new LeftMenuFragment();
 			mRightMenu = new RightMenuFragment();
 			mHomeFragment = new HomeFragment();
-			if(intent!=null&&intent.getExtras()!=null){
-				mLeftMenu.setArguments(intent.getExtras());
-			}
 			getSupportFragmentManager().beginTransaction().replace(R.id.menu_left_frag, mLeftMenu, "Left").commit();
 			getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mHomeFragment, "Home").commit();
 			getSupportFragmentManager().beginTransaction().replace(R.id.menu_right_frag, mRightMenu, "Right").commit();

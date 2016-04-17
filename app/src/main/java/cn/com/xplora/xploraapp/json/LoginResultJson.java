@@ -1,5 +1,7 @@
 package cn.com.xplora.xploraapp.json;
 
+import android.support.annotation.Nullable;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -8,7 +10,7 @@ import cn.com.xplora.xploraapp.model.UserModel;
 /**
  * Created by yckj on 2016/4/14.
  */
-public class LoginResultJson {
+public class LoginResultJson extends BaseJson{
 
     public static UserModel parse(String response){
         UserModel user = new UserModel();
@@ -23,13 +25,13 @@ public class LoginResultJson {
             }else{
                 user.setResult(result);
                 user.setErrorMsg(errorMsg);
-                String userName = root.getString("userName");
+                String userName = ignoreNullValue(root.getString("userName"));
                 user.setUserName(userName);
-                String mobile = root.getString("mobile");
+                String mobile = ignoreNullValue(root.getString("mobile"));
                 user.setMobile(mobile);
-                String imageUrl = root.getString("imageUrl");
+                String imageUrl = ignoreNullValue(root.getString("imageUrl"));
                 user.setImageUrl(imageUrl);
-                String imageName = root.getString("imageName");
+                String imageName = ignoreNullValue(root.getString("imageName"));
                 user.setImageName(imageName);
                 int followings = root.getInt("followings");
                 int followers = root.getInt("followers");
@@ -38,10 +40,16 @@ public class LoginResultJson {
                 boolean newUser = root.getBoolean("newUser");
                 user.setNewUser(newUser);
                 int uuidInBack = root.getInt("userId");
+                user.setUuidInBack(uuidInBack);
                 try {//当返回city为空时
                     JSONObject cityJson = root.getJSONObject("city");
                     if (cityJson != null) {
                         int cityId = cityJson.getInt("uuid");
+                        String cityName = ignoreNullValue(cityJson.getString("cityName"));
+                        String cityNameEn = ignoreNullValue(cityJson.getString("cityNameEn"));
+                        user.setCityNameEn(cityNameEn);
+                        user.setCityName(cityName);
+                        user.setCityId(cityId);
                     }
                 }catch (Exception ex){
 
@@ -62,10 +70,10 @@ public class LoginResultJson {
                             break;
                         }
                         hobbyEnSB.append("#");
-                        hobbyEnSB.append(hobbyJson.getString("hobbyNameEn"));
+                        hobbyEnSB.append(ignoreNullValue(hobbyJson.getString("hobbyNameEn")));
 
                         hobbySB.append("#");
-                        hobbySB.append(hobbyJson.getString("hobbyName"));
+                        hobbySB.append(ignoreNullValue(hobbyJson.getString("hobbyName")));
                     }
 
                     for(int i = 0;i<hobbyList.length();i++){

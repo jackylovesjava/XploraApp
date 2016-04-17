@@ -40,7 +40,8 @@
         <activity
             android:name=".NewUserGuideActivity"
             android:label="@string/title_activity_new_user_guide"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FancyFlowDemoActivity"></activity>
     </application>
 
 </manifest>

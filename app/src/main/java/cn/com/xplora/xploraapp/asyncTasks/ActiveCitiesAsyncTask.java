@@ -4,9 +4,13 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.util.List;
+
 import cn.com.xplora.xploraapp.LoginActivity;
 import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
+import cn.com.xplora.xploraapp.json.ActiveCitiesResult;
 import cn.com.xplora.xploraapp.json.LoginResultJson;
+import cn.com.xplora.xploraapp.model.CityModel;
 import cn.com.xplora.xploraapp.model.UserModel;
 import cn.com.xplora.xploraapp.utils.CommonUtil;
 import cn.com.xplora.xploraapp.utils.HttpUtil;
@@ -14,51 +18,38 @@ import cn.com.xplora.xploraapp.utils.HttpUtil;
 /**
  * Created by yckj on 2016/4/14.
  */
-public class LoginAsyncTask extends AsyncTask {
+public class ActiveCitiesAsyncTask extends AsyncTask {
 
     private String TAG = "XPLORA";
-    private String apiUrl = "http://120.76.98.160:8080/admin/api/login/doLogin";
+    private String apiUrl = "http://120.76.98.160:8080/admin/api/city/activeCities";
 
     private Context context;
-    private String mobile;
-    private String code;
-    private CustomProgressDialog loadingDialog;
-    public LoginAsyncTask(String mobile,String code,Context context, CustomProgressDialog loadingDialog){
-        this.mobile = mobile;
-        this.code = code;
+    public ActiveCitiesAsyncTask( Context context){
         this.context = context;
-        this.loadingDialog = loadingDialog;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        loadingDialog.show();
     }
 
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        loadingDialog.hide();
-        LoginActivity loginActivity = (LoginActivity)context;
-        loginActivity.doAfterTask((UserModel)o);
+        ((DoAfterResultInterface)context).doAfterResult(o);
     }
 
     @Override
     protected Object doInBackground(Object[] params) {
-
         try {
-            Thread.currentThread().sleep(2000);
+            Thread.currentThread().sleep(3000);
         }catch (Exception ex){
             ex.printStackTrace();
         }
         HttpUtil http = new HttpUtil(apiUrl);
-        String lang = CommonUtil.getLang(context);
-        String data = "mobile="+mobile+"&code="+code+"&lang="+lang;
-        String result = http.doGet(data);
-        Log.i(TAG, result);
-        UserModel user = LoginResultJson.parse(result);
-        return user;
+        String result = http.doGet(null);
+        List<CityModel> cityList = ActiveCitiesResult.parse(result);
+        return cityList;
     }
 
     @Override

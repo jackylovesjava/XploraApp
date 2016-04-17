@@ -150,7 +150,7 @@ public class LoginActivity extends Activity {
         if(cancel){
             focusView.requestFocus();
         }else{
-            showProgress(true);
+//            showProgress(true);
             mLoginAsyncTask = new LoginAsyncTask(mobile,code,LoginActivity.this,mLoadingDialog);
             mLoginAsyncTask.execute((Void)null);
         }
@@ -265,7 +265,7 @@ public class LoginActivity extends Activity {
         return m.matches();
     }
     public void doAfterTask(UserModel user){
-        showProgress(false);
+//        showProgress(false);
         mLoginAsyncTask = null;
         if(!user.isResult()){
             Toast toast= Toast.makeText(LoginActivity.this, user.getErrorMsg(), Toast.LENGTH_SHORT);
@@ -273,27 +273,51 @@ public class LoginActivity extends Activity {
         }else{
             user.setLogined(true);//成功登陆
             user.setLastLoginDate(new Date());
+
+            //INSERT LOGINED USER DATA INTO LOCAL DATABASE
+            mUserDAO = new UserDAO(new XploraDBHelper(this,"XPLORA"));
+
+            mUserDAO.updateAllUserStatusForLogout();//将所有本地账号更新为logout
+
+            UserModel oldUser = mUserDAO.getUserByUuidInBack(user.getUuidInBack());
+            if(oldUser!=null&&oldUser.getUuid()>0){
+                oldUser.setUserName(user.getUserName());
+                oldUser.setLastLoginDate(new Date());
+                oldUser.setMobile(user.getMobile());
+                oldUser.setAutoPush(user.isAutoPush());
+                oldUser.setFollowers(user.getFollowers());
+                oldUser.setFollowings(user.getFollowings());
+                oldUser.setCityId(user.getCityId());
+                oldUser.setHobby(user.getHobby());
+                oldUser.setHobbyEn(user.getHobbyEn());
+                oldUser.setHobbyIds(user.getHobbyIds());
+                oldUser.setLogined(true);
+                oldUser.setImageName(user.getImageName());
+                oldUser.setImageUrl(user.getImageUrl());
+                mUserDAO.updateUser(oldUser);
+            }else {
+                mUserDAO.insert(user);
+            }
+
             if(user.isNewUser()){// new user, go to new user guide
 
                 Intent intent = new Intent(LoginActivity.this, NewUserGuideActivity.class);
-                intent.putExtra("userId",user.getUuidInBack());
+//                intent.putExtra("userId",user.getUuidInBack());
                 startActivity(intent);
 
             }else {//login, go to home page
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("userName", user.getUserName());
-                intent.putExtra("hobby", user.getHobby());
-                intent.putExtra("hobbyEn", user.getHobbyEn());
-                intent.putExtra("imageName", user.getImageName());
-                intent.putExtra("imageUrl", user.getImageUrl());
-                intent.putExtra("followings", user.getFollowings());
-                intent.putExtra("followers", user.getFollowers());
+//                intent.putExtra("userName", user.getUserName());
+//                intent.putExtra("hobby", user.getHobby());
+//                intent.putExtra("hobbyEn", user.getHobbyEn());
+//                intent.putExtra("imageName", user.getImageName());
+//                intent.putExtra("imageUrl", user.getImageUrl());
+//                intent.putExtra("followings", user.getFollowings());
+//                intent.putExtra("followers", user.getFollowers());
                 startActivity(intent);
             }
 
-            //INSERT LOGINED USER DATA INTO LOCAL DATABASE
-            mUserDAO = new UserDAO(new XploraDBHelper(this,"XPLORA"));
-            mUserDAO.insert(user);
+
         }
 
     }

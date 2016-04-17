@@ -15,6 +15,8 @@ public class UserModel extends BaseModel {
     private String hobby;
     private String hobbyEn;
     private int cityId;
+    private String cityName;
+    private String cityNameEn;
     private int followings;
     private int followers;
     private boolean newUser;
@@ -132,5 +134,21 @@ public class UserModel extends BaseModel {
 
     public void setAutoPush(boolean autoPush) {
         this.autoPush = autoPush;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getCityNameEn() {
+        return cityNameEn;
+    }
+
+    public void setCityNameEn(String cityNameEn) {
+        this.cityNameEn = cityNameEn;
     }
 }

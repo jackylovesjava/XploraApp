@@ -11,9 +11,8 @@
     <string name="error_mobile_invalid">请输入正确手机号码</string>
     <string name="error_code_invalid">请输入6位数字验证码</string>
 
-    <string name="setup_profile_username">点此编辑个人资料，设置昵称</string>
-    <string name="setup_profile_image">点此编辑个人资料，设置头像</string>
-    <string name="setup_profile_hobby">点此编辑个人资料，设置兴趣</string>
+    <string name="setup_profile">点此编辑个人资料</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
