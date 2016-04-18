@@ -22,7 +22,7 @@
         android:layout_centerHorizontal="true"
         />
 
-    <EditText
+    <cn.com.xplora.xploraapp.customUI.CleanableEditText
         android:id="@+id/login_username_input"
         android:layout_width="260dp"
         android:layout_height="40dp"
@@ -31,12 +31,15 @@
         android:singleLine="true"
         android:textColorHint="#444444"
         android:paddingLeft="10dp"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/background_login_text"
         android:layout_below="@id/logo"
+        android:background="@drawable/background_login_text"
+        android:drawableRight="@drawable/delete"
+        android:paddingRight="10dp"
         />
-    <EditText
+
+    <cn.com.xplora.xploraapp.customUI.CleanableEditText
         android:id="@+id/login_smscode_input"
         android:layout_centerHorizontal="true"
         android:layout_width="180dp"
@@ -46,10 +49,12 @@
         android:singleLine="true"
         android:textColorHint="#444444"
         android:paddingLeft="10dp"
-        android:textSize="14sp"
-        android:background="@drawable/background_login_text"
+        android:textSize="16sp"
         android:layout_below="@id/login_username_input"
         android:layout_alignLeft="@id/login_username_input"
+        android:background="@drawable/background_login_text"
+        android:drawableRight="@drawable/delete"
+        android:paddingRight="10dp"
         />
     <Button
         android:id="@+id/login_fetch_smscode"

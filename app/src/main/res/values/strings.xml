@@ -13,6 +13,7 @@
 
     <string name="setup_profile">点此编辑个人资料</string>
 
+    <string name="tip_select_city">请选择您所在城市</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>

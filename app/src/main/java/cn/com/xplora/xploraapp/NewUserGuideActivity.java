@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.xplora.xploraapp.fragments.MyFragment;
+import cn.com.xplora.xploraapp.fragments.SelectCityFragment;
 import cn.com.xplora.xploraapp.fragments.TabFragmentAdapter;
 
 public class NewUserGuideActivity extends FragmentActivity {
@@ -29,11 +30,19 @@ public class NewUserGuideActivity extends FragmentActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         List<Fragment> fragments = new ArrayList<Fragment>();
         for (int i = 0; i < mTitles.length; i++) {
-            Fragment fragment = new MyFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("text",mTitles[i]);
-            fragment.setArguments(bundle);
-            fragments.add(fragment);
+            if(i==0){
+                SelectCityFragment selectCityFragment = new SelectCityFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("text",mTitles[i]);
+                selectCityFragment.setArguments(bundle);
+                fragments.add(selectCityFragment);
+            }else {
+                Fragment fragment = new MyFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("text", mTitles[i]);
+                fragment.setArguments(bundle);
+                fragments.add(fragment);
+            }
         }
         viewPager.setAdapter(new TabFragmentAdapter(fragments, mTitles, getSupportFragmentManager(), this));
         TabLayout tablayout = (TabLayout) findViewById(R.id.tablayout);

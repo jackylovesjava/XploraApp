@@ -6,14 +6,20 @@
     android:layout_height="match_parent"
     android:gravity="center" >
 
-    <cn.com.xplora.xploraapp.fancyFlow.FancyCoverFlow
-        android:id="@+id/fancyCoverFlow"
+    <cn.com.xplora.xploraapp.customUI.CoverFlowView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/coverflow"
         android:layout_width="match_parent"
+        android:layout_height="320dp"
+        app:coverflowGravity="center_vertical"
+        app:coverflowLayoutMode="wrap_content"
+        app:reflectionGap="10dp"
+        app:reflectionHeight="30%"
+        app:visibleImage="5" />
+    <Button
+        android:id="@+id/change_bitmap_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        fcf:maxRotation="0"
-        fcf:scaleDownGravity="0.5"
-        fcf:unselectedAlpha="0.8"
-        fcf:unselectedScale="0.8" />
-
+        android:layout_below="@id/coverflow"
+        android:text="change bitmap" />
 </RelativeLayout>
