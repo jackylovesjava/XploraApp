@@ -42,6 +42,7 @@
             android:label="@string/title_activity_new_user_guide"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FancyFlowDemoActivity"></activity>
+        <activity android:name=".PullToRefreshRecycleActivity"></activity>
     </application>
 
 </manifest>

@@ -145,7 +145,8 @@ public class LeftMenuFragment extends Fragment implements OnClickListener {
 			startActivity(intent4);
 			break;
 		case R.id.tab_local:
-			fragment = new LocalFragment();
+			Intent intent5 = new Intent(mAct,PullToRefreshRecycleActivity.class);
+			startActivity(intent5);
 			break;
 		case R.id.tab_ties:
 			fragment = new TiesFragment();

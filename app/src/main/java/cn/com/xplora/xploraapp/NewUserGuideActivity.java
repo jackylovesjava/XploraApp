@@ -18,6 +18,7 @@ import java.util.List;
 
 import cn.com.xplora.xploraapp.fragments.MyFragment;
 import cn.com.xplora.xploraapp.fragments.SelectCityFragment;
+import cn.com.xplora.xploraapp.fragments.SelectHobbyFragment;
 import cn.com.xplora.xploraapp.fragments.TabFragmentAdapter;
 
 public class NewUserGuideActivity extends FragmentActivity {
@@ -36,6 +37,10 @@ public class NewUserGuideActivity extends FragmentActivity {
                 bundle.putString("text",mTitles[i]);
                 selectCityFragment.setArguments(bundle);
                 fragments.add(selectCityFragment);
+            }else if (i ==1){
+                SelectHobbyFragment selectHobbyFragment = new SelectHobbyFragment();
+                selectHobbyFragment.setContext(NewUserGuideActivity.this);
+                fragments.add(selectHobbyFragment);
             }else {
                 Fragment fragment = new MyFragment();
                 Bundle bundle = new Bundle();
