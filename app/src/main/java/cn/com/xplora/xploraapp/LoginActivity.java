@@ -41,6 +41,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.com.xplora.xploraapp.asyncTasks.LoginAsyncTask;
+import cn.com.xplora.xploraapp.customUI.CleanableEditText;
 import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
 import cn.com.xplora.xploraapp.db.UserDAO;
 import cn.com.xplora.xploraapp.db.XploraDBHelper;
@@ -63,8 +64,8 @@ public class LoginActivity extends Activity {
     private TimeCount mTime;
     private CustomProgressDialog mLoadingDialog;
     private Button mLoginBtn;
-    private EditText mMobileInput;
-    private EditText mCodeInput;
+    private CleanableEditText mMobileInput;
+    private CleanableEditText mCodeInput;
     private LoginAsyncTask mLoginAsyncTask = null;
     private RelativeLayout mLoginPage = null;
     private UserDAO mUserDAO = null;
@@ -88,8 +89,8 @@ public class LoginActivity extends Activity {
 
             }
         });
-        mMobileInput =  (EditText) findViewById(R.id.login_username_input);
-        mCodeInput = (EditText) findViewById(R.id.login_smscode_input);
+        mMobileInput =  (CleanableEditText) findViewById(R.id.login_username_input);
+        mCodeInput = (CleanableEditText) findViewById(R.id.login_smscode_input);
         mCodeInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -139,18 +140,20 @@ public class LoginActivity extends Activity {
         if (TextUtils.isEmpty(mobile) ||!isMobileValid(mobile)) {
             mMobileInput.setError(getString(R.string.error_mobile_invalid));
             focusView = mMobileInput;
+            mMobileInput.setShakeAnimation();
             cancel = true;
         }
         if (TextUtils.isEmpty(code)||!isCodeValid(code)) {
             mCodeInput.setError(getString(R.string.error_code_invalid));
             focusView = mCodeInput;
+            mCodeInput.setShakeAnimation();
             cancel = true;
         }
 
         if(cancel){
             focusView.requestFocus();
         }else{
-//            showProgress(true);
+            showProgress(true);
             mLoginAsyncTask = new LoginAsyncTask(mobile,code,LoginActivity.this,mLoadingDialog);
             mLoginAsyncTask.execute((Void)null);
         }
@@ -195,69 +198,12 @@ public class LoginActivity extends Activity {
 
 
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-//    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    private boolean isMobileValid(String mobile){
+        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
 
-//        private final String mEmail;
-//        private final String mPassword;
-//
-//        UserLoginTask(String email, String password) {
-//            mEmail = email;
-//            mPassword = password;
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-//            // TODO: attempt authentication against a network service.
-//
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                return false;
-//            }
-//
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mEmail)) {
-//                    // Account exists, return true if the password matches.
-//                    return pieces[1].equals(mPassword);
-//                }
-//            }
-//
-//            // TODO: register the new account here.
-//            return true;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(final Boolean success) {
-//            mAuthTask = null;
-//            showProgress(false);
-//
-//            if (success) {
-//                finish();
-//            } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-//            }
-//        }
-//
-//        @Override
-//        protected void onCancelled() {
-//            mAuthTask = null;
-//            showProgress(false);
-//        }
-//    }
-
-        private boolean isMobileValid(String mobile){
-            Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
-
-              Matcher m = p.matcher(mobile);
-            return m.matches();
-        }
+        Matcher m = p.matcher(mobile);
+        return m.matches();
+    }
     private boolean isCodeValid(String code){
         Pattern p = Pattern.compile("^\\d{6}$");
 
@@ -265,7 +211,7 @@ public class LoginActivity extends Activity {
         return m.matches();
     }
     public void doAfterTask(UserModel user){
-//        showProgress(false);
+        showProgress(false);
         mLoginAsyncTask = null;
         if(!user.isResult()){
             Toast toast= Toast.makeText(LoginActivity.this, user.getErrorMsg(), Toast.LENGTH_SHORT);
@@ -273,51 +219,27 @@ public class LoginActivity extends Activity {
         }else{
             user.setLogined(true);//成功登陆
             user.setLastLoginDate(new Date());
-
-            //INSERT LOGINED USER DATA INTO LOCAL DATABASE
-            mUserDAO = new UserDAO(new XploraDBHelper(this,"XPLORA"));
-
-            mUserDAO.updateAllUserStatusForLogout();//将所有本地账号更新为logout
-
-            UserModel oldUser = mUserDAO.getUserByUuidInBack(user.getUuidInBack());
-            if(oldUser!=null&&oldUser.getUuid()>0){
-                oldUser.setUserName(user.getUserName());
-                oldUser.setLastLoginDate(new Date());
-                oldUser.setMobile(user.getMobile());
-                oldUser.setAutoPush(user.isAutoPush());
-                oldUser.setFollowers(user.getFollowers());
-                oldUser.setFollowings(user.getFollowings());
-                oldUser.setCityId(user.getCityId());
-                oldUser.setHobby(user.getHobby());
-                oldUser.setHobbyEn(user.getHobbyEn());
-                oldUser.setHobbyIds(user.getHobbyIds());
-                oldUser.setLogined(true);
-                oldUser.setImageName(user.getImageName());
-                oldUser.setImageUrl(user.getImageUrl());
-                mUserDAO.updateUser(oldUser);
-            }else {
-                mUserDAO.insert(user);
-            }
-
             if(user.isNewUser()){// new user, go to new user guide
 
                 Intent intent = new Intent(LoginActivity.this, NewUserGuideActivity.class);
-//                intent.putExtra("userId",user.getUuidInBack());
+                intent.putExtra("userId",user.getUuidInBack());
                 startActivity(intent);
 
             }else {//login, go to home page
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                intent.putExtra("userName", user.getUserName());
-//                intent.putExtra("hobby", user.getHobby());
-//                intent.putExtra("hobbyEn", user.getHobbyEn());
-//                intent.putExtra("imageName", user.getImageName());
-//                intent.putExtra("imageUrl", user.getImageUrl());
-//                intent.putExtra("followings", user.getFollowings());
-//                intent.putExtra("followers", user.getFollowers());
+                intent.putExtra("userName", user.getUserName());
+                intent.putExtra("hobby", user.getHobby());
+                intent.putExtra("hobbyEn", user.getHobbyEn());
+                intent.putExtra("imageName", user.getImageName());
+                intent.putExtra("imageUrl", user.getImageUrl());
+                intent.putExtra("followings", user.getFollowings());
+                intent.putExtra("followers", user.getFollowers());
                 startActivity(intent);
             }
 
-
+            //INSERT LOGINED USER DATA INTO LOCAL DATABASE
+            mUserDAO = new UserDAO(new XploraDBHelper(this,"XPLORA"));
+            mUserDAO.insert(user);
         }
 
     }
