@@ -5,5 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="pink_overlay">#33FF0000</color>
     <color name="blue">#3399CCFF</color>
+    <color name="darkgray">#666</color>
 </resources>

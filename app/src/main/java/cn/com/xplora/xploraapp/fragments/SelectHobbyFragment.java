@@ -45,7 +45,7 @@ public class SelectHobbyFragment extends Fragment{
     private String[] mStrings = { "Abbaye de Belloc", "Abbaye du Mont des Cats", "Abertam",
             "Abondance", "Ackawi","Acorn"};
     private Integer[] mImages = {R.drawable.img04,R.drawable.img05,R.drawable.img06,
-            R.drawable.img07,R.drawable.img09,R.drawable.img08};
+            R.drawable.img09,R.drawable.img08};
     @Override
     public void onCreate(@Nullable Bundle bundle) {
         super.onCreate(bundle);
