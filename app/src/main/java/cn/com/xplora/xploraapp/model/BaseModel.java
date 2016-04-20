@@ -6,8 +6,6 @@ package cn.com.xplora.xploraapp.model;
 public class BaseModel {
     private int uuid;
     private int uuidInBack;
-    private boolean result;
-    private String errorMsg;
 
     public int getUuid() {
         return uuid;
@@ -25,19 +23,5 @@ public class BaseModel {
         this.uuidInBack = uuidInBack;
     }
 
-    public boolean isResult() {
-        return result;
-    }
 
-    public void setResult(boolean result) {
-        this.result = result;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
 }

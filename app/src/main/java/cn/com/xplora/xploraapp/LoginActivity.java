@@ -40,19 +40,23 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.com.xplora.xploraapp.asyncTasks.DoAfterResultInterface;
 import cn.com.xplora.xploraapp.asyncTasks.LoginAsyncTask;
 import cn.com.xplora.xploraapp.customUI.CleanableEditText;
 import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
 import cn.com.xplora.xploraapp.db.UserDAO;
 import cn.com.xplora.xploraapp.db.XploraDBHelper;
+import cn.com.xplora.xploraapp.json.BaseResult;
+import cn.com.xplora.xploraapp.json.LoginResult;
 import cn.com.xplora.xploraapp.model.UserModel;
+import cn.com.xplora.xploraapp.utils.IConstant;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements DoAfterResultInterface {
 
 
     /**
@@ -265,63 +269,6 @@ public class LoginActivity extends Activity {
         Matcher m = p.matcher(code);
         return m.matches();
     }
-    public void doAfterTask(UserModel user){
-//        showProgress(false);
-        mLoginAsyncTask = null;
-        if(!user.isResult()){
-            Toast toast= Toast.makeText(LoginActivity.this, user.getErrorMsg(), Toast.LENGTH_SHORT);
-            toast.show();
-        }else{
-            user.setLogined(true);//成功登陆
-            user.setLastLoginDate(new Date());
-
-            //INSERT LOGINED USER DATA INTO LOCAL DATABASE
-            mUserDAO = new UserDAO(new XploraDBHelper(this,"XPLORA"));
-
-            mUserDAO.updateAllUserStatusForLogout();//将所有本地账号更新为logout
-
-            UserModel oldUser = mUserDAO.getUserByUuidInBack(user.getUuidInBack());
-            if(oldUser!=null&&oldUser.getUuid()>0){
-                oldUser.setUserName(user.getUserName());
-                oldUser.setLastLoginDate(new Date());
-                oldUser.setMobile(user.getMobile());
-                oldUser.setAutoPush(user.isAutoPush());
-                oldUser.setFollowers(user.getFollowers());
-                oldUser.setFollowings(user.getFollowings());
-                oldUser.setCityId(user.getCityId());
-                oldUser.setHobby(user.getHobby());
-                oldUser.setHobbyEn(user.getHobbyEn());
-                oldUser.setHobbyIds(user.getHobbyIds());
-                oldUser.setLogined(true);
-                oldUser.setImageName(user.getImageName());
-                oldUser.setImageUrl(user.getImageUrl());
-                mUserDAO.updateUser(oldUser);
-            }else {
-                mUserDAO.insert(user);
-            }
-
-            if(user.isNewUser()){// new user, go to new user guide
-
-                Intent intent = new Intent(LoginActivity.this, NewUserGuideActivity.class);
-//                intent.putExtra("userId",user.getUuidInBack());
-                startActivity(intent);
-
-            }else {//login, go to home page
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                intent.putExtra("userName", user.getUserName());
-//                intent.putExtra("hobby", user.getHobby());
-//                intent.putExtra("hobbyEn", user.getHobbyEn());
-//                intent.putExtra("imageName", user.getImageName());
-//                intent.putExtra("imageUrl", user.getImageUrl());
-//                intent.putExtra("followings", user.getFollowings());
-//                intent.putExtra("followers", user.getFollowers());
-                startActivity(intent);
-            }
-
-
-        }
-
-    }
 
     class TimeCount extends CountDownTimer {
         public TimeCount(long millisInFuture, long countDownInterval) {
@@ -344,6 +291,65 @@ public class LoginActivity extends Activity {
         Pattern p = Pattern.compile("^\\d{6}$");
         Matcher m = p.matcher("565");
         System.out.println(m.matches());
+    }
+
+    @Override
+    public void doAfterResult(BaseResult result, int taskSource) {
+        {
+//        showProgress(false);.
+            if(taskSource== IConstant.TASK_SOURCE_DOLOGIN){
+                LoginResult loginResult = (LoginResult)result;
+                mLoginAsyncTask = null;
+
+                if(!loginResult.isResult()){
+                    Toast toast= Toast.makeText(LoginActivity.this, loginResult.getErrorMsg(), Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
+                    UserModel user = loginResult.getUserModel();
+                    user.setLogined(true);//成功登陆
+                    user.setLastLoginDate(new Date());
+
+                    //INSERT LOGINED USER DATA INTO LOCAL DATABASE
+                    mUserDAO = new UserDAO(new XploraDBHelper(this,"XPLORA"));
+
+                    mUserDAO.updateAllUserStatusForLogout();//将所有本地账号更新为logout
+
+                    UserModel oldUser = mUserDAO.getUserByUuidInBack(user.getUuidInBack());
+                    if(oldUser!=null&&oldUser.getUuid()>0){
+                        oldUser.setUserName(user.getUserName());
+                        oldUser.setLastLoginDate(new Date());
+                        oldUser.setMobile(user.getMobile());
+                        oldUser.setAutoPush(user.isAutoPush());
+                        oldUser.setFollowers(user.getFollowers());
+                        oldUser.setFollowings(user.getFollowings());
+                        oldUser.setCityId(user.getCityId());
+                        oldUser.setHobby(user.getHobby());
+                        oldUser.setHobbyEn(user.getHobbyEn());
+                        oldUser.setHobbyIds(user.getHobbyIds());
+                        oldUser.setLogined(true);
+                        oldUser.setImageName(user.getImageName());
+                        oldUser.setImageUrl(user.getImageUrl());
+                        mUserDAO.updateUser(oldUser);
+                    }else {
+                        mUserDAO.insert(user);
+                    }
+
+                    if(user.isNewUser()){// new user, go to new user guide
+
+                        Intent intent = new Intent(LoginActivity.this, NewUserGuideActivity.class);
+                        startActivity(intent);
+
+                    }else {//login, go to home page
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+
+
+                }
+
+            }
+
+        }
     }
 }
 

@@ -19,6 +19,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import cn.com.xplora.xploraapp.asyncTasks.ActiveCitiesAsyncTask;
 import cn.com.xplora.xploraapp.asyncTasks.DoAfterResultInterface;
 import cn.com.xplora.xploraapp.json.ActiveCitiesResult;
+import cn.com.xplora.xploraapp.json.BaseResult;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -111,7 +112,7 @@ public class LaunchActivity extends Activity implements DoAfterResultInterface{
     }
 
     @Override
-    public void doAfterResult(Object result) {
+    public void doAfterResult(BaseResult result,int taskSource) {
 
         Intent intent = new Intent(LaunchActivity.this, MainActivity.class);
         startActivity(intent);

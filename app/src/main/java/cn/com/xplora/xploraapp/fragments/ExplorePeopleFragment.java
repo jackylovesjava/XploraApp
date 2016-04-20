@@ -21,12 +21,14 @@ import com.handmark.pulltorefresh.library.extras.recyclerview.PullToRefreshRecyc
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import cn.com.xplora.xploraapp.R;
 import cn.com.xplora.xploraapp.adapter.GalleryAdapter;
 import cn.com.xplora.xploraapp.customUI.JingDongHeaderLayout;
 import cn.com.xplora.xploraapp.customUI.SpaceItemDecoration;
 import cn.com.xplora.xploraapp.model.TrendsetterModel;
+import cn.com.xplora.xploraapp.model.UserModel;
 
 /**
  * Created by lt on 2015/12/14.
@@ -34,7 +36,8 @@ import cn.com.xplora.xploraapp.model.TrendsetterModel;
 public class ExplorePeopleFragment extends Fragment{
 
 
-    private LinkedList<TrendsetterModel> mListItems;
+    private List<TrendsetterModel> mTrendsetterList;
+    private List<UserModel> mUserList;
     private RecyclerView mTrendsetterListView;
     private GalleryAdapter mTrendsetterAdapter;
     private Context mContext;
@@ -49,7 +52,7 @@ public class ExplorePeopleFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_select_hobby, null);
+        View view = inflater.inflate(R.layout.frag_explore_people, null);
 
         initDatas();
         //得到控件
@@ -59,7 +62,7 @@ public class ExplorePeopleFragment extends Fragment{
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mTrendsetterListView.setLayoutManager(linearLayoutManager);
         //设置适配器
-        mTrendsetterAdapter = new GalleryAdapter(mContext, mListItems);
+        mTrendsetterAdapter = new GalleryAdapter(mContext, mTrendsetterList);
         mTrendsetterListView.setAdapter(mTrendsetterAdapter);
 
         return view;
@@ -68,4 +71,19 @@ public class ExplorePeopleFragment extends Fragment{
 
     }
 
+    public List<UserModel> getmUserList() {
+        return mUserList;
+    }
+
+    public void setmUserList(List<UserModel> mUserList) {
+        this.mUserList = mUserList;
+    }
+
+    public List<TrendsetterModel> getmTrendsetterList() {
+        return mTrendsetterList;
+    }
+
+    public void setmTrendsetterList(List<TrendsetterModel>  mTrendsetterList) {
+        this.mTrendsetterList = mTrendsetterList;
+    }
 }

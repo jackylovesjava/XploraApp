@@ -20,7 +20,7 @@ public class FancyFlowDemoActivity extends Activity {
 
         final CoverFlowView<MyCoverFlowAdapter> mCoverFlowView = (CoverFlowView<MyCoverFlowAdapter>) findViewById(R.id.coverflow);
 
-        final MyCoverFlowAdapter adapter = new MyCoverFlowAdapter(this);
+        final MyCoverFlowAdapter adapter = new MyCoverFlowAdapter(this,null);
         mCoverFlowView.setAdapter(adapter);
         mCoverFlowView
                 .setCoverFlowListener(new CoverFlowView.CoverFlowListener<MyCoverFlowAdapter>() {
@@ -58,7 +58,6 @@ public class FancyFlowDemoActivity extends Activity {
         findViewById(R.id.change_bitmap_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.changeBitmap();
             }
         });
     }

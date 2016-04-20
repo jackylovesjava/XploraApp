@@ -9,9 +9,12 @@ public class TrendsetterModel extends BaseModel{
     private String userName;
     private String intro;
     private String introEn;
-    private String userNameEn;
+    private String fullName;
+    private String fullNameEn;
     private int followings;
     private int followers;
+    private String hobby;
+    private String hobbyEn;
 
     public String getImageUrl() {
         return imageUrl;
@@ -53,12 +56,20 @@ public class TrendsetterModel extends BaseModel{
         this.introEn = introEn;
     }
 
-    public String getUserNameEn() {
-        return userNameEn;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setUserNameEn(String userNameEn) {
-        this.userNameEn = userNameEn;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getFullNameEn() {
+        return fullNameEn;
+    }
+
+    public void setFullNameEn(String fullNameEn) {
+        this.fullNameEn = fullNameEn;
     }
 
     public int getFollowings() {
@@ -75,5 +86,21 @@ public class TrendsetterModel extends BaseModel{
 
     public void setFollowers(int followers) {
         this.followers = followers;
+    }
+
+    public String getHobby() {
+        return hobby;
+    }
+
+    public void setHobby(String hobby) {
+        this.hobby = hobby;
+    }
+
+    public String getHobbyEn() {
+        return hobbyEn;
+    }
+
+    public void setHobbyEn(String hobbyEn) {
+        this.hobbyEn = hobbyEn;
     }
 }

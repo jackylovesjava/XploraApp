@@ -1,5 +1,7 @@
 package cn.com.xplora.xploraapp.model;
 
+import android.graphics.Bitmap;
+
 import java.util.Date;
 
 /**
@@ -11,7 +13,7 @@ public class CityModel extends BaseModel {
     private String cityNameEn;
     private String imageUrl;
     private String imageName;
-
+    private Bitmap bitmap;
 
     public String getCityName() {
         return cityName;
@@ -43,5 +45,13 @@ public class CityModel extends BaseModel {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

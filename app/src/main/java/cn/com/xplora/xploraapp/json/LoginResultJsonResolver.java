@@ -1,7 +1,5 @@
 package cn.com.xplora.xploraapp.json;
 
-import android.support.annotation.Nullable;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,21 +8,23 @@ import cn.com.xplora.xploraapp.model.UserModel;
 /**
  * Created by yckj on 2016/4/14.
  */
-public class LoginResultJson extends BaseJson{
+public class LoginResultJsonResolver extends BaseJsonResolver {
 
-    public static UserModel parse(String response){
+    public static LoginResult parse(String response){
+        LoginResult result = new LoginResult();
         UserModel user = new UserModel();
         try {
             JSONObject root = new JSONObject(response);
-            boolean result = root.getBoolean("result");
+            boolean flag = root.getBoolean("result");
             String errorMsg = root.getString("errorMsg");
-            if(!result){
-                user.setResult(result);
-                user.setErrorMsg(errorMsg);
-                return user;
+            if(!flag){
+                result.setResult(flag);
+                result.setErrorMsg(errorMsg);
+                result.setUserModel(user);
+                return result;
             }else{
-                user.setResult(result);
-                user.setErrorMsg(errorMsg);
+                result.setResult(flag);
+                result.setErrorMsg(errorMsg);
                 String userName = ignoreNullValue(root.getString("userName"));
                 user.setUserName(userName);
                 String mobile = ignoreNullValue(root.getString("mobile"));
@@ -91,12 +91,15 @@ public class LoginResultJson extends BaseJson{
                 user.setHobbyEn(hobbyEnSB.toString());
                 user.setHobby(hobbySB.toString());
                 user.setHobbyIds(hobbyIdsSB.toString());
-                return user;
+                result.setUserModel(user);
+                return result;
 
             }
         }catch (Exception ex){
+            result.setErrorMsg("SYSTEM ERROR");
+            result.setResult(false);
             ex.printStackTrace();
-            return null;
+            return result;
         }
     }
 }

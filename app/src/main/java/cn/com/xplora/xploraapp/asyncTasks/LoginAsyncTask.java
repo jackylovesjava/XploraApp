@@ -6,10 +6,13 @@ import android.util.Log;
 
 import cn.com.xplora.xploraapp.LoginActivity;
 import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
-import cn.com.xplora.xploraapp.json.LoginResultJson;
+import cn.com.xplora.xploraapp.json.BaseResult;
+import cn.com.xplora.xploraapp.json.LoginResult;
+import cn.com.xplora.xploraapp.json.LoginResultJsonResolver;
 import cn.com.xplora.xploraapp.model.UserModel;
 import cn.com.xplora.xploraapp.utils.CommonUtil;
 import cn.com.xplora.xploraapp.utils.HttpUtil;
+import cn.com.xplora.xploraapp.utils.IConstant;
 
 /**
  * Created by yckj on 2016/4/14.
@@ -40,8 +43,7 @@ public class LoginAsyncTask extends AsyncTask {
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         loadingDialog.hide();
-        LoginActivity loginActivity = (LoginActivity)context;
-        loginActivity.doAfterTask((UserModel)o);
+        ((DoAfterResultInterface)context).doAfterResult((BaseResult)o, IConstant.TASK_SOURCE_DOLOGIN);
     }
 
     @Override
@@ -57,8 +59,8 @@ public class LoginAsyncTask extends AsyncTask {
         String data = "mobile="+mobile+"&code="+code+"&lang="+lang;
         String result = http.doGet(data);
         Log.i(TAG, result);
-        UserModel user = LoginResultJson.parse(result);
-        return user;
+        LoginResult loginResult = LoginResultJsonResolver.parse(result);
+        return loginResult;
     }
 
     @Override

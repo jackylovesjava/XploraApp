@@ -107,13 +107,9 @@ public class LeftMenuFragment extends Fragment implements OnClickListener {
 			if(TextUtils.isEmpty(imageName)){
 				profileImage.setImageResource(R.drawable.profile_image_no);
 			}else{
-				ImageLoader imageLoader = ImageLoader.getInstance();
+				ImageLoader imageLoader = CommonUtil.getImageLoader(mAct);
 				DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
 						.cacheOnDisk(true).imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).showImageForEmptyUri(R.drawable.profile_image_no).build();
-				if(!imageLoader.isInited()){
-					imageLoader.init(ImageLoaderConfiguration.createDefault(mAct));
-				}
-
 				imageLoader.displayImage(imageUrl, profileImage, displayImageOptions);
 			}
 
