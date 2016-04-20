@@ -1,5 +1,6 @@
 package cn.com.xplora.xploraapp.asyncTasks;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -20,12 +21,13 @@ public class ActiveHobbysAsyncTask extends AsyncTask {
 
     private String TAG = "XPLORA";
     private String apiUrl = "http://120.76.98.160:8080/admin/api/hobby/activeHobbys";
-
+    private int mCurrentPage=1;
+    private int mPageSize=10;
+    private int mUserId = 0;
     private Context context;
     public ActiveHobbysAsyncTask(Context context){
         this.context = context;
     }
-
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -34,13 +36,15 @@ public class ActiveHobbysAsyncTask extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        ((DoAfterResultInterface)context).doAfterResult((BaseResult)o, IConstant.TASK_SOURCE_ACTIVEHOBBYS);
+        if(context!=null) {
+            ((DoAfterResultInterface) context).doAfterResult((BaseResult) o, IConstant.TASK_SOURCE_ACTIVEHOBBYS);
+        }
     }
 
     @Override
     protected Object doInBackground(Object[] params) {
         HttpUtil http = new HttpUtil(apiUrl);
-        String result = http.doGet(null);
+        String result = http.doGet("userId=" + mUserId + "&nowPage=" + mCurrentPage + "&pageShow=" + mPageSize);
         ActiveHobbysResult activeHobbysResult = ActiveHobbysResultJsonResolver.parse(result);
         return activeHobbysResult;
     }

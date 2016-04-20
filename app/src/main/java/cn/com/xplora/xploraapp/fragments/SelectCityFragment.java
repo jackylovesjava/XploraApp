@@ -74,7 +74,7 @@ public class SelectCityFragment extends Fragment{
 
                             cityName = cityModel.getCityName();
                         }else{
-                            cityName = cityModel.getCityNameEn();
+                            cityName = cityModel.getCityNameEn().toUpperCase();
                         }
                         cityNameTextView.setText(cityName);
                     }

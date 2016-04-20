@@ -25,6 +25,7 @@ public class TrendsetterPageAsyncTask extends AsyncTask {
     private int mCurrentPage=1;
     private int mPageSize=10;
     private int mUserId = 0;
+    private int mStep=0;//0 find similar hobby users;1 find different hobby users;
 
     public TrendsetterPageAsyncTask(Context context,int currentPage,int userId){
         this.context = context;
@@ -46,7 +47,7 @@ public class TrendsetterPageAsyncTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] params) {
         HttpUtil http = new HttpUtil(apiUrl);
-        String result = http.doGet("userId=" + mUserId + "&nowPage=" + mCurrentPage + "&pageShow=" + mPageSize);
+        String result = http.doGet("userId=" + mUserId + "&nowPage=" + mCurrentPage + "&pageShow=" + mPageSize+"&step="+mStep);
         TrendsetterPageResult trendsetterPageResult = TrendsetterPageResultJsonResolver.parse(result);
         return trendsetterPageResult;
     }

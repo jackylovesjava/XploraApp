@@ -33,6 +33,7 @@ public class UserPageResultJsonResolver extends BaseJsonResolver {
                 int pageSize = root.getInt("pageSize");
                 int totalPage = root.getInt("totalPage");
                 int totalCount = root.getInt("totalCount");
+                int step = root.getInt("step");
                 JSONArray array = root.getJSONArray("userList");
                 if (array != null && array.length() > 0) {
 

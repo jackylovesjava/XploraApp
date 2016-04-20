@@ -16,7 +16,7 @@ public class TrendsetterPageResult extends BaseResult {
     private int pageSize;
     private int totalPage;
     private int totalCount;
-
+    private int step;
     public List<TrendsetterModel> getTrendsetterList() {
         return trendsetterList;
     }
@@ -55,5 +55,13 @@ public class TrendsetterPageResult extends BaseResult {
 
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
     }
 }

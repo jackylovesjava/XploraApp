@@ -161,6 +161,8 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
                     ActiveHobbysResult activeHobbysResult = (ActiveHobbysResult)result;
                     List<HobbyModel> hobbyList = activeHobbysResult.getHobbyList();
                     mSelectHobbyFragment.setHobbyList(hobbyList);
+                    mSelectHobbyFragment.setmUserId(mUserId);
+                    mSelectHobbyFragment.setmCurrentPage(activeHobbysResult.getCurrentPage());
                     mFragments.add(mSelectHobbyFragment);
                     mActiveHobbysAsyncTask = null;
                 }

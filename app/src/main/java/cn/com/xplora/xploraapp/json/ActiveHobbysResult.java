@@ -15,6 +15,9 @@ import cn.com.xplora.xploraapp.model.UserModel;
  */
 public class ActiveHobbysResult extends BaseResult {
 
+        private int currentPage;
+        private int pageSize;
+
         private List<HobbyModel> hobbyList;
 
         public List<HobbyModel> getHobbyList() {
@@ -24,4 +27,20 @@ public class ActiveHobbysResult extends BaseResult {
         public void setHobbyList(List<HobbyModel> hobbyList) {
             this.hobbyList = hobbyList;
         }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
 }

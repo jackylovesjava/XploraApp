@@ -10,6 +10,8 @@ public class HobbyModel extends BaseModel {
     private String imageUrl;
     private String imageName;
 
+    private int selected;
+
     public String getHobbyName() {
         return hobbyName;
     }
@@ -40,5 +42,13 @@ public class HobbyModel extends BaseModel {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
     }
 }

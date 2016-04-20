@@ -28,6 +28,10 @@ public class ActiveHobbysResultJsonResolver extends BaseJsonResolver {
 
             }else{
                 result.setResult(true);
+                int currentPage = root.getInt("currentPage");
+                int pageSize = root.getInt("pageSize");
+                result.setCurrentPage(currentPage);
+                result.setPageSize(pageSize);
                 List<HobbyModel> hobbyList = new ArrayList<HobbyModel>();
                 JSONArray hobbyArray = root.getJSONArray("hobbyList");
                 if(hobbyArray!=null&&hobbyArray.length()>0){
@@ -39,6 +43,7 @@ public class ActiveHobbysResultJsonResolver extends BaseJsonResolver {
                         String hobbyNameEn = ignoreNullValue(hobbyJson.getString("hobbyNameEn"));
                         String imageName = ignoreNullValue(hobbyJson.getString("imageName"));
                         String imageUrl = ignoreNullValue(hobbyJson.getString("imageUrl"));
+                        int selected = hobbyJson.getInt("selected");
                         int uuidInBack = hobbyJson.getInt("uuid");
 
                         hobby.setHobbyName(hobbyName);
@@ -46,6 +51,7 @@ public class ActiveHobbysResultJsonResolver extends BaseJsonResolver {
                         hobby.setImageName(imageName);
                         hobby.setImageUrl(imageUrl);
                         hobby.setUuidInBack(uuidInBack);
+                        hobby.setSelected(selected);
                         hobbyList.add(hobby);
                     }
 

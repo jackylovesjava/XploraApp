@@ -23,5 +23,19 @@ public class BaseModel {
         this.uuidInBack = uuidInBack;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        BaseModel baseModel = (BaseModel) o;
+
+        return uuidInBack == baseModel.uuidInBack;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return uuidInBack;
+    }
 }
