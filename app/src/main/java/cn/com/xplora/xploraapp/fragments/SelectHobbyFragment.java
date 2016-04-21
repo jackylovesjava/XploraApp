@@ -182,11 +182,12 @@ public class SelectHobbyFragment extends Fragment{
                 Drawable selectedForeground = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selector_hobby_item_selected, null);
                 ((MyViewHolder) holder).hobbyItemFrame.setForeground(selectedForeground);
                 ((MyViewHolder) holder).hobbyItemFrame.setSelected(true);
+                ((MyViewHolder) holder).hobbyItemCheck.setVisibility(View.VISIBLE);
             }else{
                 Drawable normalForeground = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selector_hobby_item_normal, null);
                 ((MyViewHolder) holder).hobbyItemFrame.setForeground(normalForeground);
                 ((MyViewHolder) holder).hobbyItemFrame.setSelected(false);
-
+                ((MyViewHolder) holder).hobbyItemCheck.setVisibility(View.GONE);
             }
         }
 
@@ -210,11 +211,13 @@ public class SelectHobbyFragment extends Fragment{
                             hobbyItemFrame.setForeground(normalForeground);
                             hobbyItemFrame.setSelected(false);
                             hobbyModel.setSelected(0);
+                            hobbyItemCheck.setVisibility(View.GONE);
                         }else{
                             Drawable selectedForeground = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selector_hobby_item_selected, null);
                             hobbyItemFrame.setForeground(selectedForeground);
                             hobbyItemFrame.setSelected(true);
                             hobbyModel.setSelected(1);
+                            hobbyItemCheck.setVisibility(View.VISIBLE);
                         }
                     }
                 });

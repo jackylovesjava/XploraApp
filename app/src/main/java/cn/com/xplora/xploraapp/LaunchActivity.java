@@ -116,5 +116,6 @@ public class LaunchActivity extends Activity implements DoAfterResultInterface{
 
         Intent intent = new Intent(LaunchActivity.this, MainActivity.class);
         startActivity(intent);
+        this.finish();
     }
 }
