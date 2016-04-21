@@ -12,29 +12,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.extras.recyclerview.PullToRefreshRecyclerView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import cn.com.xplora.xploraapp.R;
-import cn.com.xplora.xploraapp.adapter.MyCoverFlowAdapter;
-import cn.com.xplora.xploraapp.asyncTasks.ActiveHobbysAsyncTask;
-import cn.com.xplora.xploraapp.customUI.CoverFlowView;
 import cn.com.xplora.xploraapp.customUI.JingDongHeaderLayout;
 import cn.com.xplora.xploraapp.customUI.SpaceItemDecoration;
 import cn.com.xplora.xploraapp.json.ActiveHobbysResult;
@@ -54,6 +47,7 @@ public class SelectHobbyFragment extends Fragment{
     private List<HobbyModel> hobbyList;
     private PullToRefreshRecyclerView mPullRefreshRecyclerView;
     private RecyclerView mRecyclerView;
+    private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private RecyclerViewAdapter mAdapter;
     private Context mContext;
     @Override
@@ -99,10 +93,12 @@ public class SelectHobbyFragment extends Fragment{
         mPullRefreshRecyclerView = (PullToRefreshRecyclerView)(view.findViewById(R.id.pull_refresh_hobby));
         mPullRefreshRecyclerView.setHeaderLayout(new JingDongHeaderLayout(this.getActivity()));
         mPullRefreshRecyclerView.setHasPullUpFriction(false); // 设置没有上拉阻力
-
+        mPullRefreshRecyclerView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         mRecyclerView = mPullRefreshRecyclerView.getRefreshableView();
 //		mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mStaggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
         SpaceItemDecoration decoration=new SpaceItemDecoration(2);
         mRecyclerView.addItemDecoration(decoration);
         // Set a listener to be invoked when the list should be refreshed.
@@ -116,6 +112,7 @@ public class SelectHobbyFragment extends Fragment{
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<RecyclerView> refreshView) {
                 new GetDataTask().execute();
+//                mStaggeredGridLayoutManager.invalidateSpanAssignments();
             }
         });
         mAdapter = new RecyclerViewAdapter();
@@ -141,7 +138,8 @@ public class SelectHobbyFragment extends Fragment{
             mCurrentPage = result.getCurrentPage();
             if(!hobbyList.containsAll(result.getHobbyList())){
                 hobbyList.addAll(result.getHobbyList());
-                mAdapter.notifyDataSetChanged();
+                mAdapter.notifyItemRangeInserted(hobbyList.size(),result.getHobbyList().size());
+
             }
             // Call onRefreshComplete when the list has been refreshed.
             mPullRefreshRecyclerView.onRefreshComplete();
@@ -169,7 +167,8 @@ public class SelectHobbyFragment extends Fragment{
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            HobbyModel hobbyModel = hobbyList.get(holder.getLayoutPosition());
+            HobbyModel hobbyModel = hobbyList.get(position);
+            ((MyViewHolder) holder).hobbyModel = hobbyModel;
             ImageLoader imageLoader = CommonUtil.getImageLoader(mContext);
             DisplayImageOptions displayImageOptions = CommonUtil.getDefaultImageLoadOption();
             imageLoader.displayImage(hobbyModel.getImageUrl(),((MyViewHolder) holder).hobbyImageView,displayImageOptions);
@@ -180,8 +179,14 @@ public class SelectHobbyFragment extends Fragment{
                 ((MyViewHolder) holder).hobbyItemNameText.setText("#"+hobbyModel.getHobbyNameEn());
             }
             if(hobbyModel.getSelected()==1){
-                Drawable selectedForeground = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selector_hobby_item, null);
+                Drawable selectedForeground = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selector_hobby_item_selected, null);
                 ((MyViewHolder) holder).hobbyItemFrame.setForeground(selectedForeground);
+                ((MyViewHolder) holder).hobbyItemFrame.setSelected(true);
+            }else{
+                Drawable normalForeground = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selector_hobby_item_normal, null);
+                ((MyViewHolder) holder).hobbyItemFrame.setForeground(normalForeground);
+                ((MyViewHolder) holder).hobbyItemFrame.setSelected(false);
+
             }
         }
 
@@ -190,12 +195,29 @@ public class SelectHobbyFragment extends Fragment{
             FrameLayout hobbyItemFrame;
             TextView hobbyItemNameText;
             ImageView hobbyItemCheck;
+            HobbyModel hobbyModel;
             public MyViewHolder(View view) {
                 super(view);
                 hobbyImageView = (ImageView) view.findViewById(R.id.hobby_item_image);
                 hobbyItemFrame = (FrameLayout)view.findViewById(R.id.hobby_item_frame);
                 hobbyItemNameText = (TextView)view.findViewById(R.id.hobby_item_name);
                 hobbyItemCheck = (ImageView) view.findViewById(R.id.hobby_item_check);
+                hobbyItemFrame.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(hobbyItemFrame.isSelected()){
+                            Drawable normalForeground = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selector_hobby_item_normal, null);
+                            hobbyItemFrame.setForeground(normalForeground);
+                            hobbyItemFrame.setSelected(false);
+                            hobbyModel.setSelected(0);
+                        }else{
+                            Drawable selectedForeground = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selector_hobby_item_selected, null);
+                            hobbyItemFrame.setForeground(selectedForeground);
+                            hobbyItemFrame.setSelected(true);
+                            hobbyModel.setSelected(1);
+                        }
+                    }
+                });
             }
         }
 

@@ -33,18 +33,18 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="20dp"
                 />
-            <TextView
-                android:id="@+id/hobby_item_name"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:textSize="14sp"
-                android:textColor="#FFFFFF"
-                android:text="#Music"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                />
         </RelativeLayout>
     </FrameLayout>
+    <TextView
+        android:id="@+id/hobby_item_name"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:text="#Music"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        />
 </RelativeLayout>
