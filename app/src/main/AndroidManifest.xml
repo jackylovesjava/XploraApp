@@ -43,6 +43,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FancyFlowDemoActivity"></activity>
         <activity android:name=".PullToRefreshRecycleActivity"></activity>
+        <activity android:name=".camera.ClipImageDemoActivity"></activity>
     </application>
 
 </manifest>
