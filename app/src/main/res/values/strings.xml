@@ -19,6 +19,15 @@
     <string name="tab_title_city">城市</string>
     <string name="tab_title_tag">标签</string>
     <string name="tab_title_friend">朋友</string>
+
+    <string name="tip_explore_people">关注潮人和朋友</string>
+    <string name="tip_follow_trendsetter">关注城市潮人</string>
+    <string name="link_more_trendsetter">更多潮人</string>
+    <string name="tip_follow_friend">关注朋友</string>
+    <string name="tip_follow_all">全部关注</string>
+    <string name="confirm">确定</string>
+    <string name="next_step">下一步</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>

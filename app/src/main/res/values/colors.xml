@@ -8,4 +8,6 @@
     <color name="pink_overlay">#44FF0000</color>
     <color name="blue">#3399CCFF</color>
     <color name="darkgray">#666</color>
+    <color name="xplora_blue">#00FFFF</color>
+    <color name="white">#FFFFFF</color>
 </resources>

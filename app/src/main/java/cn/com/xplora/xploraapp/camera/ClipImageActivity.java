@@ -17,6 +17,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import cn.com.xplora.xploraapp.R;
+
 /**
  * ²Ã¼ôÍ¼Æ¬µÄActivity
  *
@@ -68,7 +70,7 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 			Bitmap bitmap = mClipImageLayout.clip();
 
 			String path = Environment.getExternalStorageDirectory() + "/"
-					+ MainActivity.TMP_PATH;
+					+ ClipImageDemoActivity.TMP_PATH;
 			saveBitmap(bitmap, path);
 
 			Intent intent = new Intent();

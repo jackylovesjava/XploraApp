@@ -59,6 +59,8 @@ public class TrendsetterPageResultJsonResolver extends BaseJsonResolver {
                         model.setImageName(imageName);
                         model.setImageUrl(imageUrl);
                         model.setUuidInBack(uuidInBack);
+                        model.setIntro(intro);
+                        model.setIntroEn(introEn);
                         resultList.add(model);
                     }
 

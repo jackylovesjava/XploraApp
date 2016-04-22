@@ -1,15 +1,20 @@
 package cn.com.xplora.xploraapp.adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -42,7 +47,11 @@ public class GalleryAdapter extends
         }
 
         ImageView mImg;
-        TextView mTxt;
+        TextView mTrendsetterNameText;
+        TextView mTrendsetterIntroText;
+        TextView mTrendsetterFollowersText;
+        ImageView mFollowBtn;
+        ImageView mUnFollowBtn;
     }
 
     @Override
@@ -63,6 +72,11 @@ public class GalleryAdapter extends
 
         viewHolder.mImg = (ImageView) view
                 .findViewById(R.id.id_index_gallery_item_image);
+        viewHolder.mTrendsetterNameText = (TextView)view.findViewById(R.id.trendsetter_name);
+        viewHolder.mTrendsetterIntroText = (TextView)view.findViewById(R.id.trendsetter_intro);
+        viewHolder.mTrendsetterFollowersText = (TextView)view.findViewById(R.id.trendsetter_followers);
+        viewHolder.mFollowBtn = (ImageView)view.findViewById(R.id.btn_follow_trendsetter);
+        viewHolder.mUnFollowBtn = (ImageView)view.findViewById(R.id.btn_unfollow_trendsetter);
         return viewHolder;
     }
 
@@ -72,11 +86,23 @@ public class GalleryAdapter extends
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int position)
     {
-//        viewHolder.mImg.setImageResource(mDatas.get(i));
         ImageLoader imageLoader = CommonUtil.getImageLoader(mContext);
         DisplayImageOptions displayImageOptions = CommonUtil.getDefaultImageLoadOption();
-        TrendsetterModel trendsetterModel = mDatas.get(position);
-        imageLoader.displayImage(trendsetterModel.getImageUrl(),viewHolder.mImg);
+        TrendsetterModel trendsetterModel = mDatas.get(viewHolder.getLayoutPosition());
+        if(TextUtils.isEmpty(trendsetterModel.getImageName())){
+            viewHolder.mImg.setImageResource(R.drawable.profile_image_no);
+        }else {
+            imageLoader.displayImage(trendsetterModel.getImageUrl(), viewHolder.mImg);
+        }
+        if("CHN".equalsIgnoreCase(CommonUtil.getLang(mContext))){
+            viewHolder.mTrendsetterNameText.setText(trendsetterModel.getFullName());
+            viewHolder.mTrendsetterIntroText.setText(trendsetterModel.getIntro());
+            viewHolder.mTrendsetterFollowersText.setText(trendsetterModel.getFollowers()+" 粉丝");
+        }else{
+            viewHolder.mTrendsetterNameText.setText(trendsetterModel.getFullNameEn());
+            viewHolder.mTrendsetterIntroText.setText(trendsetterModel.getIntroEn());
+            viewHolder.mTrendsetterFollowersText.setText(trendsetterModel.getFollowers()+" Followers");
+        }
     }
 
 }

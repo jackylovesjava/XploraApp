@@ -25,6 +25,7 @@ import java.util.List;
 
 import cn.com.xplora.xploraapp.R;
 import cn.com.xplora.xploraapp.adapter.GalleryAdapter;
+import cn.com.xplora.xploraapp.adapter.UserListAdapter;
 import cn.com.xplora.xploraapp.customUI.JingDongHeaderLayout;
 import cn.com.xplora.xploraapp.customUI.SpaceItemDecoration;
 import cn.com.xplora.xploraapp.model.TrendsetterModel;
@@ -39,7 +40,9 @@ public class ExplorePeopleFragment extends Fragment{
     private List<TrendsetterModel> mTrendsetterList;
     private List<UserModel> mUserList;
     private RecyclerView mTrendsetterListView;
+    private RecyclerView mUserListView;
     private GalleryAdapter mTrendsetterAdapter;
+    private UserListAdapter mUserListAdapter;
     private Context mContext;
 
     @Override
@@ -54,21 +57,25 @@ public class ExplorePeopleFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_explore_people, null);
 
-        initDatas();
         //得到控件
         mTrendsetterListView = (RecyclerView) view.findViewById(R.id.id_recyclerview_horizontal);
+        mUserListView = (RecyclerView)view.findViewById(R.id.id_recyclerview_vertical);
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mTrendsetterListView.setLayoutManager(linearLayoutManager);
+
+        LinearLayoutManager linearLayoutManagerUserList = new LinearLayoutManager(mContext);
+        linearLayoutManagerUserList.setOrientation(LinearLayoutManager.VERTICAL);
+        mUserListView.setLayoutManager(linearLayoutManagerUserList);
+
         //设置适配器
         mTrendsetterAdapter = new GalleryAdapter(mContext, mTrendsetterList);
         mTrendsetterListView.setAdapter(mTrendsetterAdapter);
 
+        mUserListAdapter = new UserListAdapter(mContext,mUserList);
+        mUserListView.setAdapter(mUserListAdapter);
         return view;
-    }
-    private void initDatas(){
-
     }
 
     public List<UserModel> getmUserList() {
