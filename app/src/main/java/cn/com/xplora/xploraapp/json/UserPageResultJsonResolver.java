@@ -38,37 +38,36 @@ public class UserPageResultJsonResolver extends BaseJsonResolver {
                 if (array != null && array.length() > 0) {
 
                     for (int i = 0; i < array.length(); i++) {
+                        JSONObject json = array.getJSONObject(i);
                         UserModel user = new UserModel();
-                        String userName = ignoreNullValue(root.getString("userName"));
+                        String userName = ignoreNullValue(json.getString("userName"));
                         user.setUserName(userName);
-                        String mobile = ignoreNullValue(root.getString("mobile"));
+                        String mobile = ignoreNullValue(json.getString("mobile"));
                         user.setMobile(mobile);
-                        String imageUrl = ignoreNullValue(root.getString("imageUrl"));
+                        String imageUrl = ignoreNullValue(json.getString("imageUrl"));
                         user.setImageUrl(imageUrl);
-                        String imageName = ignoreNullValue(root.getString("imageName"));
+                        String imageName = ignoreNullValue(json.getString("imageName"));
                         user.setImageName(imageName);
-                        int followings = root.getInt("followings");
-                        int followers = root.getInt("followers");
+                        int followings = json.getInt("followings");
+                        int followers = json.getInt("followers");
                         user.setFollowings(followings);
                         user.setFollowers(followers);
-                        boolean newUser = root.getBoolean("newUser");
-                        user.setNewUser(newUser);
-                        int uuidInBack = root.getInt("userId");
+                        int uuidInBack = json.getInt("uuid");
                         user.setUuidInBack(uuidInBack);
-                        JSONObject cityJson = root.getJSONObject("city");
-                        if (cityJson != null) {
-                            int cityId = cityJson.getInt("uuid");
-                            String cityName = ignoreNullValue(cityJson.getString("cityName"));
-                            String cityNameEn = ignoreNullValue(cityJson.getString("cityNameEn"));
-                            user.setCityNameEn(cityNameEn);
-                            user.setCityName(cityName);
+//                        JSONObject cityJson = json.getJSONObject("city");
+//                        if (cityJson != null) {
+                            int cityId = json.getInt("cityId");
+//                            String cityName = ignoreNullValue(cityJson.getString("cityName"));
+//                            String cityNameEn = ignoreNullValue(cityJson.getString("cityNameEn"));
+//                            user.setCityNameEn(cityNameEn);
+//                            user.setCityName(cityName);
                             user.setCityId(cityId);
-                        }
+//                        }
 
                         StringBuilder hobbyEnSB = new StringBuilder("");
                         StringBuilder hobbySB = new StringBuilder("");
                         StringBuilder hobbyIdsSB = new StringBuilder("");
-                        JSONArray hobbyList = root.getJSONArray("hobbyList");
+                        JSONArray hobbyList = json.getJSONArray("hobbyList");
 
                         if (hobbyList != null && hobbyList.length() > 0) {
                             for (int j = 0; j < hobbyList.length(); j++) {
@@ -92,6 +91,11 @@ public class UserPageResultJsonResolver extends BaseJsonResolver {
 
                             }
                         }
+                        user.setHobby(hobbySB.toString());
+                        user.setHobbyEn(hobbyEnSB.toString());
+
+                        int followedByCurrentUser = json.getInt("followedByCurrentUser");
+                        user.setFollowedByCurrentUser(followedByCurrentUser);
                         resultList.add(user);
 
                     }

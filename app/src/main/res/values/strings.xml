@@ -20,13 +20,27 @@
     <string name="tab_title_tag">标签</string>
     <string name="tab_title_friend">朋友</string>
 
-    <string name="tip_explore_people">关注潮人和朋友</string>
+    <string name="tip_explore_people">寻找志同道合之人</string>
     <string name="tip_follow_trendsetter">关注城市潮人</string>
+    <string name="tip_follow_friend">关注同道中人</string>
     <string name="link_more_trendsetter">更多潮人</string>
-    <string name="tip_follow_friend">关注朋友</string>
     <string name="tip_follow_all">全部关注</string>
     <string name="confirm">确定</string>
     <string name="next_step">下一步</string>
+
+    <string name="title_setting">设置</string>
+    <string name="setting_image_title">头像</string>
+    <string name="setting_account">账号信息</string>
+    <string name="setting_push">推送开关</string>
+    <string name="setting_about_xplora">关于XPLORA</string>
+    <string name="setting_terms">相关协议</string>
+    <string name="setting_order_term">注册及交易协议</string>
+    <string name="setting_check_update">检查更新</string>
+
+    <string name="setting_tip_username">请编辑您的昵称</string>
+    <string name="setting_tip_mobile">请编辑您的手机号码</string>
+    <string name="setting_tip_hobby">请选择兴趣标签</string>
+    <string name="setting_tip_city">请选择所在城市</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

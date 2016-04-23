@@ -19,14 +19,7 @@ import java.io.IOException;
 
 import cn.com.xplora.xploraapp.R;
 
-/**
- * 裁剪图片的Activity
- *
- * @ClassName: CropImageActivity
- * @Description:
- * @author xiechengfa2000@163.com
- * @date 2015-5-8 下午3:39:22
- */
+
 public class ClipImageActivity extends Activity implements OnClickListener {
 	public static final String RESULT_PATH = "crop_image";
 	private static final String KEY = "path";
@@ -47,7 +40,6 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 		mClipImageLayout = (ClipImageLayout) findViewById(R.id.clipImageLayout);
 		String path = getIntent().getStringExtra(KEY);
 
-		// 有的系统返回的图片是旋转了，有的没有旋转，所以处理
 		int degreee = readBitmapDegree(path);
 		Bitmap bitmap = createBitmap(path);
 		if (bitmap != null) {
@@ -104,12 +96,7 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	/**
-	 * 创建图片
-	 *
-	 * @param path
-	 * @return
-	 */
+
 	private Bitmap createBitmap(String path) {
 		if (path == null) {
 			return null;
@@ -117,7 +104,7 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 
 		BitmapFactory.Options opts = new BitmapFactory.Options();
 		opts.inSampleSize = 1;
-		opts.inJustDecodeBounds = false;// 这里一定要将其设置回false，因为之前我们将其设置成了true
+		opts.inJustDecodeBounds = false;
 		opts.inPurgeable = true;
 		opts.inInputShareable = true;
 		opts.inDither = false;
@@ -144,7 +131,7 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 		return bitmap;
 	}
 
-	// 读取图像的旋转度
+
 	private int readBitmapDegree(String path) {
 		int degree = 0;
 		try {
@@ -169,12 +156,12 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 		return degree;
 	}
 
-	// 旋转图片
+
 	private Bitmap rotateBitmap(int angle, Bitmap bitmap) {
-		// 旋转图片 动作
+
 		Matrix matrix = new Matrix();
 		matrix.postRotate(angle);
-		// 创建新的图片
+
 		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
 				bitmap.getWidth(), bitmap.getHeight(), matrix, false);
 		return resizedBitmap;

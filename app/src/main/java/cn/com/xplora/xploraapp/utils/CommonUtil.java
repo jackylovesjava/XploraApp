@@ -10,6 +10,9 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import java.util.Locale;
 
 import cn.com.xplora.xploraapp.R;
+import cn.com.xplora.xploraapp.db.UserDAO;
+import cn.com.xplora.xploraapp.db.XploraDBHelper;
+import cn.com.xplora.xploraapp.model.UserModel;
 
 /**
  * Created by yckj on 2016/4/14.
@@ -43,5 +46,15 @@ public class CommonUtil {
         DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true).imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).showImageForEmptyUri(R.drawable.profile_image_no).build();
         return displayImageOptions;
+    }
+
+    public static UserModel getCurrentUser(Context context){
+
+       UserDAO mUserDao = new UserDAO(new XploraDBHelper(context,"XPLORA"));
+        if(mUserDao!=null){
+            return mUserDao.getLastLoginUser();
+        }else{
+            return null;
+        }
     }
 }

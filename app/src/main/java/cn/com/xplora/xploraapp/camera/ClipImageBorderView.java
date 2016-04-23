@@ -17,11 +17,11 @@ import android.view.View;
  */
 public class ClipImageBorderView extends View {
 	/**
-	 * 水平方向与View的边�?
+	 * 水平方向与View的边�?
 	 */
 	private int mHorizontalPadding;
 	/**
-	 * 垂直方向与View的边�?
+	 * 垂直方向与View的边�?
 	 */
 	private int mVerticalPadding;
 	/**
@@ -29,11 +29,11 @@ public class ClipImageBorderView extends View {
 	 */
 	private int mWidth;
 	/**
-	 * 边框的颜色，默认为白�?
+	 * 边框的颜色，默认为白�?
 	 */
 	private int mBorderColor = Color.parseColor("#FFFFFF");
 	/**
-	 * 边框的宽�?单位dp
+	 * 边框的宽�?单位dp
 	 */
 	private int mBorderWidth = 1;
 
@@ -60,9 +60,9 @@ public class ClipImageBorderView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		// 计算矩形区域的宽�?
+		// 计算矩形区域的宽�?
 		mWidth = getWidth() - 2 * mHorizontalPadding;
-		// 计算距离屏幕垂直边界 的边�?
+		// 计算距离屏幕垂直边界 的边�?
 		mVerticalPadding = (getHeight() - mWidth) / 2;
 		mPaint.setColor(Color.parseColor("#aa000000"));
 		mPaint.setStyle(Style.FILL);
@@ -77,7 +77,7 @@ public class ClipImageBorderView extends View {
 		// 绘制下边4
 		canvas.drawRect(mHorizontalPadding, getHeight() - mVerticalPadding,
 				getWidth() - mHorizontalPadding, getHeight(), mPaint);
-		// 绘制外边�?
+		// 绘制外边�?
 		mPaint.setColor(mBorderColor);
 		mPaint.setStrokeWidth(mBorderWidth);
 		mPaint.setStyle(Style.STROKE);

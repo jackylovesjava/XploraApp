@@ -1,6 +1,7 @@
 package cn.com.xplora.xploraapp.adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -44,11 +45,11 @@ public class UserListAdapter  extends
         }
 
         ImageView mImg;
-//        TextView mTrendsetterNameText;
-//        TextView mTrendsetterIntroText;
-//        TextView mTrendsetterFollowersText;
-//        ImageView mFollowBtn;
-//        ImageView mUnFollowBtn;
+        TextView mUserNameText;
+        TextView mUserHobbyText;
+        ImageView mFollowBtn;
+        ImageView mUnFollowBtn;
+//
     }
 
     @Override
@@ -69,11 +70,11 @@ public class UserListAdapter  extends
 
         viewHolder.mImg = (ImageView) view
                 .findViewById(R.id.user_image);
-//        viewHolder.mTrendsetterNameText = (TextView)view.findViewById(R.id.trendsetter_name);
-//        viewHolder.mTrendsetterIntroText = (TextView)view.findViewById(R.id.trendsetter_intro);
-//        viewHolder.mTrendsetterFollowersText = (TextView)view.findViewById(R.id.trendsetter_followers);
-//        viewHolder.mFollowBtn = (ImageView)view.findViewById(R.id.btn_follow_trendsetter);
-//        viewHolder.mUnFollowBtn = (ImageView)view.findViewById(R.id.btn_unfollow_trendsetter);
+        viewHolder.mUserNameText=(TextView)view.findViewById(R.id.user_name_text);
+        viewHolder.mUserHobbyText=(TextView)view.findViewById(R.id.user_hobby_text);
+        viewHolder.mFollowBtn=(ImageView)view.findViewById(R.id.user_follow_btn);
+        viewHolder.mUnFollowBtn=(ImageView)view.findViewById(R.id.user_unfollow_btn);
+
         return viewHolder;
     }
 
@@ -91,15 +92,29 @@ public class UserListAdapter  extends
         }else {
             imageLoader.displayImage(userModel.getImageUrl(), viewHolder.mImg,displayImageOptions);
         }
-//        if("CHN".equalsIgnoreCase(CommonUtil.getLang(mContext))){
-//            viewHolder.mTrendsetterNameText.setText(trendsetterModel.getFullName());
-//            viewHolder.mTrendsetterIntroText.setText(trendsetterModel.getIntro());
-//            viewHolder.mTrendsetterFollowersText.setText(trendsetterModel.getFollowers()+" 粉丝");
-//        }else{
-//            viewHolder.mTrendsetterNameText.setText(trendsetterModel.getFullNameEn());
-//            viewHolder.mTrendsetterIntroText.setText(trendsetterModel.getIntroEn());
-//            viewHolder.mTrendsetterFollowersText.setText(trendsetterModel.getFollowers()+" Followers");
-//        }
+        String mobile = userModel.getMobile();
+        String userName = userModel.getUserName();
+        if(userName==null||TextUtils.isEmpty(userName)){
+            if(!TextUtils.isEmpty(mobile)) {
+                String needToReplace = mobile.substring(3, 7);
+                userName = mobile.replace(needToReplace, "****");
+            }
+        }
+        viewHolder.mUserNameText.setText(userName);
+        if("CHN".equalsIgnoreCase(CommonUtil.getLang(mContext))){
+            viewHolder.mUserHobbyText.setText(userModel.getHobby());
+        }else{
+            viewHolder.mUserHobbyText.setText(userModel.getHobbyEn());
+        }
+        int followedByCurrentUser = userModel.getFollowedByCurrentUser();
+        if(followedByCurrentUser==1){
+            viewHolder.mUnFollowBtn.setVisibility(View.VISIBLE);
+            viewHolder.mFollowBtn.setVisibility(View.GONE);
+        }else{
+            viewHolder.mFollowBtn.setVisibility(View.VISIBLE);
+            viewHolder.mUnFollowBtn.setVisibility(View.GONE);
+
+        }
     }
 
 }

@@ -15,6 +15,7 @@ public class TrendsetterModel extends BaseModel{
     private int followers;
     private String hobby;
     private String hobbyEn;
+    private int followedByCurrentUser;
 
     public String getImageUrl() {
         return imageUrl;
@@ -102,5 +103,13 @@ public class TrendsetterModel extends BaseModel{
 
     public void setHobbyEn(String hobbyEn) {
         this.hobbyEn = hobbyEn;
+    }
+
+    public int getFollowedByCurrentUser() {
+        return followedByCurrentUser;
+    }
+
+    public void setFollowedByCurrentUser(int followedByCurrentUser) {
+        this.followedByCurrentUser = followedByCurrentUser;
     }
 }

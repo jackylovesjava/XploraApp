@@ -23,7 +23,7 @@ public class UserModel extends BaseModel {
     private boolean logined;
     private Date lastLoginDate;
     private boolean autoPush;
-
+    private int followedByCurrentUser;
     public String getUserName() {
         return userName;
     }
@@ -150,5 +150,13 @@ public class UserModel extends BaseModel {
 
     public void setCityNameEn(String cityNameEn) {
         this.cityNameEn = cityNameEn;
+    }
+
+    public int getFollowedByCurrentUser() {
+        return followedByCurrentUser;
+    }
+
+    public void setFollowedByCurrentUser(int followedByCurrentUser) {
+        this.followedByCurrentUser = followedByCurrentUser;
     }
 }

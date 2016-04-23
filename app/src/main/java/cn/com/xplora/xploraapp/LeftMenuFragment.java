@@ -1,35 +1,29 @@
 package cn.com.xplora.xploraapp;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import cn.com.xplora.xploraapp.db.UserDAO;
 import cn.com.xplora.xploraapp.db.XploraDBHelper;
 import cn.com.xplora.xploraapp.fragments.BaseFragment;
 import cn.com.xplora.xploraapp.fragments.FocusFragment;
-import cn.com.xplora.xploraapp.fragments.LocalFragment;
 import cn.com.xplora.xploraapp.fragments.PicsFragment;
-import cn.com.xplora.xploraapp.fragments.ReadFragment;
 import cn.com.xplora.xploraapp.fragments.TiesFragment;
 import cn.com.xplora.xploraapp.fragments.UgcFragment;
-import cn.com.xplora.xploraapp.fragments.VoteFragment;
+import cn.com.xplora.xploraapp.fragments.SettingFragment;
 import cn.com.xplora.xploraapp.model.UserModel;
 import cn.com.xplora.xploraapp.utils.CommonUtil;
 
@@ -48,7 +42,7 @@ public class LeftMenuFragment extends Fragment implements OnClickListener {
 		view.findViewById(R.id.tab_ties).setOnClickListener(this);
 		view.findViewById(R.id.tab_pics).setOnClickListener(this);
 		view.findViewById(R.id.tab_focus).setOnClickListener(this);
-		view.findViewById(R.id.tab_vote).setOnClickListener(this);
+		view.findViewById(R.id.tab_settings).setOnClickListener(this);
 		view.findViewById(R.id.tab_ugc).setOnClickListener(this);
 		view.findViewById(R.id.login_label).setOnClickListener(this);
 		view.findViewById(R.id.logout_btn).setOnClickListener(this);
@@ -88,8 +82,10 @@ public class LeftMenuFragment extends Fragment implements OnClickListener {
 			}
 			//当用户昵称未设置时，将手机号码隐藏四位作为昵称显示
 			if(userName==null||TextUtils.isEmpty(userName)){
+				if(!TextUtils.isEmpty(mobile)) {
 					String needToReplace = mobile.substring(3, 7);
 					userName = mobile.replace(needToReplace, "****");
+				}
 				}
 			fullNameText.setText(userName);
 
@@ -153,8 +149,10 @@ public class LeftMenuFragment extends Fragment implements OnClickListener {
 		case R.id.tab_focus:
 			fragment = new FocusFragment();
 			break;
-		case R.id.tab_vote:
-			fragment = new VoteFragment();
+		case R.id.tab_settings:
+			SettingFragment settingFragment = new SettingFragment();
+			settingFragment.setmContext(mAct);
+			fragment = settingFragment;
 			break;
 		case R.id.tab_ugc:
 			fragment = new UgcFragment();

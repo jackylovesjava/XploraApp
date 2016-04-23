@@ -61,6 +61,8 @@ public class TrendsetterPageResultJsonResolver extends BaseJsonResolver {
                         model.setUuidInBack(uuidInBack);
                         model.setIntro(intro);
                         model.setIntroEn(introEn);
+                        int followedByCurrentUser = json.getInt("followedByCurrentUser");
+                        model.setFollowedByCurrentUser(followedByCurrentUser);
                         resultList.add(model);
                     }
 

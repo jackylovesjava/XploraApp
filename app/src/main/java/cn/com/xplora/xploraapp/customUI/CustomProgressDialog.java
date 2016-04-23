@@ -3,7 +3,9 @@ package cn.com.xplora.xploraapp.customUI;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,6 +67,7 @@ public class CustomProgressDialog extends ProgressDialog {
 		setContentView(R.layout.progress_dialog);
 		mLoadingTv = (TextView) findViewById(R.id.loadingTv);
 		mImageView = (ImageView) findViewById(R.id.loadingIv);
+		this.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 	}
 
 	/*@Override

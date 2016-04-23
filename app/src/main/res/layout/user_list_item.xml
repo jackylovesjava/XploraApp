@@ -10,8 +10,61 @@
         android:layout_height="60dp"
         android:adjustViewBounds="true"
         android:layout_gravity="top"
-        android:layout_margin="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="20dp"
         app:siBorderWidth="1dp"
         app:siBorderColor="@color/darkgray"
         android:scaleType="fitXY"/>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_margin="5dp"
+        android:layout_weight="3"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:id="@+id/user_name_text"
+            android:textSize="12sp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:id="@+id/user_hobby_text"
+            android:textSize="10sp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/user_name_text"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        >
+    <ImageView
+        android:id="@+id/user_follow_btn"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/follow_white"
+        android:layout_gravity="left"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        />
+    <ImageView
+        android:id="@+id/user_unfollow_btn"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/follower_black"
+        android:layout_gravity="left"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        />
+    </RelativeLayout>
 </LinearLayout>

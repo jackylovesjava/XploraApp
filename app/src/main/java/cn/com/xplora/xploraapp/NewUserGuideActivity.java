@@ -113,6 +113,7 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
         }
         //==================加载Loading动画=====================================
         mLoadingDialog = new CustomProgressDialog(NewUserGuideActivity.this,getString(R.string.loading),R.anim.loading_frame);
+        mLoadingDialog.setInverseBackgroundForced(true);
         mLoadingDialog.show();
         //=================获取后台城市列表=======================================
         mActiveCitiesAsyncTask = new ActiveCitiesAsyncTask(NewUserGuideActivity.this);

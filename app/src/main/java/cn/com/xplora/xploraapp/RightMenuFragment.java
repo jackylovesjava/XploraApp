@@ -14,7 +14,7 @@ import cn.com.xplora.xploraapp.fragments.PicsFragment;
 import cn.com.xplora.xploraapp.fragments.ReadFragment;
 import cn.com.xplora.xploraapp.fragments.TiesFragment;
 import cn.com.xplora.xploraapp.fragments.UgcFragment;
-import cn.com.xplora.xploraapp.fragments.VoteFragment;
+import cn.com.xplora.xploraapp.fragments.SettingFragment;
 
 public class RightMenuFragment extends Fragment implements OnClickListener {
 
@@ -60,7 +60,7 @@ public class RightMenuFragment extends Fragment implements OnClickListener {
 			fragment = new FocusFragment();
 			break;
 		case R.id.tab_myvote:
-			fragment = new VoteFragment();
+			fragment = new SettingFragment();
 			break;
 		case R.id.tab_myugc:
 			fragment = new UgcFragment();

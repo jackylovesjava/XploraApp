@@ -284,7 +284,7 @@
                     android:src="@drawable/icon_left_menu_setting"
                     />
                 <TextView
-                    android:id="@+id/tab_vote"
+                    android:id="@+id/tab_settings"
                     android:layout_toRightOf="@id/icon_left_menu_setting"
                     android:layout_centerVertical="true"
                     style="@style/tab_style"

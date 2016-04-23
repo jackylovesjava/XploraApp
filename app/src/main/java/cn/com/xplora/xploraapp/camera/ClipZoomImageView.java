@@ -32,24 +32,24 @@ public class ClipZoomImageView extends ImageView implements
 	private static float SCALE_MID = 2.0f;
 
 	/**
-	 * 初始化时的缩放比例，如果图片宽或高大于屏幕，此�?将小�?
+	 * 初始化时的缩放比例，如果图片宽或高大于屏幕，此将小
 	 */
 	private float initScale = 1.0f;
 	private boolean once = true;
 
 	/**
-	 * 用于存放矩阵�?个�?
+	 * 用于存放矩阵
 	 */
 	private final float[] matrixValues = new float[9];
 
 	/**
-	 * 缩放的手势检�?
+	 * 缩放的手势检
 	 */
 	private ScaleGestureDetector mScaleGestureDetector = null;
 	private final Matrix mScaleMatrix = new Matrix();
 
 	/**
-	 * 用于双击�?��
+	 * 用于双击
 	 */
 	private GestureDetector mGestureDetector;
 	private boolean isAutoScale;
@@ -62,7 +62,7 @@ public class ClipZoomImageView extends ImageView implements
 	private boolean isCanDrag;
 	private int lastPointerCount;
 	/**
-	 * 水平方向与View的边�?
+	 * 水平方向与View的边
 	 */
 	private int mHorizontalPadding;
 
@@ -101,7 +101,7 @@ public class ClipZoomImageView extends ImageView implements
 	}
 
 	/**
-	 * 自动缩放的任�?
+	 * 自动缩放的任
 	 * 
 	 */
 	private class AutoScaleRunnable implements Runnable {
@@ -111,7 +111,7 @@ public class ClipZoomImageView extends ImageView implements
 		private float tmpScale;
 
 		/**
-		 * 缩放的中�?
+		 * 缩放的中
 		 */
 		private float x;
 		private float y;
@@ -167,12 +167,12 @@ public class ClipZoomImageView extends ImageView implements
 			return true;
 
 		/**
-		 * 缩放的范围控�?
+		 * 缩放的范围控
 		 */
 		if ((scale < SCALE_MAX && scaleFactor > 1.0f)
 				|| (scale > initScale && scaleFactor < 1.0f)) {
 			/**
-			 * �?��值最小�?判断
+			 * 值最小判断
 			 */
 			if (scaleFactor * scale < initScale) {
 				scaleFactor = initScale / scale;
@@ -192,7 +192,7 @@ public class ClipZoomImageView extends ImageView implements
 	}
 
 	/**
-	 * 根据当前图片的Matrix获得图片的范�?
+	 * 根据当前图片的Matrix获得图片的范
 	 * 
 	 * @return
 	 */
@@ -225,7 +225,7 @@ public class ClipZoomImageView extends ImageView implements
 		float x = 0, y = 0;
 		// 拿到触摸点的个数
 		final int pointerCount = event.getPointerCount();
-		// 得到多个触摸点的x与y均�?
+		// 得到多个触摸点的x与y均
 		for (int i = 0; i < pointerCount; i++) {
 			x += event.getX(i);
 			y += event.getY(i);
@@ -284,7 +284,7 @@ public class ClipZoomImageView extends ImageView implements
 	}
 
 	/**
-	 * 获得当前的缩放比�?
+	 * 获得当前的缩放比
 	 * 
 	 * @return
 	 */
@@ -306,7 +306,7 @@ public class ClipZoomImageView extends ImageView implements
 	}
 
 	/**
-	 * 垂直方向与View的边�?
+	 * 垂直方向与View的边
 	 */
 	// private int getHVerticalPadding();
 
@@ -316,7 +316,7 @@ public class ClipZoomImageView extends ImageView implements
 			Drawable d = getDrawable();
 			if (d == null)
 				return;
-			// 垂直方向的边�?
+			// 垂直方向的边
 			// getHVerticalPadding() = (getHeight() - (getWidth() - 2 *
 			// mHorizontalPadding)) / 2;
 
@@ -340,7 +340,7 @@ public class ClipZoomImageView extends ImageView implements
 				scale = Math.max(scaleW, scaleH);
 			}
 
-			// 太小的图片放大处�?
+			// 太小的图片放大处
 			if (drawableW < frameSize && drawableH > frameSize) {
 				scale = 1.0f * frameSize / drawableW;
 			} else if (drawableH < frameSize && drawableW > frameSize) {
@@ -359,7 +359,7 @@ public class ClipZoomImageView extends ImageView implements
 			mScaleMatrix.postScale(scale, scale, getWidth() / 2,
 					getHeight() / 2);
 
-			// 图片移动至屏幕中�?
+			// 图片移动至屏幕中
 			setImageMatrix(mScaleMatrix);
 			once = false;
 		}
@@ -381,7 +381,7 @@ public class ClipZoomImageView extends ImageView implements
 	}
 
 	/**
-	 * 边界�?��
+	 * 边界
 	 */
 	private void checkBorder() {
 		RectF rect = getMatrixRectF();
@@ -391,7 +391,7 @@ public class ClipZoomImageView extends ImageView implements
 		int width = getWidth();
 		int height = getHeight();
 
-		// 如果宽或高大于屏幕，则控制范�?; 这里�?.001是因为精度丢失会产生问题，但是误差一般很小，�?��我们直接加了�?��0.01
+		// 如果宽或高大于屏幕，则控制范 这里001是因为精度丢失会产生问题，但是误差一般很小我们直接加了
 		if (rect.width() + 0.01 >= width - 2 * mHorizontalPadding) {
 			if (rect.left > mHorizontalPadding) {
 				deltaX = -rect.left + mHorizontalPadding;
@@ -416,7 +416,7 @@ public class ClipZoomImageView extends ImageView implements
 	}
 
 	/**
-	 * 是否是拖动行�?
+	 * 是否是拖动行
 	 * 
 	 * @param dx
 	 * @param dy
