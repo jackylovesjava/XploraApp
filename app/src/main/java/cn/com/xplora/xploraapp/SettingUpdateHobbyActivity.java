@@ -1,10 +1,15 @@
 package cn.com.xplora.xploraapp;
 
 import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.ImageButton;
 
 import java.util.List;
 
@@ -26,6 +31,7 @@ public class SettingUpdateHobbyActivity extends FragmentActivity implements DoAf
     private SelectHobbyFragment mContent;
     private ActiveHobbysAsyncTask mActiveHobbysAsyncTask;
     private CustomProgressDialog mLoadingDialog;
+    private ImageButton backBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +47,27 @@ public class SettingUpdateHobbyActivity extends FragmentActivity implements DoAf
             mActiveHobbysAsyncTask.execute();
 
         }
+        backBtn = (ImageButton)findViewById(R.id.ib_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doBack();
+            }
+        });
+    }
+
+    public void doBack(){
+        new Thread(){
+            public void run() {
+                try{
+                    Instrumentation inst = new Instrumentation();
+                    inst.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
+                }
+                catch (Exception e) {
+                    Log.e("Exception when onBack", e.toString());
+                }
+            }
+        }.start();
     }
 
     /**

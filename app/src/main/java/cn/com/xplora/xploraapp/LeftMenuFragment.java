@@ -32,6 +32,7 @@ public class LeftMenuFragment extends Fragment implements OnClickListener {
 	private MainActivity mAct;
 	private View view;
 	private UserDAO mUserDao;
+	private TextView setupTV;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.menu_left_frag, null);
@@ -46,7 +47,15 @@ public class LeftMenuFragment extends Fragment implements OnClickListener {
 		view.findViewById(R.id.tab_ugc).setOnClickListener(this);
 		view.findViewById(R.id.login_label).setOnClickListener(this);
 		view.findViewById(R.id.logout_btn).setOnClickListener(this);
-
+		setupTV = (TextView)view.findViewById(R.id.setup);
+		setupTV.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				SettingFragment settingFragment = new SettingFragment();
+				settingFragment.setmContext(mAct);
+				mAct.switchContent(settingFragment);
+			}
+		});
 		mUserDao = new UserDAO(new XploraDBHelper(mAct,"XPLORA"));
 
 		//得到当前登录的用户

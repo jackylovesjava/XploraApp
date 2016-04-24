@@ -67,7 +67,11 @@ public class SettingFragment extends BaseFragment {
 		//=================== 根据当前用户显示数据 =================
 		ImageLoader imageLoader = CommonUtil.getImageLoader(mContext);
 		DisplayImageOptions options = CommonUtil.getDefaultImageLoadOption();
-		imageLoader.displayImage(currentUser.getImageUrl(), mUserImageIV, options);
+		if(TextUtils.isEmpty(currentUser.getImageName())){
+			mUserImageIV.setImageResource(R.drawable.profile_image_no);
+		}else {
+			imageLoader.displayImage(currentUser.getImageUrl(), mUserImageIV, options);
+		}
 		if(!TextUtils.isEmpty(currentUser.getUserName())){
 			mUsernameTV.setText(currentUser.getUserName());
 		}

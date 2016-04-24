@@ -1,16 +1,19 @@
 package cn.com.xplora.xploraapp;
 
 import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.regex.Matcher;
@@ -37,6 +40,7 @@ public class SettingEditMobileActivity extends Activity implements DoAfterResult
     private EditText mCodeInput;
     private UserModel mCurrentUser;
     private UpdateMobileAsyncTask mLoginAsyncTask;
+    private ImageButton backBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +68,28 @@ public class SettingEditMobileActivity extends Activity implements DoAfterResult
                 return false;
             }
         });
+        backBtn = (ImageButton)findViewById(R.id.ib_back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doBack();
+            }
+        });
     }
 
+    public void doBack(){
+        new Thread(){
+            public void run() {
+                try{
+                    Instrumentation inst = new Instrumentation();
+                    inst.sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);
+                }
+                catch (Exception e) {
+                    Log.e("Exception when onBack", e.toString());
+                }
+            }
+        }.start();
+    }
     private void attemptLogin() {
         if (mLoginAsyncTask != null){
             return;
