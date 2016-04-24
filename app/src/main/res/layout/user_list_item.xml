@@ -60,7 +60,7 @@
         android:id="@+id/user_unfollow_btn"
         android:layout_width="20dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/follower_black"
+        android:src="@drawable/following"
         android:layout_gravity="left"
         android:visibility="gone"
         android:layout_centerVertical="true"

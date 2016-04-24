@@ -113,9 +113,24 @@ public class UserListAdapter  extends
         }else{
             viewHolder.mFollowBtn.setVisibility(View.VISIBLE);
             viewHolder.mUnFollowBtn.setVisibility(View.GONE);
-
         }
+        viewHolder.mFollowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.mUnFollowBtn.setVisibility(View.VISIBLE);
+                viewHolder.mFollowBtn.setVisibility(View.GONE);
+            }
+        });
+
+        viewHolder.mUnFollowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.mFollowBtn.setVisibility(View.VISIBLE);
+                viewHolder.mUnFollowBtn.setVisibility(View.GONE);
+            }
+        });
     }
+
 
 }
 

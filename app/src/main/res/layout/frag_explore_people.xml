@@ -23,13 +23,27 @@
         android:textSize="14sp"
         android:text="@string/tip_follow_trendsetter"
         />
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_no_more_trendsetter"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:text="@string/no_more_trendsetter"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/tip_follow_trendsetter"
+                android:textColor="@color/white"
+                />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/id_recyclerview_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tip_follow_trendsetter"
+        android:layout_below="@id/tv_no_more_trendsetter"
         android:layout_marginTop="10dp"
         android:scrollbars="none" />
+
+
     <View
         android:id="@+id/seperate_line"
         android:layout_below="@id/id_recyclerview_horizontal"

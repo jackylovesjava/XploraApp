@@ -54,6 +54,7 @@
     <string name="btn_login">登入</string>
     <string name="tip_sns_login">您亦可以</string>
 
+    <string name="no_more_trendsetter">暂时没有可关注的潮人</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

@@ -185,6 +185,8 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
                     TrendsetterPageResult trendsetterPageResult = (TrendsetterPageResult)result;
                     List<TrendsetterModel> trendsetterList = trendsetterPageResult.getTrendsetterList();
                     mExplorePeopleFragment.setmTrendsetterList(trendsetterList);
+                    mExplorePeopleFragment.setmTrendsetterCurrentPage(trendsetterPageResult.getCurrentPage());
+                    mExplorePeopleFragment.setmTrendsetterStep(trendsetterPageResult.getStep());
                     if(mUserPageAsyncTask==null){//表示读取用户的任务已经结束，可以将fragment添加到fragmentList中
                         mFragments.add(mExplorePeopleFragment);
                     }

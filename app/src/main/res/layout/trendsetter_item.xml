@@ -67,7 +67,7 @@
             android:id="@+id/btn_unfollow_trendsetter"
             android:layout_width="25dp"
             android:layout_height="35dp"
-            android:src="@drawable/follower_black"
+            android:src="@drawable/following"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"

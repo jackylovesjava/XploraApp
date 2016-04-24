@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.extras.recyclerview.PullToRefreshRecyclerView;
@@ -32,6 +33,7 @@ import cn.com.xplora.xploraapp.customUI.JingDongHeaderLayout;
 import cn.com.xplora.xploraapp.customUI.SpaceItemDecoration;
 import cn.com.xplora.xploraapp.model.TrendsetterModel;
 import cn.com.xplora.xploraapp.model.UserModel;
+import cn.com.xplora.xploraapp.utils.CommonUtil;
 
 /**
  * Created by lt on 2015/12/14.
@@ -40,6 +42,8 @@ public class ExplorePeopleFragment extends Fragment{
 
 
     private List<TrendsetterModel> mTrendsetterList;
+    private int mTrendsetterCurrentPage = 1;
+    private int mTrendsetterStep = 0;
     private List<UserModel> mUserList;
     private RecyclerView mTrendsetterListView;
     private RecyclerView mUserListView;
@@ -47,7 +51,8 @@ public class ExplorePeopleFragment extends Fragment{
     private UserListAdapter mUserListAdapter;
     private Context mContext;
     private Button mConfirmBtn;
-
+    private UserModel mCurrentUser;
+    private TextView mNoMoreDataTV;
     @Override
     public void onCreate(@Nullable Bundle bundle) {
         super.onCreate(bundle);
@@ -64,6 +69,8 @@ public class ExplorePeopleFragment extends Fragment{
         mTrendsetterListView = (RecyclerView) view.findViewById(R.id.id_recyclerview_horizontal);
         mUserListView = (RecyclerView)view.findViewById(R.id.id_recyclerview_vertical);
         mConfirmBtn = (Button)view.findViewById(R.id.btn_explore_confirm);
+        mCurrentUser = CommonUtil.getCurrentUser(mContext);
+        mNoMoreDataTV = (TextView)view.findViewById(R.id.tv_no_more_trendsetter);
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -73,10 +80,14 @@ public class ExplorePeopleFragment extends Fragment{
         linearLayoutManagerUserList.setOrientation(LinearLayoutManager.VERTICAL);
         mUserListView.setLayoutManager(linearLayoutManagerUserList);
 
-        //设置适配器
-        mTrendsetterAdapter = new GalleryAdapter(mContext, mTrendsetterList);
-        mTrendsetterListView.setAdapter(mTrendsetterAdapter);
-
+        if(mTrendsetterList==null||mTrendsetterList.size()==0){
+            mNoMoreDataTV.setVisibility(View.VISIBLE);
+            mTrendsetterListView.setVisibility(View.GONE);
+        }else {
+            //设置适配器
+            mTrendsetterAdapter = new GalleryAdapter(mContext, mTrendsetterList, mCurrentUser, mTrendsetterCurrentPage, mTrendsetterStep,mNoMoreDataTV);
+            mTrendsetterListView.setAdapter(mTrendsetterAdapter);
+        }
         mUserListAdapter = new UserListAdapter(mContext,mUserList);
         mUserListView.setAdapter(mUserListAdapter);
 
@@ -103,5 +114,21 @@ public class ExplorePeopleFragment extends Fragment{
 
     public void setmTrendsetterList(List<TrendsetterModel>  mTrendsetterList) {
         this.mTrendsetterList = mTrendsetterList;
+    }
+
+    public int getmTrendsetterCurrentPage() {
+        return mTrendsetterCurrentPage;
+    }
+
+    public void setmTrendsetterCurrentPage(int mTrendsetterCurrentPage) {
+        this.mTrendsetterCurrentPage = mTrendsetterCurrentPage;
+    }
+
+    public int getmTrendsetterStep() {
+        return mTrendsetterStep;
+    }
+
+    public void setmTrendsetterStep(int mTrendsetterStep) {
+        this.mTrendsetterStep = mTrendsetterStep;
     }
 }
