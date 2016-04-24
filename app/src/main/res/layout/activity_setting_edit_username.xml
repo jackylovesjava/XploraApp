@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cn.com.xplora.xploraapp.SettingEditUsernameActivity"
+    android:background="@drawable/background_color"
+    >
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rl_edit_username_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/top_bar_bg" >
+
+        <ImageButton
+            android:id="@+id/ib_back"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/btn_left_menu" />
+
+        <TextView
+            android:id="@+id/tv_edit_username_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/title_edit_username"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+
+    </RelativeLayout>
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_below="@id/rl_edit_username_title"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:hint="@string/setting_tip_username"
+        android:layout_centerHorizontal="true"
+        android:textColorHint="@color/light_gray"
+        android:textColorLink="@color/xplora_blue"
+        android:textColor="@color/white"
+        android:textStyle="normal"
+        />
+    <Button
+        android:id="@+id/btn_edit_username_confirm"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:text="@string/confirm"
+        android:textColor="@color/xplora_blue"
+        android:background="@drawable/bg_action_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/et_username"
+        />
+</RelativeLayout>

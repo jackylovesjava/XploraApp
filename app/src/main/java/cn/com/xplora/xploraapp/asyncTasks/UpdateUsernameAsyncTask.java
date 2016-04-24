@@ -4,12 +4,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import cn.com.xplora.xploraapp.LoginActivity;
 import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
+import cn.com.xplora.xploraapp.json.BaseJsonResolver;
 import cn.com.xplora.xploraapp.json.BaseResult;
 import cn.com.xplora.xploraapp.json.LoginResult;
 import cn.com.xplora.xploraapp.json.LoginResultJsonResolver;
-import cn.com.xplora.xploraapp.model.UserModel;
 import cn.com.xplora.xploraapp.utils.CommonUtil;
 import cn.com.xplora.xploraapp.utils.HttpUtil;
 import cn.com.xplora.xploraapp.utils.IConstant;
@@ -17,45 +16,44 @@ import cn.com.xplora.xploraapp.utils.IConstant;
 /**
  * Created by yckj on 2016/4/14.
  */
-public class LoginAsyncTask extends AsyncTask {
+public class UpdateUsernameAsyncTask extends AsyncTask {
 
     private String TAG = "XPLORA";
-    private String apiUrl = "http://120.76.98.160:8080/admin/api/login/doLogin";
+    private String apiUrl = "http://120.76.98.160:8080/admin/api/profile/modify_username";
 
-    private Context context;
-    private String mobile;
-    private String code;
-    private CustomProgressDialog loadingDialog;
-    public LoginAsyncTask(String mobile,String code,Context context, CustomProgressDialog loadingDialog){
-        this.mobile = mobile;
-        this.code = code;
-        this.context = context;
-        this.loadingDialog = loadingDialog;
+    private Context mContext;
+    private String mUsername;
+    private int mUserId;
+    private CustomProgressDialog mLoadingDialog;
+    public UpdateUsernameAsyncTask(String username, int userId, Context context, CustomProgressDialog loadingDialog){
+        this.mUsername = username;
+        this.mUserId = userId;
+        this.mContext = context;
+        this.mLoadingDialog = loadingDialog;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        loadingDialog.show();
+        mLoadingDialog.show();
     }
 
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        loadingDialog.hide();
-        ((DoAfterResultInterface)context).doAfterResult((BaseResult)o, IConstant.TASK_SOURCE_DOLOGIN);
+        mLoadingDialog.hide();
+        ((DoAfterResultInterface)mContext).doAfterResult((BaseResult)o, IConstant.TASK_SOURCE_SETTINGEDITUSERNAME);
     }
 
     @Override
     protected Object doInBackground(Object[] params) {
 
         HttpUtil http = new HttpUtil(apiUrl);
-        String lang = CommonUtil.getLang(context);
-        String data = "mobile="+mobile+"&code="+code+"&lang="+lang;
+        String lang = CommonUtil.getLang(mContext);
+        String data = "userId="+mUserId+"&userName="+mUsername+"&lang="+lang;
         String result = http.doGet(data);
-        Log.i(TAG, result);
-        LoginResult loginResult = LoginResultJsonResolver.parse(result);
-        return loginResult;
+        BaseResult apiResult = BaseJsonResolver.parseSimpleResult(result);
+        return apiResult;
     }
 
     @Override

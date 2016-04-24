@@ -1,5 +1,7 @@
 package cn.com.xplora.xploraapp.json;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -53,6 +55,8 @@ public class ActiveHobbysResultJsonResolver extends BaseJsonResolver {
                         hobby.setUuidInBack(uuidInBack);
                         hobby.setSelected(selected);
                         hobbyList.add(hobby);
+
+                        Log.i("XPLORA"," API RESPONSE HOBBY NAME "+hobbyName+" HOBBY SELECTED "+selected);
                     }
 
                 }

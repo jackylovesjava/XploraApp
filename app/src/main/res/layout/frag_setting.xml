@@ -97,6 +97,7 @@
                         android:layout_marginRight="5dp"
                         />
                     <TextView
+                        android:id="@+id/tv_setting_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_above="@id/setting_username_border"
@@ -139,6 +140,7 @@
                         android:layout_marginRight="5dp"
                         />
                     <TextView
+                        android:id="@+id/tv_setting_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_above="@id/setting_mobile_border"
@@ -181,6 +183,7 @@
                         android:layout_marginRight="5dp"
                         />
                     <TextView
+                        android:id="@+id/tv_setting_hobby"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_above="@id/setting_hobby_border"
@@ -222,6 +225,7 @@
                         android:layout_marginRight="5dp"
                         />
                     <TextView
+                        android:id="@+id/tv_setting_city"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_above="@id/setting_city_border"
@@ -253,6 +257,7 @@
                     android:padding="10dp"
                     />
                 <ToggleButton
+                    android:id="@+id/tb_setting_push"
                     android:layout_width="50dp"
                     android:layout_height="15dp"
                     android:background="@drawable/toogle_push"
@@ -287,6 +292,7 @@
                 android:layout_centerHorizontal="true"
                 >
                 <TextView
+                    android:id="@+id/setting_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
@@ -296,6 +302,7 @@
                     android:padding="10dp"
                     />
                 <Button
+                    android:id="@+id/btn_check_update"
                     android:layout_width="60dp"
                     android:layout_height="20dp"
                     android:background="@drawable/setting_checkupdate_btn_bg"
@@ -332,6 +339,7 @@
                 android:layout_centerHorizontal="true"
                 >
                 <TextView
+                    android:id="@+id/setting_order_terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
@@ -341,6 +349,7 @@
                     android:padding="10dp"
                     />
                 <ImageView
+                    android:id="@+id/iv_setting_order_terms"
                     android:layout_width="15dp"
                     android:layout_height="20dp"
                     android:src="@drawable/icon_editable"

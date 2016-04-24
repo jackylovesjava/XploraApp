@@ -277,7 +277,7 @@ public class LoginActivity extends Activity implements DoAfterResultInterface {
 
         @Override
         public void onFinish() {//计时完毕时触发
-            mFetchSmsCodeBtn.setText("重新获取");
+            mFetchSmsCodeBtn.setText(getResources().getString(R.string.retry_fetch));
             mFetchSmsCodeBtn.setClickable(true);
         }
 
@@ -323,6 +323,8 @@ public class LoginActivity extends Activity implements DoAfterResultInterface {
                         oldUser.setFollowers(user.getFollowers());
                         oldUser.setFollowings(user.getFollowings());
                         oldUser.setCityId(user.getCityId());
+                        oldUser.setCityName(user.getCityName());
+                        oldUser.setCityNameEn(user.getCityNameEn());
                         oldUser.setHobby(user.getHobby());
                         oldUser.setHobbyEn(user.getHobbyEn());
                         oldUser.setHobbyIds(user.getHobbyIds());

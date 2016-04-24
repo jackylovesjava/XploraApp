@@ -79,7 +79,9 @@ public class LoginResultJsonResolver extends BaseJsonResolver {
                     for(int i = 0;i<hobbyList.length();i++){
                         JSONObject hobbyJson = (JSONObject)hobbyList.opt(i);
                         hobbyIdsSB.append(hobbyJson.getInt("uuid"));
-                        hobbyIdsSB.append("|");
+                        if(i<hobbyList.length()-1) {
+                            hobbyIdsSB.append("-");
+                        }
 
                     }
                 }
@@ -91,6 +93,8 @@ public class LoginResultJsonResolver extends BaseJsonResolver {
                 user.setHobbyEn(hobbyEnSB.toString());
                 user.setHobby(hobbySB.toString());
                 user.setHobbyIds(hobbyIdsSB.toString());
+                boolean autoPush = root.getBoolean("autoPush");
+                user.setAutoPush(autoPush);
                 result.setUserModel(user);
                 return result;
 

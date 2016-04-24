@@ -14,6 +14,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -26,6 +27,7 @@ import java.util.List;
 import cn.com.xplora.xploraapp.R;
 import cn.com.xplora.xploraapp.adapter.GalleryAdapter;
 import cn.com.xplora.xploraapp.adapter.UserListAdapter;
+import cn.com.xplora.xploraapp.asyncTasks.DoAfterExplore;
 import cn.com.xplora.xploraapp.customUI.JingDongHeaderLayout;
 import cn.com.xplora.xploraapp.customUI.SpaceItemDecoration;
 import cn.com.xplora.xploraapp.model.TrendsetterModel;
@@ -44,6 +46,7 @@ public class ExplorePeopleFragment extends Fragment{
     private GalleryAdapter mTrendsetterAdapter;
     private UserListAdapter mUserListAdapter;
     private Context mContext;
+    private Button mConfirmBtn;
 
     @Override
     public void onCreate(@Nullable Bundle bundle) {
@@ -60,6 +63,7 @@ public class ExplorePeopleFragment extends Fragment{
         //得到控件
         mTrendsetterListView = (RecyclerView) view.findViewById(R.id.id_recyclerview_horizontal);
         mUserListView = (RecyclerView)view.findViewById(R.id.id_recyclerview_vertical);
+        mConfirmBtn = (Button)view.findViewById(R.id.btn_explore_confirm);
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -75,6 +79,13 @@ public class ExplorePeopleFragment extends Fragment{
 
         mUserListAdapter = new UserListAdapter(mContext,mUserList);
         mUserListView.setAdapter(mUserListAdapter);
+
+        mConfirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((DoAfterExplore)mContext).doAfterExplore();
+            }
+        });
         return view;
     }
 

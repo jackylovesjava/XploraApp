@@ -53,4 +53,12 @@ public class ActiveHobbysAsyncTask extends AsyncTask {
     protected void onCancelled() {
         super.onCancelled();
     }
+
+    public int getmUserId() {
+        return mUserId;
+    }
+
+    public void setmUserId(int mUserId) {
+        this.mUserId = mUserId;
+    }
 }

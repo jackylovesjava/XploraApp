@@ -42,6 +42,19 @@
     <string name="setting_tip_hobby">请选择兴趣标签</string>
     <string name="setting_tip_city">请选择所在城市</string>
 
+    <string name="title_edit_username">编辑昵称</string>
+    <string name="title_edit_mobile">绑定手机号码</string>
+    <string name="title_edit_hobby">修改兴趣标签</string>
+    <string name="title_edit_city">修改所在城市</string>
+
+    <string name="tip_smscode">输入验证码</string>
+    <string name="tip_mobile">输入手机号码</string>
+    <string name="fetch_smscode">获取</string>
+    <string name="retry_fetch">重新获取</string>
+    <string name="btn_login">登入</string>
+    <string name="tip_sns_login">您亦可以</string>
+
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>

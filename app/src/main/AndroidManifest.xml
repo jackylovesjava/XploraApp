@@ -41,9 +41,13 @@
             android:name=".NewUserGuideActivity"
             android:label="@string/title_activity_new_user_guide"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FancyFlowDemoActivity"></activity>
-        <activity android:name=".PullToRefreshRecycleActivity"></activity>
-        <activity android:name=".camera.ClipImageDemoActivity"></activity>
+        <activity android:name=".FancyFlowDemoActivity" />
+        <activity android:name=".PullToRefreshRecycleActivity" />
+        <activity android:name=".camera.ClipImageDemoActivity" />
+        <activity android:name=".SettingEditUsernameActivity" />
+        <activity android:name=".SettingEditMobileActivity" />
+        <activity android:name=".SettingUpdateHobbyActivity" />
+        <activity android:name=".SettingUpdateCityActivity"></activity>
     </application>
 
 </manifest>

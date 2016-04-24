@@ -3,6 +3,7 @@ package cn.com.xplora.xploraapp.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,6 +39,8 @@ public class UserDAO{
         cValue.put("uuidInBack",user.getUuidInBack());
         cValue.put("autoPush",user.isAutoPush());
         cValue.put("cityId",user.getCityId());
+        cValue.put("cityName",user.getCityName());
+        cValue.put("cityNameEn",user.getCityNameEn());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date lastLoginDate = user.getLastLoginDate();
         String lastLoginDateStr = "";
@@ -69,9 +72,10 @@ public class UserDAO{
             user.setMobile(cursor.getString(cursor.getColumnIndex("mobile")));
             user.setNewUser(false);
             user.setCityId(cursor.getInt(cursor.getColumnIndex("cityId")));
-            user.setAutoPush(Boolean.valueOf(cursor.getString(cursor.getColumnIndex("autoPush"))));
-//            user.setLastLoginDate();
-            user.setLogined(Boolean.valueOf(cursor.getString(cursor.getColumnIndex("logined"))));
+            int autoPushIntValue = cursor.getInt(cursor.getColumnIndex("autoPush"));
+            int loginedIntValue = cursor.getInt(cursor.getColumnIndex("logined"));
+            user.setAutoPush(autoPushIntValue==1?true:false);
+            user.setLogined(loginedIntValue==1?true:false);
             user.setHobbyIds(cursor.getString(cursor.getColumnIndex("hobbyIds")));
             user.setUserName(cursor.getString(cursor.getColumnIndex("userName")));
             user.setCityName(cursor.getString(cursor.getColumnIndex("cityName")));
@@ -98,7 +102,8 @@ public class UserDAO{
                 "uuidInBack=?", new String[]{String.valueOf(uuidInBack)}, null, null, "lastLoginDate desc");
         UserModel user = new UserModel();
         if(cursor.moveToFirst()){
-
+            user.setUuid(cursor.getInt(cursor.getColumnIndex("uuid")));
+            user.setUuidInBack(cursor.getInt(cursor.getColumnIndex("uuidInBack")));
             user.setFollowers(cursor.getInt(cursor.getColumnIndex("followers")));
             user.setFollowings(cursor.getInt(cursor.getColumnIndex("followings")));
             user.setHobby(cursor.getString(cursor.getColumnIndex("hobby")));
@@ -108,9 +113,10 @@ public class UserDAO{
             user.setMobile(cursor.getString(cursor.getColumnIndex("mobile")));
             user.setNewUser(false);
             user.setCityId(cursor.getInt(cursor.getColumnIndex("cityId")));
-            user.setAutoPush(Boolean.valueOf(cursor.getString(cursor.getColumnIndex("autoPush"))));
-//            user.setLastLoginDate();
-            user.setLogined(Boolean.valueOf(cursor.getString(cursor.getColumnIndex("logined"))));
+            int autoPushIntValue = cursor.getInt(cursor.getColumnIndex("autoPush"));
+            int loginedIntValue = cursor.getInt(cursor.getColumnIndex("logined"));
+            user.setAutoPush(autoPushIntValue==1?true:false);
+            user.setLogined(loginedIntValue==1?true:false);
             user.setHobbyIds(cursor.getString(cursor.getColumnIndex("hobbyIds")));
             user.setUserName(cursor.getString(cursor.getColumnIndex("userName")));
             user.setCityName(cursor.getString(cursor.getColumnIndex("cityName")));
@@ -137,16 +143,24 @@ public class UserDAO{
         cValue.put("uuidInBack",user.getUuidInBack());
         cValue.put("autoPush",user.isAutoPush());
         cValue.put("cityId",user.getCityId());
+        cValue.put("cityName",user.getCityName());
+        cValue.put("cityNameEn",user.getCityNameEn());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date lastLoginDate = user.getLastLoginDate();
         String lastLoginDateStr = "";
         if(lastLoginDate!=null){
             lastLoginDateStr = dateFormat.format(lastLoginDate);
         }
-        cValue.put("lastLoginDate",lastLoginDateStr);
+        cValue.put("lastLoginDate", lastLoginDateStr);
 
 
         SQLiteDatabase db =  dbHelper.getWritableDatabase();
-        db.update("user", cValue, "uuid=?", new String[]{String.valueOf(user.getUuid())});
+        db.update("user", cValue, "uuidInBack=?", new String[]{String.valueOf(user.getUuidInBack())});
+    }
+
+    public static void main(String[]args){
+
+        System.out.println(Boolean.valueOf("1"));
+
     }
 }

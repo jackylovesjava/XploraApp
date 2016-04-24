@@ -35,11 +35,6 @@ public class CheckUpdateAsyncTask extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-        try {
-            Thread.currentThread().sleep(2000);
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
 //        HttpUtil http = new HttpUtil(apiUrl);
 //        String result = http.doGet(null);
 //        List<CityModel> cityList = ActiveCitiesResult.parse(result);

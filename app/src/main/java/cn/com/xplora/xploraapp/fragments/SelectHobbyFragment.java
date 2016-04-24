@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,14 +26,24 @@ import com.handmark.pulltorefresh.library.extras.recyclerview.PullToRefreshRecyc
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.xplora.xploraapp.R;
+import cn.com.xplora.xploraapp.asyncTasks.DoAfterConfirm;
+import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
 import cn.com.xplora.xploraapp.customUI.JingDongHeaderLayout;
 import cn.com.xplora.xploraapp.customUI.SpaceItemDecoration;
+import cn.com.xplora.xploraapp.db.UserDAO;
+import cn.com.xplora.xploraapp.db.XploraDBHelper;
 import cn.com.xplora.xploraapp.json.ActiveHobbysResult;
 import cn.com.xplora.xploraapp.json.ActiveHobbysResultJsonResolver;
+import cn.com.xplora.xploraapp.json.BaseJsonResolver;
+import cn.com.xplora.xploraapp.json.BaseResult;
 import cn.com.xplora.xploraapp.model.HobbyModel;
+import cn.com.xplora.xploraapp.model.UserModel;
 import cn.com.xplora.xploraapp.utils.CommonUtil;
 import cn.com.xplora.xploraapp.utils.HttpUtil;
 
@@ -44,12 +55,16 @@ public class SelectHobbyFragment extends Fragment{
     private int mUserId;
     private int mCurrentPage=1;
     private int mPageSize=10;
+    private UserModel mCurrentUser;
+    private List<HobbyModel> selectedHobbyList = new ArrayList<HobbyModel>();
     private List<HobbyModel> hobbyList;
     private PullToRefreshRecyclerView mPullRefreshRecyclerView;
     private RecyclerView mRecyclerView;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private RecyclerViewAdapter mAdapter;
     private Context mContext;
+    private Button mConfirmBtn;
+    private CustomProgressDialog mLoadingDialog;
     @Override
     public void onCreate(@Nullable Bundle bundle) {
         super.onCreate(bundle);
@@ -85,6 +100,22 @@ public class SelectHobbyFragment extends Fragment{
         this.mPageSize = mPageSize;
     }
 
+    public UserModel getmCurrentUser() {
+        return mCurrentUser;
+    }
+
+    public void setmCurrentUser(UserModel mCurrentUser) {
+        this.mCurrentUser = mCurrentUser;
+    }
+
+    public CustomProgressDialog getmLoadingDialog() {
+        return mLoadingDialog;
+    }
+
+    public void setmLoadingDialog(CustomProgressDialog mLoadingDialog) {
+        this.mLoadingDialog = mLoadingDialog;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -117,7 +148,14 @@ public class SelectHobbyFragment extends Fragment{
         });
         mAdapter = new RecyclerViewAdapter();
         mRecyclerView.setAdapter(mAdapter);
+        mConfirmBtn = (Button)view.findViewById(R.id.select_hobby_confirm);
+        mConfirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                new UpdateHobbyTask().execute();
+            }
+        });
         return view;
     }
 
@@ -149,6 +187,83 @@ public class SelectHobbyFragment extends Fragment{
     }
 
 
+    private class UpdateHobbyTask extends AsyncTask<Void, Void, BaseResult> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mLoadingDialog.show();
+        }
+
+        @Override
+        protected BaseResult doInBackground(Void... params) {
+            // Simulates a background job.
+
+            StringBuffer hobbyIDsSb = new StringBuffer();
+            for(int i = 0;i<hobbyList.size();i++){
+                HobbyModel hobbyModel = hobbyList.get(i);
+                if(hobbyModel.getSelected()==1){
+                    selectedHobbyList.add(hobbyModel);
+                }
+            }
+            for(int i = 0;i<selectedHobbyList.size();i++){
+                HobbyModel hobbyModel = selectedHobbyList.get(i);
+                hobbyIDsSb.append(hobbyModel.getUuidInBack());
+                if(i<selectedHobbyList.size()-1){
+                    hobbyIDsSb.append("-");
+                }
+            }
+            HttpUtil http = new HttpUtil("http://120.76.98.160:8080/admin/api/hobby/updateUserHobbys");
+            String result = http.doGet("userId=" + mUserId + "&hobbys=" + hobbyIDsSb.toString());
+            BaseResult updateHobbyResult = BaseJsonResolver.parseSimpleResult(result);
+            return updateHobbyResult;
+        }
+
+        @Override
+        protected void onPostExecute(BaseResult result) {
+            super.onPostExecute(result);
+            mLoadingDialog.hide();
+            StringBuffer hobbyEnSB = new StringBuffer();
+            StringBuffer hobbySB = new StringBuffer();
+            StringBuffer hobbyIdsSB = new StringBuffer();
+            if(selectedHobbyList!=null&&selectedHobbyList.size()>0){
+                for(int i = 0;i<selectedHobbyList.size();i++){
+                    HobbyModel hobbyModel = selectedHobbyList.get(i);
+                        if(i>4){
+                            hobbyEnSB.append("...and "+(selectedHobbyList.size()-5)+" more");
+                            hobbySB.append("...等"+selectedHobbyList.size()+"项");
+                            break;
+                        }
+                        hobbyEnSB.append("#");
+                        hobbyEnSB.append(hobbyModel.getHobbyNameEn());
+
+                        hobbySB.append("#");
+                        hobbySB.append(hobbyModel.getHobbyName());
+                    }
+
+
+                }
+
+                for(int i = 0;i<selectedHobbyList.size();i++){
+                    HobbyModel hobbyModel = selectedHobbyList.get(i);
+                    hobbyIdsSB.append(hobbyModel.getUuidInBack());
+                    if(i<selectedHobbyList.size()-1) {
+                        hobbyIdsSB.append("-");
+                    }
+
+                }
+            mCurrentUser.setHobbyEn(hobbyEnSB.toString());
+            mCurrentUser.setHobby(hobbySB.toString());
+            mCurrentUser.setHobbyIds(hobbyIdsSB.toString());
+
+            XploraDBHelper dbHelper = new XploraDBHelper(mContext,"XPLORA");
+            UserDAO userDAO = new UserDAO(dbHelper);
+
+            userDAO.updateUser(mCurrentUser);
+
+            ((DoAfterConfirm)mContext).doAfterConfirm();
+        }
+    }
 
 
     class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -168,6 +283,7 @@ public class SelectHobbyFragment extends Fragment{
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             HobbyModel hobbyModel = hobbyList.get(position);
+            Log.i("XPLORA"," FRAME INIT HOBBY NAME "+hobbyModel.getHobbyName()+" HOBBY SELECTED "+hobbyModel.getSelected());
             ((MyViewHolder) holder).hobbyModel = hobbyModel;
             ImageLoader imageLoader = CommonUtil.getImageLoader(mContext);
             DisplayImageOptions displayImageOptions = CommonUtil.getDefaultImageLoadOption();

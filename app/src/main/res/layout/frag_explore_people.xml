@@ -99,6 +99,7 @@
             android:paddingLeft="10dp"
             />
         <Button
+            android:id="@+id/btn_explore_confirm"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="36dp"

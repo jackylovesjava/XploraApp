@@ -20,10 +20,14 @@ import java.util.List;
 
 import cn.com.xplora.xploraapp.asyncTasks.ActiveCitiesAsyncTask;
 import cn.com.xplora.xploraapp.asyncTasks.ActiveHobbysAsyncTask;
+import cn.com.xplora.xploraapp.asyncTasks.DoAfterConfirm;
+import cn.com.xplora.xploraapp.asyncTasks.DoAfterExplore;
 import cn.com.xplora.xploraapp.asyncTasks.DoAfterResultInterface;
+import cn.com.xplora.xploraapp.asyncTasks.DoAfterSelectCity;
 import cn.com.xplora.xploraapp.asyncTasks.TrendsetterPageAsyncTask;
 import cn.com.xplora.xploraapp.asyncTasks.UserPageAsyncTask;
 import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
+import cn.com.xplora.xploraapp.customUI.NoScrollViewPager;
 import cn.com.xplora.xploraapp.db.UserDAO;
 import cn.com.xplora.xploraapp.db.XploraDBHelper;
 import cn.com.xplora.xploraapp.fragments.ExplorePeopleFragment;
@@ -42,7 +46,8 @@ import cn.com.xplora.xploraapp.model.TrendsetterModel;
 import cn.com.xplora.xploraapp.model.UserModel;
 import cn.com.xplora.xploraapp.utils.IConstant;
 
-public class NewUserGuideActivity extends FragmentActivity implements DoAfterResultInterface {
+public class NewUserGuideActivity extends FragmentActivity implements DoAfterResultInterface,
+        DoAfterConfirm,DoAfterSelectCity,DoAfterExplore {
 
     private ActiveCitiesAsyncTask mActiveCitiesAsyncTask;
     private ActiveHobbysAsyncTask mActiveHobbysAsyncTask;
@@ -57,9 +62,9 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
     private int mUserCurrentPage = 1;
     private int mHobbyCurrentPage = 1;
     private int mUserId = 1;
-
+    private UserModel currentUser;
     private CustomProgressDialog mLoadingDialog;
-    private ViewPager mViewPager;
+    private NoScrollViewPager mViewPager;
     private TabLayout mTabLayout;
 
     private List<Fragment> mFragments = new ArrayList<Fragment>();;
@@ -94,7 +99,7 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
         super.onCreate(savedInstanceState);
         //====================初始化视图========================
         setContentView(R.layout.activity_new_user_guide);
-        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        mViewPager = (NoScrollViewPager) findViewById(R.id.viewPager);
         mTabLayout = (TabLayout) findViewById(R.id.tablayout);
         mTitles = new String[]{
                 getResources().getString(R.string.tab_title_city),
@@ -104,7 +109,7 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
         //==================得到当前登陆用户ID============================
         XploraDBHelper dbHelper = new XploraDBHelper(NewUserGuideActivity.this,"XPLORA");
         UserDAO userDAO = new UserDAO(dbHelper);
-        UserModel currentUser = userDAO.getLastLoginUser();
+        currentUser = userDAO.getLastLoginUser();
         if(currentUser!=null&&currentUser.getUuidInBack()>0){
             mUserId = currentUser.getUuidInBack();
         }else{//未登陆，跳转到登陆页面
@@ -120,6 +125,7 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
         mActiveCitiesAsyncTask.execute();
         //=================获取后台兴趣列表==========================================
         mActiveHobbysAsyncTask = new ActiveHobbysAsyncTask(NewUserGuideActivity.this);
+        mActiveHobbysAsyncTask.setmUserId(mUserId);
         mActiveHobbysAsyncTask.execute();
         //=================获取与当前用户兴趣相似的名人列表==============================
         mTrendsetterPageAsyncTask = new TrendsetterPageAsyncTask(NewUserGuideActivity.this,mTrendsetterCurrentPage,mUserId);
@@ -150,6 +156,8 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
                     ActiveCitiesResult activeCitiesResult = (ActiveCitiesResult)result;
                     List<CityModel> cityList = activeCitiesResult.getCityList();
                     mSelectCityFragment.setCityList(cityList);
+                    mSelectCityFragment.setmCurrentUser(currentUser);
+                    mSelectCityFragment.setmLoadingDialog(mLoadingDialog);
                     mFragments.add(mSelectCityFragment);
                     mActiveCitiesAsyncTask = null;
 
@@ -164,6 +172,8 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
                     mSelectHobbyFragment.setHobbyList(hobbyList);
                     mSelectHobbyFragment.setmUserId(mUserId);
                     mSelectHobbyFragment.setmCurrentPage(activeHobbysResult.getCurrentPage());
+                    mSelectHobbyFragment.setmCurrentUser(currentUser);
+                    mSelectHobbyFragment.setmLoadingDialog(mLoadingDialog);
                     mFragments.add(mSelectHobbyFragment);
                     mActiveHobbysAsyncTask = null;
                 }
@@ -201,5 +211,23 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
                     mTabLayout.setTabTextColors(Color.GRAY, Color.WHITE);
                 }
         }
+    }
+
+    @Override
+    public void doAfterConfirm() {
+
+        mViewPager.setCurrentItem(2);
+    }
+
+    @Override
+    public void doAfterSelectCity() {
+        mViewPager.setCurrentItem(1);
+    }
+
+    @Override
+    public void doAfterExplore() {
+        Intent intent = new Intent(NewUserGuideActivity.this,MainActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 }

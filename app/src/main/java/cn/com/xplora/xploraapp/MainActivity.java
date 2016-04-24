@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.animation.Interpolator;
 import android.widget.TextView;
 
+import cn.com.xplora.xploraapp.fragments.SettingFragment;
+
 public class MainActivity extends SlidingFragmentActivity {
 
 	/** 侧滑菜单 */
@@ -36,7 +38,7 @@ public class MainActivity extends SlidingFragmentActivity {
 		setContentView(R.layout.content_frame);
 		setBehindContentView(R.layout.menu_left_frag);
 		sm.setSecondaryMenu(R.layout.menu_right_frag);
-		Intent intent = getIntent();
+
 
 		if (savedInstanceState == null) {
 			mLeftMenu = new LeftMenuFragment();
@@ -56,7 +58,14 @@ public class MainActivity extends SlidingFragmentActivity {
 		sm.setMode(SlidingMenu.LEFT_RIGHT); // 设置菜单同时兼具左右滑动
 		sm.setBehindCanvasTransformer(mTransformer); // 设置动画
 
+		Intent intent = getIntent();
+		if("SETTING".equalsIgnoreCase(intent.getStringExtra("DESTINY_FRAGMENT"))){
 
+			SettingFragment settingFragment = new SettingFragment();
+			settingFragment.setmContext(MainActivity.this);
+			switchContent(settingFragment);
+
+		}
 	}
 
 	/**
