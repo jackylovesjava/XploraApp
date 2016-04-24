@@ -167,6 +167,7 @@ public class GalleryAdapter extends
             public void onClick(View v) {
                 viewHolder.mFollowBtn.setVisibility(View.VISIBLE);
                 viewHolder.mUnFollowBtn.setVisibility(View.GONE);
+                new DoUnFollowTask().execute(viewHolder.getLayoutPosition());
             }
         });
     }
@@ -234,7 +235,48 @@ public class GalleryAdapter extends
             }
         }
     }
+    private class DoUnFollowTask extends AsyncTask<Integer, Void, BaseResult> {
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected BaseResult doInBackground(Integer... params) {
+            // Simulates a background job.
+            try {
+
+                Thread.sleep(1000);
+
+            }catch (Exception ex){
+                ex.printStackTrace();;
+            }
+            HashMap map = new HashMap();
+
+            int followToTrendsetterPosition = params[0];
+            TrendsetterModel followToTrendsetter = mShowDatas.get(followToTrendsetterPosition);
+            HttpUtil http = new HttpUtil("http://120.76.98.160:8080/admin/api/people/cancelFollow");
+            String result = http.doGet("followFrom=" + mCurrentUser.getUuidInBack() + "&followTo=" + followToTrendsetter.getUuidInBack());
+            BaseResult apiResult = BaseJsonResolver.parseSimpleResult(result);
+
+            return apiResult;
+        }
+
+        @Override
+        protected void onPostExecute(BaseResult result) {
+            super.onPostExecute(result);
+            if(result.isResult()) {
+                int followings = mCurrentUser.getFollowings();
+                mCurrentUser.setFollowings(followings - 1);
+
+                XploraDBHelper dbHelper = new XploraDBHelper(mContext, "XPLORA");
+                UserDAO userDAO = new UserDAO(dbHelper);
+                userDAO.updateUser(mCurrentUser);
+
+            }
+        }
+    }
     private class RefetchDataTask extends AsyncTask {
 
         private String TAG = "XPLORA";
