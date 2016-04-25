@@ -49,8 +49,12 @@
         <activity android:name=".SettingEditMobileActivity" />
         <activity android:name=".SettingUpdateHobbyActivity" />
         <activity android:name=".SettingUpdateCityActivity" />
-        <activity android:name=".SettingUpdatePortraitActivity"></activity>
-        <activity android:name=".camera.ClipImageActivity"></activity>
+        <activity android:name=".SettingUpdatePortraitActivity"
+            android:hardwareAccelerated="false"
+            ></activity>
+        <activity android:name=".camera.ClipImageActivity"
+            android:hardwareAccelerated="false"
+            ></activity>
     </application>
 
 </manifest>

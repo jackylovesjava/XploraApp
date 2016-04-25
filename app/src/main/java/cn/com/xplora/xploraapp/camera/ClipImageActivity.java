@@ -9,6 +9,7 @@ import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -17,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import cn.com.xplora.xploraapp.MainActivity;
 import cn.com.xplora.xploraapp.R;
 
 
@@ -68,6 +70,8 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent();
 			intent.putExtra(RESULT_PATH, path);
 			setResult(RESULT_OK, intent);
+		}else{
+			cancelClip();
 		}
 		finish();
 	}
@@ -82,7 +86,7 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 		try {
 			f.createNewFile();
 			fOut = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOut);
 			fOut.flush();
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -103,7 +107,7 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 		}
 
 		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inSampleSize = 1;
+		opts.inSampleSize = 2;
 		opts.inJustDecodeBounds = false;
 		opts.inPurgeable = true;
 		opts.inInputShareable = true;
@@ -112,7 +116,7 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 		FileInputStream is = null;
 		Bitmap bitmap = null;
 		try {
-			Log.i("CLIP","PATH : "+path);
+			Log.i("XPLORA","=======CLIP PATH : "+path);
 			is = new FileInputStream(path);
 			bitmap = BitmapFactory.decodeFileDescriptor(is.getFD(), null, opts);
 		} catch (IOException e) {
@@ -165,5 +169,42 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
 				bitmap.getWidth(), bitmap.getHeight(), matrix, false);
 		return resizedBitmap;
+	}
+
+	/**
+	 * 监听Back键按下事件,方法1:
+	 * 注意:
+	 * super.onBackPressed()会自动调用finish()方法,关闭
+	 * 当前Activity.
+	 * 若要屏蔽Back键盘,注释该行代码即可
+	 */
+	@Override
+	public void onBackPressed() {
+		cancelClip();
+		System.out.println("按下了back键 onBackPressed()");
+	}
+	/**
+	 * 监听Back键按下事件,方法2:
+	 * 注意:
+	 * 返回值表示:是否能完全处理该事件
+	 * 在此处返回false,所以会继续传播该事件.
+	 * 在具体项目中此处的返回值视情况而定.
+	 */
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+			cancelClip();
+			return false;
+		}else {
+			return super.onKeyDown(keyCode, event);
+		}
+
+	}
+
+	private void cancelClip(){
+
+		Intent goBackToSetting = new Intent(ClipImageActivity.this, MainActivity.class);
+		goBackToSetting.putExtra("DESTINY_FRAGMENT","SETTING");
+		startActivity(goBackToSetting);
 	}
 }

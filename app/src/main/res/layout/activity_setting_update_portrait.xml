@@ -1,15 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background_color"
     tools:context="cn.com.xplora.xploraapp.SettingUpdatePortraitActivity">
-    <ImageView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rl_edit_mobile_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/top_bar_bg" >
+
+        <ImageButton
+            android:id="@+id/ib_back"
+            android:layout_width="14dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_edit_mobile_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="上传头像"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+
+    </RelativeLayout>
+
+    <com.github.siyamed.shapeimageview.RoundedImageView
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_below="@id/rl_edit_mobile_title"
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:adjustViewBounds="true"
+        app:siRadius="5dp"
+        app:siBorderWidth="1dp"
+        app:siBorderColor="@color/darkgray"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:scaleType="centerCrop"/>
+    />
+    <Button
+        android:id="@+id/uploadBtn"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_action_btn"
+        android:textColor="@color/xplora_blue"
+        android:textSize="14sp"
+        android:text="上传"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imageView"
+        android:layout_marginTop="10dp"
+        />
 </RelativeLayout>

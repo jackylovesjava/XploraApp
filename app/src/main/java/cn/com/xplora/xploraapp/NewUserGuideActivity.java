@@ -199,7 +199,9 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
                     UserPageResult userPageResult = (UserPageResult)result;
                     List<UserModel> userList = userPageResult.getUserList();
                     mExplorePeopleFragment.setmUserList(userList);
-                    if(mTrendsetterPageAsyncTask==null){//表示读取名人的任务已经结束，可以将fragment添加到fragmentList中
+                    mExplorePeopleFragment.setmUserCurrentPage(userPageResult.getCurrentPage());
+                    mExplorePeopleFragment.setmUserStep(userPageResult.getStep());
+                if(mTrendsetterPageAsyncTask==null){//表示读取名人的任务已经结束，可以将fragment添加到fragmentList中
                         mFragments.add(mExplorePeopleFragment);
                     }
                     mUserPageAsyncTask = null;

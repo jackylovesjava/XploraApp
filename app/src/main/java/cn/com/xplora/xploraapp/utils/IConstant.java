@@ -11,5 +11,6 @@ public interface IConstant {
     public static int TASK_SOURCE_USERPAGE = 4;
     public static int TASK_SOURCE_DOLOGIN = 5;
     public static int TASK_SOURCE_SETTINGEDITUSERNAME = 6;
-    public static int TASK_SOURCE_SETTINGEDITMOBILE = 6;
+    public static int TASK_SOURCE_SETTINGEDITMOBILE = 7;
+    public static int TASK_SOURCE_UPDATEUSERPORTRAIT = 8;
 }

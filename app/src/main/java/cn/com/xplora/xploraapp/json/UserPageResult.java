@@ -16,6 +16,7 @@ public class UserPageResult extends BaseResult {
     private int pageSize;
     private int totalPage;
     private int totalCount;
+    private int step;
 
     public List<UserModel> getUserList() {
         return userList;
@@ -55,5 +56,13 @@ public class UserPageResult extends BaseResult {
 
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
     }
 }

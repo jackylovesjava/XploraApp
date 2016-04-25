@@ -54,6 +54,10 @@
     <string name="btn_login">登入</string>
     <string name="tip_sns_login">您亦可以</string>
 
+    <string name="tip_upload_failed">抱歉，上传失败，请稍候再试</string>
+    <string name="tip_upload_loading">正在上传中</string>
+
+
     <string name="no_more_trendsetter">暂时没有可关注的潮人</string>
 
     <!-- Strings related to login -->

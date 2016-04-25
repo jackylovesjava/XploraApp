@@ -44,6 +44,8 @@ public class ExplorePeopleFragment extends Fragment{
     private List<TrendsetterModel> mTrendsetterList;
     private int mTrendsetterCurrentPage = 1;
     private int mTrendsetterStep = 0;
+    private int mUserCurrentPage = 1;
+    private int mUserStep = 0;
     private List<UserModel> mUserList;
     private RecyclerView mTrendsetterListView;
     private RecyclerView mUserListView;
@@ -53,6 +55,7 @@ public class ExplorePeopleFragment extends Fragment{
     private Button mConfirmBtn;
     private UserModel mCurrentUser;
     private TextView mNoMoreDataTV;
+    private TextView mNoMoreUserDataTV;
     @Override
     public void onCreate(@Nullable Bundle bundle) {
         super.onCreate(bundle);
@@ -71,6 +74,7 @@ public class ExplorePeopleFragment extends Fragment{
         mConfirmBtn = (Button)view.findViewById(R.id.btn_explore_confirm);
         mCurrentUser = CommonUtil.getCurrentUser(mContext);
         mNoMoreDataTV = (TextView)view.findViewById(R.id.tv_no_more_trendsetter);
+        mNoMoreUserDataTV = (TextView)view.findViewById(R.id.tv_no_more_user);
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -88,7 +92,7 @@ public class ExplorePeopleFragment extends Fragment{
             mTrendsetterAdapter = new GalleryAdapter(mContext, mTrendsetterList, mCurrentUser, mTrendsetterCurrentPage, mTrendsetterStep,mNoMoreDataTV);
             mTrendsetterListView.setAdapter(mTrendsetterAdapter);
         }
-        mUserListAdapter = new UserListAdapter(mContext,mUserList);
+        mUserListAdapter = new UserListAdapter(mContext,mUserList, mCurrentUser, mUserCurrentPage, mUserStep,mNoMoreUserDataTV);
         mUserListView.setAdapter(mUserListAdapter);
 
         mConfirmBtn.setOnClickListener(new View.OnClickListener() {
@@ -130,5 +134,21 @@ public class ExplorePeopleFragment extends Fragment{
 
     public void setmTrendsetterStep(int mTrendsetterStep) {
         this.mTrendsetterStep = mTrendsetterStep;
+    }
+
+    public int getmUserCurrentPage() {
+        return mUserCurrentPage;
+    }
+
+    public void setmUserCurrentPage(int mUserCurrentPage) {
+        this.mUserCurrentPage = mUserCurrentPage;
+    }
+
+    public int getmUserStep() {
+        return mUserStep;
+    }
+
+    public void setmUserStep(int mUserStep) {
+        this.mUserStep = mUserStep;
     }
 }
