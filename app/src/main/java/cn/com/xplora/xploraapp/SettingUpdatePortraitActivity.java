@@ -13,6 +13,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -98,11 +100,12 @@ public class SettingUpdatePortraitActivity  extends Activity implements UploadUt
         });
         Intent intent = getIntent();
         String actionType = intent.getStringExtra("actionType");
-        if("capture".equalsIgnoreCase(actionType)){
-            startCapture();
-        }else{
-            startAlbum();
-        }
+
+            if ("capture".equalsIgnoreCase(actionType)) {
+                startCapture();
+            } else {
+                startAlbum();
+            }
     }
 
     @Override
@@ -311,6 +314,7 @@ public class SettingUpdatePortraitActivity  extends Activity implements UploadUt
             Intent intent = new Intent(SettingUpdatePortraitActivity.this,MainActivity.class);
             intent.putExtra("DESTINY_FRAGMENT","SETTING");
             startActivity(intent);
+            finish();
         }else{
             Toast.makeText(SettingUpdatePortraitActivity.this,apiResult.getErrorMsg(),Toast.LENGTH_LONG);
 
