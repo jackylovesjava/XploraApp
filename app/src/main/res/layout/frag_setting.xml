@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_color"
+    android:id="@+id/setting_main"
     >
 
     <include layout="@layout/frag_title" />

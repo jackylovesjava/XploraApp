@@ -24,7 +24,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -47,7 +48,9 @@
         <activity android:name=".SettingEditUsernameActivity" />
         <activity android:name=".SettingEditMobileActivity" />
         <activity android:name=".SettingUpdateHobbyActivity" />
-        <activity android:name=".SettingUpdateCityActivity"></activity>
+        <activity android:name=".SettingUpdateCityActivity" />
+        <activity android:name=".SettingUpdatePortraitActivity"></activity>
+        <activity android:name=".camera.ClipImageActivity"></activity>
     </application>
 
 </manifest>

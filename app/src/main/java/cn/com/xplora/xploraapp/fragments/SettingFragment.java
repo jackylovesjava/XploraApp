@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -21,11 +23,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import org.w3c.dom.Text;
 
 import cn.com.xplora.xploraapp.LoginActivity;
+import cn.com.xplora.xploraapp.MainActivity;
 import cn.com.xplora.xploraapp.R;
 import cn.com.xplora.xploraapp.SettingEditMobileActivity;
 import cn.com.xplora.xploraapp.SettingEditUsernameActivity;
 import cn.com.xplora.xploraapp.SettingUpdateCityActivity;
 import cn.com.xplora.xploraapp.SettingUpdateHobbyActivity;
+import cn.com.xplora.xploraapp.SettingUpdatePortraitActivity;
+import cn.com.xplora.xploraapp.customUI.SelectPicPopupWindow;
 import cn.com.xplora.xploraapp.model.UserModel;
 import cn.com.xplora.xploraapp.utils.CommonUtil;
 
@@ -46,7 +51,8 @@ public class SettingFragment extends BaseFragment {
 	private Button mCheckUpdateBtn;
 	private TextView mOrderTermsTV;
 	private ImageView mOrderTermsIV;
-
+	private SelectPicPopupWindow menuWindow;
+	private View settingMainView;
 	public Context getmContext() {
 		return mContext;
 	}
@@ -151,8 +157,39 @@ public class SettingFragment extends BaseFragment {
 				goToEdit(SettingUpdateCityActivity.class);
 			}
 		});
+		mUserImageIV.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//实例化SelectPicPopupWindow
+				menuWindow = new SelectPicPopupWindow((getActivity()), itemsOnClick);
+				//显示窗口
+				menuWindow.showAtLocation(settingMainView,Gravity.BOTTOM| Gravity.CENTER_HORIZONTAL, 0, 0); //设置layout在PopupWindow中显示的位置
+			}
+		});
 	}
+	private View.OnClickListener itemsOnClick = new View.OnClickListener(){
 
+		public void onClick(View v) {
+			menuWindow.dismiss();
+			switch (v.getId()) {
+				case R.id.btn_take_photo:
+					Intent goToTakePhoto = new Intent(mContext, SettingUpdatePortraitActivity.class);
+					goToTakePhoto.putExtra("actionType","capture");
+					getActivity().startActivity(goToTakePhoto);
+					break;
+				case R.id.btn_pick_photo:
+					Intent goToPickPhoto = new Intent(mContext, SettingUpdatePortraitActivity.class);
+					goToPickPhoto.putExtra("actionType","pick");
+					getActivity().startActivity(goToPickPhoto);
+					break;
+				default:
+					break;
+			}
+
+
+		}
+
+	};
 	@Override
 	public View initView(LayoutInflater inflater) {
 		View root = inflater.inflate(R.layout.frag_setting, null);
@@ -175,7 +212,7 @@ public class SettingFragment extends BaseFragment {
 		mCheckUpdateBtn = (Button)root.findViewById(R.id.btn_check_update);
 		mOrderTermsTV = (TextView)root.findViewById(R.id.setting_order_terms);
 		mOrderTermsIV = (ImageView)root.findViewById(R.id.iv_setting_order_terms);
-
+		settingMainView = getActivity().findViewById(R.id.content_frame);
 		return root;
 	}
 

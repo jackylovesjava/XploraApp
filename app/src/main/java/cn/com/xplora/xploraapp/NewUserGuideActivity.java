@@ -230,6 +230,5 @@ public class NewUserGuideActivity extends FragmentActivity implements DoAfterRes
     public void doAfterExplore() {
         Intent intent = new Intent(NewUserGuideActivity.this,MainActivity.class);
         startActivity(intent);
-        this.finish();
     }
 }
