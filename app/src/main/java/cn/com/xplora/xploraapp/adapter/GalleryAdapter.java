@@ -245,13 +245,6 @@ public class GalleryAdapter extends
         @Override
         protected BaseResult doInBackground(Integer... params) {
             // Simulates a background job.
-            try {
-
-                Thread.sleep(1000);
-
-            }catch (Exception ex){
-                ex.printStackTrace();;
-            }
             HashMap map = new HashMap();
 
             int followToTrendsetterPosition = params[0];

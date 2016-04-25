@@ -52,6 +52,7 @@ public class UserDAO{
 
         SQLiteDatabase db =  dbHelper.getWritableDatabase();
         db.insert("user",null,cValue);
+        db.close();
     }
 
     public UserModel getLastLoginUser(){
@@ -156,6 +157,7 @@ public class UserDAO{
 
         SQLiteDatabase db =  dbHelper.getWritableDatabase();
         db.update("user", cValue, "uuidInBack=?", new String[]{String.valueOf(user.getUuidInBack())});
+        db.close();
     }
 
     public static void main(String[]args){

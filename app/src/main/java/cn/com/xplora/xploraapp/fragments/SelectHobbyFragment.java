@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,8 @@ import cn.com.xplora.xploraapp.json.ActiveHobbysResult;
 import cn.com.xplora.xploraapp.json.ActiveHobbysResultJsonResolver;
 import cn.com.xplora.xploraapp.json.BaseJsonResolver;
 import cn.com.xplora.xploraapp.json.BaseResult;
+import cn.com.xplora.xploraapp.json.UserHobbysResult;
+import cn.com.xplora.xploraapp.json.UserHobbysResultJsonResolver;
 import cn.com.xplora.xploraapp.model.HobbyModel;
 import cn.com.xplora.xploraapp.model.UserModel;
 import cn.com.xplora.xploraapp.utils.CommonUtil;
@@ -156,6 +159,20 @@ public class SelectHobbyFragment extends Fragment{
                 new UpdateHobbyTask().execute();
             }
         });
+
+        String originalHobbyIds = mCurrentUser.getHobbyIds();
+        if(!TextUtils.isEmpty(originalHobbyIds)){
+            String[] originalHobbyArray = originalHobbyIds.split("-");
+            for(int i =0;i<originalHobbyArray.length;i++){
+                String hobbyIdStr = originalHobbyArray[i];
+                if(!TextUtils.isEmpty(hobbyIdStr)) {
+                    int hobbyIdIntValue = Integer.valueOf(hobbyIdStr);
+                    HobbyModel hobbyModel = new HobbyModel();
+                    hobbyModel.setUuidInBack(hobbyIdIntValue);
+                    selectedHobbyList.add(hobbyModel);
+                }
+            }
+        }
         return view;
     }
 
@@ -187,7 +204,7 @@ public class SelectHobbyFragment extends Fragment{
     }
 
 
-    private class UpdateHobbyTask extends AsyncTask<Void, Void, BaseResult> {
+    private class UpdateHobbyTask extends AsyncTask<Void, Void, UserHobbysResult> {
 
         @Override
         protected void onPreExecute() {
@@ -196,16 +213,9 @@ public class SelectHobbyFragment extends Fragment{
         }
 
         @Override
-        protected BaseResult doInBackground(Void... params) {
+        protected UserHobbysResult doInBackground(Void... params) {
             // Simulates a background job.
-
             StringBuffer hobbyIDsSb = new StringBuffer();
-            for(int i = 0;i<hobbyList.size();i++){
-                HobbyModel hobbyModel = hobbyList.get(i);
-                if(hobbyModel.getSelected()==1){
-                    selectedHobbyList.add(hobbyModel);
-                }
-            }
             for(int i = 0;i<selectedHobbyList.size();i++){
                 HobbyModel hobbyModel = selectedHobbyList.get(i);
                 hobbyIDsSb.append(hobbyModel.getUuidInBack());
@@ -215,43 +225,42 @@ public class SelectHobbyFragment extends Fragment{
             }
             HttpUtil http = new HttpUtil("http://120.76.98.160:8080/admin/api/hobby/updateUserHobbys");
             String result = http.doGet("userId=" + mUserId + "&hobbys=" + hobbyIDsSb.toString());
-            BaseResult updateHobbyResult = BaseJsonResolver.parseSimpleResult(result);
+            UserHobbysResult updateHobbyResult = UserHobbysResultJsonResolver.parse(result);
             return updateHobbyResult;
         }
 
         @Override
-        protected void onPostExecute(BaseResult result) {
+        protected void onPostExecute(UserHobbysResult result) {
             super.onPostExecute(result);
+            List<HobbyModel> userHobbyList = result.getHobbyList();
             mLoadingDialog.hide();
             StringBuffer hobbyEnSB = new StringBuffer();
             StringBuffer hobbySB = new StringBuffer();
             StringBuffer hobbyIdsSB = new StringBuffer();
-            if(selectedHobbyList!=null&&selectedHobbyList.size()>0){
-                for(int i = 0;i<selectedHobbyList.size();i++){
-                    HobbyModel hobbyModel = selectedHobbyList.get(i);
-                        if(i>4){
-                            hobbyEnSB.append("...and "+(selectedHobbyList.size()-5)+" more");
-                            hobbySB.append("...等"+selectedHobbyList.size()+"项");
-                            break;
-                        }
-                        hobbyEnSB.append("#");
-                        hobbyEnSB.append(hobbyModel.getHobbyNameEn());
 
-                        hobbySB.append("#");
-                        hobbySB.append(hobbyModel.getHobbyName());
+            if(userHobbyList!=null&&userHobbyList.size()>0){
+                for(int i = 0;i<userHobbyList.size();i++){
+                    HobbyModel hobbyModel = userHobbyList.get(i);
+                    if(i>4){
+                        hobbyEnSB.append("...and "+(userHobbyList.size()-5)+" more");
+                        hobbySB.append("...等"+userHobbyList.size()+"项");
+                        break;
                     }
+                    hobbyEnSB.append("#");
+                    hobbyEnSB.append(hobbyModel.getHobbyNameEn());
 
-
+                    hobbySB.append("#");
+                    hobbySB.append(hobbyModel.getHobbyName());
+                }
+            }
+            for(int i = 0;i<userHobbyList.size();i++){
+                HobbyModel hobbyModel = userHobbyList.get(i);
+                hobbyIdsSB.append(hobbyModel.getUuidInBack());
+                if(i<userHobbyList.size()-1) {
+                    hobbyIdsSB.append("-");
                 }
 
-                for(int i = 0;i<selectedHobbyList.size();i++){
-                    HobbyModel hobbyModel = selectedHobbyList.get(i);
-                    hobbyIdsSB.append(hobbyModel.getUuidInBack());
-                    if(i<selectedHobbyList.size()-1) {
-                        hobbyIdsSB.append("-");
-                    }
-
-                }
+            }
             mCurrentUser.setHobbyEn(hobbyEnSB.toString());
             mCurrentUser.setHobby(hobbySB.toString());
             mCurrentUser.setHobbyIds(hobbyIdsSB.toString());
@@ -328,12 +337,14 @@ public class SelectHobbyFragment extends Fragment{
                             hobbyItemFrame.setSelected(false);
                             hobbyModel.setSelected(0);
                             hobbyItemCheck.setVisibility(View.GONE);
+                            selectedHobbyList.remove(hobbyModel);
                         }else{
                             Drawable selectedForeground = ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.selector_hobby_item_selected, null);
                             hobbyItemFrame.setForeground(selectedForeground);
                             hobbyItemFrame.setSelected(true);
                             hobbyModel.setSelected(1);
                             hobbyItemCheck.setVisibility(View.VISIBLE);
+                            selectedHobbyList.add(hobbyModel);
                         }
                     }
                 });
@@ -348,5 +359,11 @@ public class SelectHobbyFragment extends Fragment{
 
     public void setHobbyList(List<HobbyModel> hobbyList) {
         this.hobbyList = hobbyList;
+    }
+
+    public static void main(String[] args){
+        String aaa = "1-2";
+        String[] bbb = aaa.split("-");
+        System.out.println(bbb[1]);
     }
 }

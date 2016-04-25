@@ -35,6 +35,7 @@ public class CityDAO {
 
         SQLiteDatabase db =  dbHelper.getWritableDatabase();
         db.insert("city", null, cValue);
+        db.close();
     }
 
     public CityModel getByUuidInBack(int uuidInBack){
@@ -50,6 +51,9 @@ public class CityDAO {
             city.setImageUrl(cursor.getString(cursor.getColumnIndex("imageUrl")));
             city.setImageName(cursor.getString(cursor.getColumnIndex("imageName")));
             city.setUuidInBack(uuidInBack);
+            cursor.close();
+
+            db.close();
         }
         return city;
     }
@@ -64,10 +68,12 @@ public class CityDAO {
 
         SQLiteDatabase db =  dbHelper.getWritableDatabase();
         db.update("user", cValue, "uuid=?", new String[]{String.valueOf(city.getUuid())});
+        db.close();
     }
 
     public void deleteByUuidInBack(int uuidInBack){
         SQLiteDatabase db =  dbHelper.getWritableDatabase();
         db.delete("city","uuidInBack=?",new String[]{String.valueOf(uuidInBack)});
+        db.close();
     }
 }
