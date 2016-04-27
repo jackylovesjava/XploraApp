@@ -172,7 +172,7 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * 监听Back键按下事件,方法1:
+	 * 监听Back键按下事�?,方法1:
 	 * 注意:
 	 * super.onBackPressed()会自动调用finish()方法,关闭
 	 * 当前Activity.
@@ -181,14 +181,14 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 	@Override
 	public void onBackPressed() {
 		cancelClip();
-		System.out.println("按下了back键 onBackPressed()");
+		System.out.println("按下了back�? onBackPressed()");
 	}
 	/**
-	 * 监听Back键按下事件,方法2:
+	 * 监听Back键按下事�?,方法2:
 	 * 注意:
-	 * 返回值表示:是否能完全处理该事件
-	 * 在此处返回false,所以会继续传播该事件.
-	 * 在具体项目中此处的返回值视情况而定.
+	 * 返回值表�?:是否能完全处理该事件
+	 * 在此处返回false,�?以会继续传播该事�?.
+	 * 在具体项目中此处的返回�?�视情况而定.
 	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -206,5 +206,6 @@ public class ClipImageActivity extends Activity implements OnClickListener {
 		Intent goBackToSetting = new Intent(ClipImageActivity.this, MainActivity.class);
 		goBackToSetting.putExtra("DESTINY_FRAGMENT","SETTING");
 		startActivity(goBackToSetting);
+		finish();
 	}
 }

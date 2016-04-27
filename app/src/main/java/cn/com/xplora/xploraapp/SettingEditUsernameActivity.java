@@ -102,6 +102,7 @@ public class SettingEditUsernameActivity extends Activity implements DoAfterResu
         Intent intent = new Intent(SettingEditUsernameActivity.this,MainActivity.class);
         intent.putExtra("DESTINY_FRAGMENT","SETTING");
         startActivity(intent);
+        finish();
 
     }
 

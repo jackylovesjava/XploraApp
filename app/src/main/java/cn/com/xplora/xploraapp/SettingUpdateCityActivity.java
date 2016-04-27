@@ -107,5 +107,6 @@ public class SettingUpdateCityActivity extends FragmentActivity implements DoAft
         Intent intent = new Intent(SettingUpdateCityActivity.this,MainActivity.class);
         intent.putExtra("DESTINY_FRAGMENT","SETTING");
         startActivity(intent);
+        finish();
     }
 }

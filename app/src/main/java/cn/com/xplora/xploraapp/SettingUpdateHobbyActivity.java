@@ -107,5 +107,6 @@ public class SettingUpdateHobbyActivity extends FragmentActivity implements DoAf
         Intent intent = new Intent(SettingUpdateHobbyActivity.this,MainActivity.class);
         intent.putExtra("DESTINY_FRAGMENT","SETTING");
         startActivity(intent);
+        finish();
     }
 }
