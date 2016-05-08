@@ -34,7 +34,7 @@ public class ClipZoomImageView extends ImageView implements
 	/**
 	 * 初始化时的缩放比例，如果图片宽或高大于屏幕，此将小
 	 */
-	private float initScale = 1.0f;
+	private float initScale = 0.5f;
 	private boolean once = true;
 
 	/**

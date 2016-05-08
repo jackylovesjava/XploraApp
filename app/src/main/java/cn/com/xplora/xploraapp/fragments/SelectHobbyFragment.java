@@ -265,7 +265,7 @@ public class SelectHobbyFragment extends Fragment{
             mCurrentUser.setHobby(hobbySB.toString());
             mCurrentUser.setHobbyIds(hobbyIdsSB.toString());
 
-            XploraDBHelper dbHelper = new XploraDBHelper(mContext,"XPLORA");
+            XploraDBHelper dbHelper = new XploraDBHelper(getActivity().getApplicationContext(),"XPLORA");
             UserDAO userDAO = new UserDAO(dbHelper);
 
             userDAO.updateUser(mCurrentUser);

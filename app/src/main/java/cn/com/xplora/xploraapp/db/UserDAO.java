@@ -157,6 +157,7 @@ public class UserDAO{
 
         SQLiteDatabase db =  dbHelper.getWritableDatabase();
         db.update("user", cValue, "uuidInBack=?", new String[]{String.valueOf(user.getUuidInBack())});
+
         db.close();
     }
 
