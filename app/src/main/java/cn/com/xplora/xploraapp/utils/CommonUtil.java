@@ -1,6 +1,7 @@
 package cn.com.xplora.xploraapp.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -18,6 +19,7 @@ import cn.com.xplora.xploraapp.model.UserModel;
  * Created by yckj on 2016/4/14.
  */
 public class CommonUtil {
+
     /**
      * 得到当前系统语言
      * ENG：英文
@@ -56,5 +58,26 @@ public class CommonUtil {
         }else{
             return null;
         }
+    }
+
+    public static SharedPreferences.Editor getSharedPreferenceEditor(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(IConstant.COMMON_PREFERENCE_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        return editor;
+    }
+
+
+    public static String getSharedPreferencesStringValue(Context context,String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(IConstant.COMMON_PREFERENCE_FILE, Context.MODE_PRIVATE);
+
+        String value = sharedPreferences.getString(key, "");
+        return value;
+    }
+
+    public static Integer getSharedPreferencesIntValue(Context context,String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(IConstant.COMMON_PREFERENCE_FILE, Context.MODE_PRIVATE);
+
+        Integer value = sharedPreferences.getInt(key, 0);
+        return value;
     }
 }

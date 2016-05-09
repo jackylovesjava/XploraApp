@@ -3,6 +3,7 @@ package cn.com.xplora.xploraapp.fragments;
 /**
  * Created by jackylovesjava on 16/4/16.
  */
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -39,6 +40,7 @@ import cn.com.xplora.xploraapp.model.HobbyModel;
 import cn.com.xplora.xploraapp.model.UserModel;
 import cn.com.xplora.xploraapp.utils.CommonUtil;
 import cn.com.xplora.xploraapp.utils.HttpUtil;
+import cn.com.xplora.xploraapp.utils.IConstant;
 
 /**
  * Created by lt on 2015/12/14.
@@ -174,6 +176,12 @@ public class SelectCityFragment extends Fragment{
             UserDAO userDAO = new UserDAO(dbHelper);
 
             userDAO.updateUser(mCurrentUser);
+
+            SharedPreferences.Editor editor = CommonUtil.getSharedPreferenceEditor(getActivity());
+            editor.putInt(IConstant.SHARE_PREFERENCE_KEY_LOCATECITY_UUID,mSelectedCity.getUuidInBack());
+            editor.putString(IConstant.SHARE_PREFERENCE_KEY_LOCATECITY_NAME, mSelectedCity.getCityName());
+            editor.putString(IConstant.SHARE_PREFERENCE_KEY_LOCATECITY_NAME_EN,mSelectedCity.getCityNameEn());
+            editor.commit();
 
             ((DoAfterSelectCity)getActivity()).doAfterSelectCity();
         }

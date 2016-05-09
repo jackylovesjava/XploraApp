@@ -9,10 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import cn.com.xplora.xploraapp.fragments.BaseFragment;
+import cn.com.xplora.xploraapp.model.CityModel;
 import cn.com.xplora.xploraapp.utils.AbDialogUtil;
+import cn.com.xplora.xploraapp.utils.CommonUtil;
+import cn.com.xplora.xploraapp.utils.IConstant;
 import cn.com.xplora.xploraapp.wheel.AbNumericWheelAdapter;
 import cn.com.xplora.xploraapp.wheel.AbWheelUtil;
 import cn.com.xplora.xploraapp.wheel.AbWheelView;
@@ -25,8 +29,9 @@ public class HomeFragment extends BaseFragment {
 	private View mDateWheelView;
 	private View mDistrictWheelView;
 	private View mHobbyWheelView;
-
+	private CityModel mLocateCityModel;
 	private LayoutInflater mInflater;
+	private TextView mPageTitleTV;
 	@Override
 	protected View initView(LayoutInflater inflater) {
 		// TODO Auto-generated method stub
@@ -37,13 +42,29 @@ public class HomeFragment extends BaseFragment {
 		mDistrictFilterIV = (ImageView)root.findViewById(R.id.iv_district_filter);
 		mHobbyFilterIV = (ImageView)root.findViewById(R.id.iv_hobby_filter);
 		mInflater = inflater;
-
+		mPageTitleTV = (TextView)root.findViewById(R.id.tv_load_course);
 		return root;
 	}
 
 	@Override
 	protected void initData(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		//初始化当前城市数据
+		mLocateCityModel = new CityModel();
+		int cityId = CommonUtil.getSharedPreferencesIntValue(getActivity(), IConstant.SHARE_PREFERENCE_KEY_LOCATECITY_UUID);
+		String cityName = CommonUtil.getSharedPreferencesStringValue(getActivity(), IConstant.SHARE_PREFERENCE_KEY_LOCATECITY_NAME);
+		String cityNameEn = CommonUtil.getSharedPreferencesStringValue(getActivity(), IConstant.SHARE_PREFERENCE_KEY_LOCATECITY_NAME_EN);
+		mLocateCityModel.setCityName(cityName);
+		mLocateCityModel.setCityNameEn(cityNameEn);
+		mLocateCityModel.setUuidInBack(cityId);
+
+		//根据语言，设置标题栏文本
+		if("CHN".equalsIgnoreCase(CommonUtil.getLang(getActivity()))){
+			mPageTitleTV.setText(getResources().getString(R.string.title_start_event)+cityName);
+		}else{
+			mPageTitleTV.setText(getResources().getString(R.string.title_start_event)+cityNameEn);
+
+		}
 
 	}
 
