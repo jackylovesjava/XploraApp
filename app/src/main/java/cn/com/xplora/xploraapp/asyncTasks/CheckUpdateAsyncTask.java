@@ -15,7 +15,7 @@ import cn.com.xplora.xploraapp.utils.HttpUtil;
 public class CheckUpdateAsyncTask extends AsyncTask {
 
     private String TAG = "XPLORA";
-    private String apiUrl = "http://120.76.98.160:8080/admin/api/city/activeCities";
+    private String apiUrl = "http://www.xplora.com.cn/admin/api/city/activeCities";
 
     private Context context;
     public CheckUpdateAsyncTask(Context context){

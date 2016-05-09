@@ -20,7 +20,7 @@ import cn.com.xplora.xploraapp.utils.IConstant;
 public class ActiveHobbysAsyncTask extends AsyncTask {
 
     private String TAG = "XPLORA";
-    private String apiUrl = "http://120.76.98.160:8080/admin/api/hobby/activeHobbys";
+    private String apiUrl = "http://www.xplora.com.cn/admin/api/hobby/activeHobbys";
     private int mCurrentPage=1;
     private int mPageSize=10;
     private int mUserId = 0;

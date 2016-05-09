@@ -181,7 +181,7 @@ public class SelectHobbyFragment extends Fragment{
         @Override
         protected ActiveHobbysResult doInBackground(Void... params) {
             // Simulates a background job.
-                HttpUtil http = new HttpUtil("http://120.76.98.160:8080/admin/api/hobby/activeHobbys");
+                HttpUtil http = new HttpUtil("http://www.xplora.com.cn/admin/api/hobby/activeHobbys");
                 String result = http.doGet("userId=" + mUserId + "&nowPage=" + (mCurrentPage+1) + "&pageShow=" + mPageSize);
                 ActiveHobbysResult activeHobbysResult = ActiveHobbysResultJsonResolver.parse(result);
                 return activeHobbysResult;
@@ -223,7 +223,7 @@ public class SelectHobbyFragment extends Fragment{
                     hobbyIDsSb.append("-");
                 }
             }
-            HttpUtil http = new HttpUtil("http://120.76.98.160:8080/admin/api/hobby/updateUserHobbys");
+            HttpUtil http = new HttpUtil("http://www.xplora.com.cn/admin/api/hobby/updateUserHobbys");
             String result = http.doGet("userId=" + mUserId + "&hobbys=" + hobbyIDsSb.toString());
             UserHobbysResult updateHobbyResult = UserHobbysResultJsonResolver.parse(result);
             return updateHobbyResult;

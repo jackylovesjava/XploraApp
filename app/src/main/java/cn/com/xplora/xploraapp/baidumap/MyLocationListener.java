@@ -82,9 +82,7 @@ public class MyLocationListener implements BDLocationListener {
             }
         }
         Log.i("BaiduLocationApiDem", sb.toString());
-        if(location.getLocType()==161){//定位成功，返回
-            mAct.doAfterLocation(location);
-        }
+        mAct.doAfterLocation(location);
 
 
     }

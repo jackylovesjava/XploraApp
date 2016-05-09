@@ -19,7 +19,7 @@ import cn.com.xplora.xploraapp.utils.IConstant;
 public class TrendsetterPageAsyncTask extends AsyncTask {
 
     private String TAG = "XPLORA";
-    private String apiUrl = "http://120.76.98.160:8080/admin/api/people/trendsetterPage";
+    private String apiUrl = "http://www.xplora.com.cn/admin/api/people/trendsetterPage";
 
     private Context context;
     private int mCurrentPage=1;

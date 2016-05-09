@@ -157,7 +157,7 @@ public class SelectCityFragment extends Fragment{
 
             String lang = CommonUtil.getLang(getActivity());
 
-            HttpUtil http = new HttpUtil("http://120.76.98.160:8080/admin/api/profile/modify_city");
+            HttpUtil http = new HttpUtil("http://www.xplora.com.cn/admin/api/profile/modify_city");
             String result = http.doGet("userId=" + mCurrentUser.getUuidInBack() + "&cityId=" + mSelectedCity.getUuidInBack()+"&lang="+lang);
             BaseResult apiResult = BaseJsonResolver.parseSimpleResult(result);
             return apiResult;

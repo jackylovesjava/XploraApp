@@ -80,7 +80,15 @@
                 android:layout_gravity="center"
                 />
         </LinearLayout>
-
+        <com.handmark.pulltorefresh.library.extras.recyclerview.PullToRefreshRecyclerView
+            android:layout_below="@id/filter_topbar"
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/pull_refresh_event"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ptr:ptrDrawable="@drawable/android"
+            ptr:ptrMode="both"
+            />
     </RelativeLayout>
 
 </FrameLayout>

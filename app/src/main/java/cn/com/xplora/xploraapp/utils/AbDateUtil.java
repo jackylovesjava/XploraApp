@@ -625,7 +625,13 @@ public class AbDateUtil {
      * @param args the arguments
      */
     public static void main(String[] args) {
-		System.out.println(formatDateStr2Desc("2012-3-2 12:2:20","MM月dd日  HH:mm"));
+		System.out.println(getYear(new Date()));
 	}
 
+	public static int getYear(Date date){
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		int year = calendar.get(Calendar.YEAR);
+		return year;
+	}
 }

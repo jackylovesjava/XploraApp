@@ -20,7 +20,7 @@ import cn.com.xplora.xploraapp.utils.IConstant;
 public class LoginAsyncTask extends AsyncTask {
 
     private String TAG = "XPLORA";
-    private String apiUrl = "http://120.76.98.160:8080/admin/api/login/doLogin";
+    private String apiUrl = "http://www.xplora.com.cn/admin/api/login/doLogin";
 
     private Context context;
     private String mobile;

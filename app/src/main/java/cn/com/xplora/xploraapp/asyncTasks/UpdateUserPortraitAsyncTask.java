@@ -26,7 +26,7 @@ import cn.com.xplora.xploraapp.utils.IConstant;
 public class UpdateUserPortraitAsyncTask extends AsyncTask {
 
     private String TAG = "XPLORA";
-    private String apiUrl = "http://120.76.98.160:8080/admin/api/profile/modify_portrait";
+    private String apiUrl = "http://www.xplora.com.cn/admin/api/profile/modify_portrait";
 
     private Context context;
     private String imageName;
