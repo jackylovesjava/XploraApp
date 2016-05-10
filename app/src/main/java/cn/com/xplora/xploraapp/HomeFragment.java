@@ -203,6 +203,7 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 		mHobbyFilterIV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				initWheelHobby();
 				AbDialogUtil.showDialog(mHobbyWheelView, Gravity.BOTTOM);
 			}
 		});
@@ -223,7 +224,48 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 
 	}
 
+	public void initWheelHobby(){
+		final AbWheelView mWheelView1 = (AbWheelView)mHobbyWheelView.findViewById(R.id.wheelView1);
+		int length = 1;
+		if(hobbyListForWheel.size()>=3){
+			length = 3;
+		}else{
+			length = hobbyListForWheel.size();
+		}
+		mWheelView1.setAdapter(new AbHobbyWheelAdapter(getActivity(),hobbyListForWheel,length));
+		// 可循环滚动
+		mWheelView1.setCyclic(true);
+		// 添加文字
+		//	mWheelView1.setLabel(getResources().getString(R.string.data1_unit));
+		// 初始化时显示的数据
+		mWheelView1.setCurrentItem(40);
+		mWheelView1.setValueTextSize(35);
+		mWheelView1.setLabelTextSize(35);
+		mWheelView1.setLabelTextColor(0x80000000);
+		mWheelView1.setCenterSelectDrawable(this.getResources().getDrawable(R.drawable.wheel_select));
 
+		Button okBtn = (Button)mHobbyWheelView.findViewById(R.id.okBtn);
+		Button cancelBtn = (Button)mHobbyWheelView.findViewById(R.id.cancelBtn);
+		okBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				AbDialogUtil.removeDialog(v.getContext());
+				int index = mWheelView1.getCurrentItem();
+				String val = mWheelView1.getAdapter().getItem(index);
+			}
+
+		});
+
+		cancelBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				AbDialogUtil.removeDialog(v.getContext());
+			}
+
+		});
+	}
 	class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 		private List<EventModel> eventList = new ArrayList<EventModel>();
 
@@ -425,46 +467,7 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 
 			HobbyFilterResult apiResult = (HobbyFilterResult)result;
 			hobbyListForWheel = apiResult.getHobbyList();
-			final AbWheelView mWheelView1 = (AbWheelView)mHobbyWheelView.findViewById(R.id.wheelView1);
-			int length = 1;
-			if(hobbyListForWheel.size()>=3){
-				length = 3;
-			}else{
-				length = hobbyListForWheel.size();
-			}
-			mWheelView1.setAdapter(new AbHobbyWheelAdapter(getActivity(),hobbyListForWheel,length));
-			// 可循环滚动
-			mWheelView1.setCyclic(true);
-			// 添加文字
-			//	mWheelView1.setLabel(getResources().getString(R.string.data1_unit));
-			// 初始化时显示的数据
-			mWheelView1.setCurrentItem(40);
-			mWheelView1.setValueTextSize(35);
-			mWheelView1.setLabelTextSize(35);
-			mWheelView1.setLabelTextColor(0x80000000);
-			mWheelView1.setCenterSelectDrawable(this.getResources().getDrawable(R.drawable.wheel_select));
 
-			Button okBtn = (Button)mHobbyWheelView.findViewById(R.id.okBtn);
-			Button cancelBtn = (Button)mHobbyWheelView.findViewById(R.id.cancelBtn);
-			okBtn.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					AbDialogUtil.removeDialog(v.getContext());
-					int index = mWheelView1.getCurrentItem();
-					String val = mWheelView1.getAdapter().getItem(index);
-				}
-
-			});
-
-			cancelBtn.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					AbDialogUtil.removeDialog(v.getContext());
-				}
-
-			});
 
 		}
 
