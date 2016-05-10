@@ -13,6 +13,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -36,6 +37,8 @@ import cn.com.xplora.xploraapp.asyncTasks.FetchEventListAsyncTask;
 import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
 import cn.com.xplora.xploraapp.customUI.JingDongHeaderLayout;
 import cn.com.xplora.xploraapp.customUI.SpaceItemDecoration;
+import cn.com.xplora.xploraapp.customUI.likeanimation.LikeButtonView;
+import cn.com.xplora.xploraapp.customUI.likeanimation.SmallLikeButtonView;
 import cn.com.xplora.xploraapp.fragments.BaseFragment;
 import cn.com.xplora.xploraapp.json.ActiveHobbysResult;
 import cn.com.xplora.xploraapp.json.ActiveHobbysResultJsonResolver;
@@ -275,8 +278,8 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 		}
 
 		@Override
-		public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-			EventModel eventModel = eventList.get(position);
+		public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+			final EventModel eventModel = eventList.get(position);
 			((MyViewHolder) holder).eventModel = eventModel;
 			ImageLoader imageLoader = CommonUtil.getImageLoader(getActivity());
 			DisplayImageOptions displayImageOptions = CommonUtil.getDefaultImageLoadOption();
@@ -302,6 +305,56 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 
 				}
 			}
+			if(eventModel.getPrice()>0){
+				if("CHN".equalsIgnoreCase(CommonUtil.getLang(getActivity()))) {
+					((MyViewHolder) holder).eventPriceTV.setText(eventModel.getPrice()+"元/人");
+				}else{
+					((MyViewHolder) holder).eventPriceTV.setText("CNY "+eventModel.getPrice());
+				}
+
+
+			}else{//免费
+				if("CHN".equalsIgnoreCase(CommonUtil.getLang(getActivity()))) {
+					((MyViewHolder) holder).eventPriceTV.setText("免费");
+				}else{
+					((MyViewHolder) holder).eventPriceTV.setText("FREE");
+				}
+			}
+			if(eventModel.getLikeCount()>0){
+				((MyViewHolder) holder).eventLikeSBV.setLikeCount(eventModel.getLikeCount());
+			}
+			((MyViewHolder) holder).eventLikeSBV.setRelateId(eventModel.getUuidInBack());
+			((MyViewHolder) holder).eventCoverIV.setOnTouchListener(new View.OnTouchListener() {
+				int count;
+				long firClick,secClick;
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					if(MotionEvent.ACTION_DOWN == event.getAction()){
+						count++;
+						if(count == 1){
+							firClick = System.currentTimeMillis();
+
+						} else if (count == 2){
+							secClick = System.currentTimeMillis();
+							if(secClick - firClick < 800){
+								//双击事件
+								UserModel currentUser = CommonUtil.getCurrentUser(getActivity());
+								if(currentUser!=null&&currentUser.getUuidInBack()>0) {//登录才会显示like动画
+									((MyViewHolder) holder).eventLikeLBV.setVisibility(View.VISIBLE);
+									((MyViewHolder) holder).eventLikeLBV.startAnimation();
+									((MyViewHolder) holder).eventLikeSBV.setLikeCount(eventModel.getLikeCount() + 1);
+									((MyViewHolder) holder).eventLikeSBV.setChecked(true);
+								}
+							}
+							count = 0;
+							firClick = 0;
+							secClick = 0;
+
+						}
+					}
+					return true;
+				}
+			});
 		}
 
 		class MyViewHolder extends RecyclerView.ViewHolder {
@@ -318,7 +371,9 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 			ImageView attendee3IV;
 			ImageView attendee4IV;
 			TextView attendeeCountTV;
-
+			TextView eventPriceTV;
+			LikeButtonView eventLikeLBV;
+			SmallLikeButtonView eventLikeSBV;
 			public MyViewHolder(View view) {
 				super(view);
 				eventCoverIV = (ImageView) view.findViewById(R.id.iv_event_cover);
@@ -336,9 +391,10 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 				attendeeImageList.add(attendee3IV);
 				attendeeImageList.add(attendee4IV);
 				attendeeCountTV = (TextView)view.findViewById(R.id.tv_event_attendeeCount);
-
-
-
+				eventPriceTV = (TextView)view.findViewById(R.id.tv_event_price);
+				eventLikeLBV = (LikeButtonView)view.findViewById(R.id.lbv_event_like);
+				eventLikeLBV.setVisibility(View.GONE);
+				eventLikeSBV = (SmallLikeButtonView)view.findViewById(R.id.btn_event_like);
 			}
 		}
 

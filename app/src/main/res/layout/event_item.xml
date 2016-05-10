@@ -14,6 +14,12 @@
         android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         />
+    <cn.com.xplora.xploraapp.customUI.likeanimation.LikeButtonView
+        android:id="@+id/lbv_event_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        ></cn.com.xplora.xploraapp.customUI.likeanimation.LikeButtonView>
     <RelativeLayout
         android:id="@+id/rl_event_info"
         android:layout_below="@id/iv_event_cover"
@@ -27,10 +33,30 @@
             android:textSize="14dp"
             android:textColor="@color/black"
             android:gravity="left"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             />
+        <TextView
+            android:id="@+id/tv_event_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentTop="true"
+            android:textSize="12dp"
+            android:textColor="#cba162"
+            />
+        <cn.com.xplora.xploraapp.customUI.likeanimation.SmallLikeButtonView
+            android:id="@+id/btn_event_like"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:layout_below="@id/tv_event_price"
+            ></cn.com.xplora.xploraapp.customUI.likeanimation.SmallLikeButtonView>
         <LinearLayout
             android:id="@+id/ll_event_address_daysoff"
             android:layout_width="wrap_content"
@@ -38,14 +64,14 @@
             android:orientation="horizontal"
             android:layout_below="@id/tv_event_title"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             >
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="20dp"
-                android:src="@drawable/district_filter_selected"
+                android:src="@drawable/pin"
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
@@ -58,19 +84,14 @@
                 android:textColor="@color/black"
                 android:layout_gravity="center"
                 />
-            <View
-                android:layout_width="1dp"
-                android:layout_height="15dp"
-                android:background="@color/black_overlay"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                ></View>
+
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="20dp"
-                android:src="@drawable/tab_ties"
+                android:src="@drawable/clock"
                 android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 />
             <TextView
                 android:id="@+id/tv_event_dayoffset"
@@ -85,9 +106,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/ll_event_address_daysoff"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             >
 
             <com.github.siyamed.shapeimageview.CircularImageView

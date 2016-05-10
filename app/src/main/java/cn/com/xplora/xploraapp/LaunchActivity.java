@@ -183,7 +183,7 @@ public class LaunchActivity extends Activity implements DoAfterLocationInteface,
             editor.commit();
             Intent goToMain = new Intent(LaunchActivity.this,MainActivity.class);
             startActivity(goToMain);
-
+            finish();
         }
 
     }
