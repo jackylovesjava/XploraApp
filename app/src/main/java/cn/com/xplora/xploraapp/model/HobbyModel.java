@@ -51,4 +51,5 @@ public class HobbyModel extends BaseModel {
     public void setSelected(int selected) {
         this.selected = selected;
     }
+
 }

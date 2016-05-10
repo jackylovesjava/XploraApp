@@ -35,6 +35,7 @@ import java.util.List;
 import cn.com.xplora.xploraapp.asyncTasks.DoAfterResultInterface;
 import cn.com.xplora.xploraapp.asyncTasks.DoLikeEventAsyncTask;
 import cn.com.xplora.xploraapp.asyncTasks.FetchEventListAsyncTask;
+import cn.com.xplora.xploraapp.asyncTasks.HobbyFilterAsyncTask;
 import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
 import cn.com.xplora.xploraapp.customUI.JingDongHeaderLayout;
 import cn.com.xplora.xploraapp.customUI.SpaceItemDecoration;
@@ -45,6 +46,7 @@ import cn.com.xplora.xploraapp.json.ActiveHobbysResult;
 import cn.com.xplora.xploraapp.json.ActiveHobbysResultJsonResolver;
 import cn.com.xplora.xploraapp.json.BaseResult;
 import cn.com.xplora.xploraapp.json.FetchEventListResult;
+import cn.com.xplora.xploraapp.json.HobbyFilterResult;
 import cn.com.xplora.xploraapp.model.CityModel;
 import cn.com.xplora.xploraapp.model.EventModel;
 import cn.com.xplora.xploraapp.model.HobbyModel;
@@ -53,6 +55,7 @@ import cn.com.xplora.xploraapp.utils.AbDialogUtil;
 import cn.com.xplora.xploraapp.utils.CommonUtil;
 import cn.com.xplora.xploraapp.utils.HttpUtil;
 import cn.com.xplora.xploraapp.utils.IConstant;
+import cn.com.xplora.xploraapp.wheel.AbHobbyWheelAdapter;
 import cn.com.xplora.xploraapp.wheel.AbNumericWheelAdapter;
 import cn.com.xplora.xploraapp.wheel.AbWheelUtil;
 import cn.com.xplora.xploraapp.wheel.AbWheelView;
@@ -86,6 +89,9 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 	private int mStep;
 	private int mUserId;
 	private CustomProgressDialog mLoadingDialog;
+
+	private List<HobbyModel> hobbyListForWheel;//用于显示在轮子选择器中
+	private HobbyFilterAsyncTask mHobbyFitlerTask;
 
 	@Override
 	protected View initView(LayoutInflater inflater) {
@@ -142,6 +148,9 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 
 		mFetchDataTask.execute();
 
+		mHobbyWheelView = mInflater.inflate(R.layout.choose_one, null);
+		mHobbyFitlerTask = new HobbyFilterAsyncTask(this,mUserId);
+		mHobbyFitlerTask.execute();
 		//==================加载Loading动画=====================================
 		mLoadingDialog = new CustomProgressDialog(getActivity(),getString(R.string.loading),R.anim.loading_frame);
 		mLoadingDialog.setInverseBackgroundForced(true);
@@ -188,16 +197,13 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 			@Override
 			public void onClick(View v) {
 				mDistrictWheelView = mInflater.inflate(R.layout.choose_one, null);
-				initWheelData1(mDistrictWheelView);
-				AbDialogUtil.showDialog(mDistrictWheelView,Gravity.BOTTOM);
+				AbDialogUtil.showDialog(mDistrictWheelView, Gravity.BOTTOM);
 			}
 		});
 		mHobbyFilterIV.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mHobbyWheelView = mInflater.inflate(R.layout.choose_one, null);
-				initWheelData1(mHobbyWheelView);
-				AbDialogUtil.showDialog(mHobbyWheelView,Gravity.BOTTOM);
+				AbDialogUtil.showDialog(mHobbyWheelView, Gravity.BOTTOM);
 			}
 		});
 
@@ -217,43 +223,6 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 
 	}
 
-	public void initWheelData1(View mDataView1){
-		final AbWheelView mWheelView1 = (AbWheelView)mDataView1.findViewById(R.id.wheelView1);
-		mWheelView1.setAdapter(new AbNumericWheelAdapter(40, 190));
-		// 可循环滚动
-		mWheelView1.setCyclic(true);
-		// 添加文字
-//		mWheelView1.setLabel(getResources().getString(R.string.data1_unit));
-		// 初始化时显示的数据
-		mWheelView1.setCurrentItem(40);
-		mWheelView1.setValueTextSize(35);
-		mWheelView1.setLabelTextSize(35);
-		mWheelView1.setLabelTextColor(0x80000000);
-		mWheelView1.setCenterSelectDrawable(this.getResources().getDrawable(R.drawable.wheel_select));
-
-		Button okBtn = (Button)mDataView1.findViewById(R.id.okBtn);
-		Button cancelBtn = (Button)mDataView1.findViewById(R.id.cancelBtn);
-		okBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				AbDialogUtil.removeDialog(v.getContext());
-				int index = mWheelView1.getCurrentItem();
-				String val = mWheelView1.getAdapter().getItem(index);
-//				mDataTextView1.setText(val);
-			}
-
-		});
-
-		cancelBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				AbDialogUtil.removeDialog(v.getContext());
-			}
-
-		});
-	}
 
 	class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 		private List<EventModel> eventList = new ArrayList<EventModel>();
@@ -411,9 +380,14 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 
 	@Override
 	public void doAfterResult(BaseResult result, int taskSource) {
+
+		if(taskSource==IConstant.TASK_SOURCE_FETCHEVENTLIST){
+
 		if(mLoadingDialog!=null){
-			mLoadingDialog.hide();
-			mLoadingDialog = null;
+			if(mHobbyFitlerTask==null) {
+				mLoadingDialog.hide();
+				mLoadingDialog = null;
+			}
 		}
 		FetchEventListResult apiResult = (FetchEventListResult)result;
 		if(apiResult.isResult()){
@@ -437,6 +411,60 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 				mPullRefreshRecyclerView.onRefreshComplete();//关闭刷新事件
 			}
 
+
+		}
+		mFetchDataTask = null;
+		}else if(taskSource == IConstant.TASK_SOURCE_HOBBYFILTER){
+
+			if(mLoadingDialog!=null){
+				if(mFetchDataTask==null) {
+					mLoadingDialog.hide();
+					mLoadingDialog = null;
+				}
+			}
+
+			HobbyFilterResult apiResult = (HobbyFilterResult)result;
+			hobbyListForWheel = apiResult.getHobbyList();
+			final AbWheelView mWheelView1 = (AbWheelView)mHobbyWheelView.findViewById(R.id.wheelView1);
+			int length = 1;
+			if(hobbyListForWheel.size()>=3){
+				length = 3;
+			}else{
+				length = hobbyListForWheel.size();
+			}
+			mWheelView1.setAdapter(new AbHobbyWheelAdapter(getActivity(),hobbyListForWheel,length));
+			// 可循环滚动
+			mWheelView1.setCyclic(true);
+			// 添加文字
+			//	mWheelView1.setLabel(getResources().getString(R.string.data1_unit));
+			// 初始化时显示的数据
+			mWheelView1.setCurrentItem(40);
+			mWheelView1.setValueTextSize(35);
+			mWheelView1.setLabelTextSize(35);
+			mWheelView1.setLabelTextColor(0x80000000);
+			mWheelView1.setCenterSelectDrawable(this.getResources().getDrawable(R.drawable.wheel_select));
+
+			Button okBtn = (Button)mHobbyWheelView.findViewById(R.id.okBtn);
+			Button cancelBtn = (Button)mHobbyWheelView.findViewById(R.id.cancelBtn);
+			okBtn.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					AbDialogUtil.removeDialog(v.getContext());
+					int index = mWheelView1.getCurrentItem();
+					String val = mWheelView1.getAdapter().getItem(index);
+				}
+
+			});
+
+			cancelBtn.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					AbDialogUtil.removeDialog(v.getContext());
+				}
+
+			});
 
 		}
 

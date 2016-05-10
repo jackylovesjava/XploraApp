@@ -15,6 +15,8 @@ public interface IConstant {
     public static int TASK_SOURCE_UPDATEUSERPORTRAIT = 8;
     public static int TASK_SOURCE_LOCATECITY =9;
     public static int TASK_SOURCE_FETCHEVENTLIST =10;
+    public static int TASK_SOURCE_HOBBYFILTER =11;
+    public static int TASK_SOURCE_DISTRICTFILTER =12;
 
 
     public static String COMMON_PREFERENCE_FILE = "xplora_share";
