@@ -18,10 +18,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.xplora.xploraapp.R;
+import cn.com.xplora.xploraapp.asyncTasks.CancelLikeEventAsyncTask;
+import cn.com.xplora.xploraapp.asyncTasks.DoLikeEventAsyncTask;
+import cn.com.xplora.xploraapp.model.UserModel;
+import cn.com.xplora.xploraapp.utils.CommonUtil;
 
 /**
  * Created by Miroslaw Stanek on 20.12.2015.
@@ -36,36 +41,38 @@ public class SmallLikeButtonView extends RelativeLayout implements View.OnClickL
     @Bind(R.id.tvLikeCount)
     TextView tvLikeCount;
 
-    private boolean isChecked;
+    public boolean isChecked;
     private AnimatorSet animatorSet;
     int relateId;
     private View root;
     int likeCount;
+    private Context context;
     public void setRelateId(int relateId){
         this.relateId = relateId;
     }
     public SmallLikeButtonView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public SmallLikeButtonView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     public SmallLikeButtonView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public SmallLikeButtonView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
+        this.context = context;
         root=LayoutInflater.from(getContext()).inflate(R.layout.view_small_like_button, this, true);
         ButterKnife.bind(this);
         setOnClickListener(this);
@@ -92,6 +99,16 @@ public class SmallLikeButtonView extends RelativeLayout implements View.OnClickL
     }
     @Override
     public void onClick(View v) {
+
+        UserModel currentUser = CommonUtil.getCurrentUser(context);
+        if(currentUser==null){
+            Toast.makeText(context,getResources().getString(R.string.need_signin),Toast.LENGTH_LONG).show();
+            return;
+        }
+        int userId = currentUser.getUuidInBack();
+
+
+
         isChecked = !isChecked;
         ivStar.setImageResource(isChecked ? R.drawable.liked : R.drawable.like);
 
@@ -100,6 +117,8 @@ public class SmallLikeButtonView extends RelativeLayout implements View.OnClickL
         }
 
         if (isChecked) {
+            DoLikeEventAsyncTask doLikeTask = new DoLikeEventAsyncTask(relateId,userId);
+            doLikeTask.execute();
             setLikeCount(likeCount+1);
             ivStar.animate().cancel();
             ivStar.setScaleX(0);
@@ -133,6 +152,9 @@ public class SmallLikeButtonView extends RelativeLayout implements View.OnClickL
 
             animatorSet.start();
         }else{
+
+            CancelLikeEventAsyncTask cancelLikeEventAsyncTask = new CancelLikeEventAsyncTask(relateId,userId);
+            cancelLikeEventAsyncTask.execute();
             setLikeCount(likeCount-1);
         }
     }

@@ -182,6 +182,7 @@ public class FetchEventListResultJsonResolver extends BaseJsonResolver {
                             }
                         }
                         int uuidInBack = json.getInt("uuid");
+                        model.setUuidInBack(uuidInBack);
                         JSONArray eventImageArray = json.getJSONArray("eventImageList");
                         if(eventImageArray!=null&&eventImageArray.length()>0){
                             JSONObject coverImageJson  = (JSONObject)eventImageArray.opt(0);

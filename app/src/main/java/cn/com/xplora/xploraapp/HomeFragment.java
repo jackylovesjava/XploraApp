@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.xplora.xploraapp.asyncTasks.DoAfterResultInterface;
+import cn.com.xplora.xploraapp.asyncTasks.DoLikeEventAsyncTask;
 import cn.com.xplora.xploraapp.asyncTasks.FetchEventListAsyncTask;
 import cn.com.xplora.xploraapp.customUI.CustomProgressDialog;
 import cn.com.xplora.xploraapp.customUI.JingDongHeaderLayout;
@@ -324,6 +325,7 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 				((MyViewHolder) holder).eventLikeSBV.setLikeCount(eventModel.getLikeCount());
 			}
 			((MyViewHolder) holder).eventLikeSBV.setRelateId(eventModel.getUuidInBack());
+			((MyViewHolder) holder).eventLikeSBV.setChecked(eventModel.isLikedByCurrentUser());
 			((MyViewHolder) holder).eventCoverIV.setOnTouchListener(new View.OnTouchListener() {
 				int count;
 				long firClick,secClick;
@@ -342,8 +344,15 @@ public class HomeFragment extends BaseFragment implements  DoAfterResultInterfac
 								if(currentUser!=null&&currentUser.getUuidInBack()>0) {//登录才会显示like动画
 									((MyViewHolder) holder).eventLikeLBV.setVisibility(View.VISIBLE);
 									((MyViewHolder) holder).eventLikeLBV.startAnimation();
-									((MyViewHolder) holder).eventLikeSBV.setLikeCount(eventModel.getLikeCount() + 1);
-									((MyViewHolder) holder).eventLikeSBV.setChecked(true);
+									if(((MyViewHolder) holder).eventLikeSBV.isChecked) {
+
+									}else{
+										DoLikeEventAsyncTask doLikeTask = new DoLikeEventAsyncTask(eventModel.getUuidInBack(), mUserId);
+										doLikeTask.execute();
+										((MyViewHolder) holder).eventLikeSBV.setLikeCount(eventModel.getLikeCount() + 1);
+										((MyViewHolder) holder).eventLikeSBV.setChecked(true);
+									}
+
 								}
 							}
 							count = 0;

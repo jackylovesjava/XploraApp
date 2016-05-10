@@ -62,6 +62,10 @@
     <string name="cancelBtn">取消</string>
     <string name="okBtn">确定</string>
     <string name="title_start_event">活在</string>
+
+    <string name="need_signin">请登录再进行此操作</string>
+
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
